@@ -65,51 +65,53 @@ public class MyModel extends Observable implements Model {
 		else
 			notifyObservers("directory not found");
 	}
-//
-//	/**
-//	* This method is for generating a 3d maze
-//	* @param name is the name of the maze.
-//	* @param generator is the how we would generate the maze.
-//	* @param x is the x dimension for the maze
-//	* @param y is the y dimension for the maze
-//	* @param z is the z dimension for the maze
-//	*/
-//	@Override
-//	public void generate3dMaze(String name,String generator,int x,int y,int z) {
-//		threadPool.execute(new Runnable() {
-//			@Override
-//			public void run() {
-//				Maze3d maze;
-//				if(!mazes.containsKey(name))
-//				{
-//					if(generator.startsWith("simple"))
-//						maze = new SimpleMaze3dGenerator().generate(x, y, z);
-//					else
-//						maze = new MyMaze3dGenerator().generate(x, y, z);
-//
-//					mazes.put(name, maze);
-//					controller.update("maze "+ name +" is ready");
-//				}
-//				else
-//					controller.update("maze with name "+name+" exsits");
-//			}
-//		});
-//	}
-//
-//	/**
-//	* This method is for getting the maze by his name
-//	* @param name is the name of the maze.
-//	*/
-//	@Override
-//	public void getMazeByName(String name) {
-//		try{
-//			Maze3d maze = getMaze(name);
-//			controller.update(maze);
-//		}catch(Exception e){
-//			controller.update(e.getMessage());	
-//		}
-//	}
-//
+
+	/**
+	* This method is for generating a 3d maze
+	* @param name is the name of the maze.
+	* @param generator is the how we would generate the maze.
+	* @param x is the x dimension for the maze
+	* @param y is the y dimension for the maze
+	* @param z is the z dimension for the maze
+	*/
+	@Override
+	public void generate3dMaze(String name,String generator,int x,int y,int z) {
+		threadPool.execute(new Runnable() {
+			@Override
+			public void run() {
+				Maze3d maze;
+				setChanged();
+				if(!mazes.containsKey(name))
+				{
+					if(generator.startsWith("simple"))
+						maze = new SimpleMaze3dGenerator().generate(x, y, z);
+					else
+						maze = new MyMaze3dGenerator().generate(x, y, z);
+
+					mazes.put(name, maze);
+					notifyObservers("maze "+ name +" is ready");
+				}
+				else
+					notifyObservers("maze with name "+name+" exsits");
+			}
+		});
+	}
+
+	/**
+	* This method is for getting the maze by his name
+	* @param name is the name of the maze.
+	*/
+	@Override
+	public void getMazeByName(String name) {
+		try{
+			setChanged();
+			Maze3d maze = getMaze(name);
+			notifyObservers(maze);
+		}catch(Exception e){
+			notifyObservers(e.getMessage());	
+		}
+	}
+
 //	/**
 //	* This method is getting the cross section
 //	* of a 3d maze
@@ -335,10 +337,10 @@ public class MyModel extends Observable implements Model {
 //	* @param name is the name of the maze.
 //	*@return maze is our 3d maze.
 //	*/
-//	private Maze3d getMaze(String mazeName) throws Exception
-//	{
-//		Maze3d maze = mazes.get(mazeName);
-//		if(maze==null) throw new Exception("maze dosent exsist");
-//		return maze;
-//	}
+	private Maze3d getMaze(String mazeName) throws Exception
+	{
+		Maze3d maze = mazes.get(mazeName);
+		if(maze==null) throw new Exception("maze dosent exsist");
+		return maze;
+	}
 }

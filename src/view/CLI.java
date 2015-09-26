@@ -46,7 +46,6 @@ public class CLI extends Observable {
 					while (!stop) {
 						inputString = in.readLine();
 						splitedCommand=inputString.split(" ");
-						System.out.println();
 						setChanged();
 						notifyObservers();
 					}

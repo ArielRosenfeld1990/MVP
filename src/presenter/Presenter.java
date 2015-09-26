@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import model.Model;
+import view.Displayer;
 import view.View;
 
 public class Presenter implements Observer{
@@ -55,8 +56,8 @@ public class Presenter implements Observer{
 	{
 		commands=new HashMap<String,Command>();
 		commands.put("dir", new DirCommand());
-//		commands.put("generate3dMaze",new Generate3dMazeCommand());
-//		commands.put("display", new DisplayCommand());
+		commands.put("generate3dMaze",new Generate3dMazeCommand());
+		commands.put("display", new DisplayCommand());
 //		commands.put("displayCrossSection", new DisplayCrossSectionCommand());
 //		commands.put("saveMaze", new SaveMazeCommand());
 //		commands.put("loadMaze", new LoadMazeCommand());
@@ -122,43 +123,43 @@ public class Presenter implements Observer{
 				view.display("must insert a path");}
 		}
 	}
-//	
-//	/**
-//	* <h1>Generate3dMazeCommand</h1>
-//	* The Generate3dMazeCommand class implements our Command interface
-//	* for generating 3d maze
-//	* <p>
-//	* 
-//	*/
-//	public class Generate3dMazeCommand implements Command{
-//		@Override
-//		public void doCommand(String[] args) {
-//			try{
-//				model.generate3dMaze(args[0],args[1],Integer.decode(args[2]),Integer.decode(args[3]),Integer.decode(args[4]));
-//			}
-//			catch(ArrayIndexOutOfBoundsException e){
-//				update("paramters missing"); }
-//			catch (NumberFormatException e) {
-//				update("invalid paramters");}
-//		}}
-//
-//	/**
-//	* <h1>DisplayCommand</h1>
-//	* The DisplayCommand class implements our Command interface
-//	* for displaying the maze
-//	* <p>
-//	* 
-//	*/
-//	public class DisplayCommand implements Command	{
-//		@Override
-//		public void doCommand(String[] args) {
-//			try {
-//				model.getMazeByName(args[0]);
-//			}
-//			catch(ArrayIndexOutOfBoundsException e)	{
-//				update("must insert maze name");}
-//		}				
-//	}
+	
+	/**
+	* <h1>Generate3dMazeCommand</h1>
+	* The Generate3dMazeCommand class implements our Command interface
+	* for generating 3d maze
+	* <p>
+	* 
+	*/
+	public class Generate3dMazeCommand implements Command{
+		@Override
+		public void doCommand(String[] args) {
+			try{
+				model.generate3dMaze(args[0],args[1],Integer.decode(args[2]),Integer.decode(args[3]),Integer.decode(args[4]));
+			}
+			catch(ArrayIndexOutOfBoundsException e){
+				view.display("paramters missing"); }
+			catch (NumberFormatException e) {
+				view.display("invalid paramters");}
+		}}
+
+	/**
+	* <h1>DisplayCommand</h1>
+	* The DisplayCommand class implements our Command interface
+	* for displaying the maze
+	* <p>
+	* 
+	*/
+	public class DisplayCommand implements Command	{
+		@Override
+		public void doCommand(String[] args) {
+			try {
+				model.getMazeByName(args[0]);
+			}
+			catch(ArrayIndexOutOfBoundsException e)	{
+				view.display("must insert maze name");}
+		}				
+	}
 //
 //	/**
 //	* <h1>DisplayCrossSectionCommand</h1>

@@ -16,20 +16,20 @@ public interface Model {
 * @param path is the path for the files.
 */
 void dir(String path);
-///**
-//* This method is for generating a 3d maze
-//* @param name is the name of the maze.
-//* @param generator is the how we would generate the maze.
-//* @param x is the x dimension for the maze
-//* @param y is the y dimension for the maze
-//* @param z is the z dimension for the maze
-//*/
-//void generate3dMaze(String name,String generator,int x,int y,int z);
-///**
-//* This method is for getting the maze by his name
-//* @param name is the name of the maze.
-//*/
-//void getMazeByName(String name);
+/**
+* This method is for generating a 3d maze
+* @param name is the name of the maze.
+* @param generator is the how we would generate the maze.
+* @param x is the x dimension for the maze
+* @param y is the y dimension for the maze
+* @param z is the z dimension for the maze
+*/
+void generate3dMaze(String name,String generator,int x,int y,int z);
+/**
+* This method is for getting the maze by his name
+* @param name is the name of the maze.
+*/
+void getMazeByName(String name);
 ///**
 //* This method is getting the cross section
 //* of a 3d maze
