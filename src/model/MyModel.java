@@ -112,13 +112,13 @@ public class MyModel extends Observable implements Model {
 		}
 	}
 
-//	/**
-//	* This method is getting the cross section
-//	* of a 3d maze
-//	* @param axis is the dimension of the 3d maze.
-//	* @param index is the index in the array.
-//	* @param mazeName is the name of the 3d maze.
-//	*/
+	/**
+	* This method is getting the cross section
+	* of a 3d maze
+	* @param axis is the dimension of the 3d maze.
+	* @param index is the index in the array.
+	* @param mazeName is the name of the 3d maze.
+	*/
 	@Override
 	public void getCrossSection(char axis, int index, String mazeName){
 		int[][] crossSection;
@@ -153,7 +153,7 @@ public class MyModel extends Observable implements Model {
 		notifyObservers(crossSection);
 	
 	}
-//
+
 	/**
 	* This method is for saving the maze to a file
 	* @param mazeName is the name of the maze.

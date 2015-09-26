@@ -89,11 +89,6 @@ public class Presenter implements Observer{
 		this.model = model;
 	}
 
-
-
-
-
-
 	/**
 	* <h1>Command</h1>
 	* The Command interface represents a command
@@ -158,14 +153,14 @@ public class Presenter implements Observer{
 				view.display("must insert maze name");}
 		}				
 	}
-//
-//	/**
-//	* <h1>DisplayCrossSectionCommand</h1>
-//	* The DisplayCrossSectionCommand class implements our Command interface
-//	* for displaying a cross section for our 3d maze
-//	* <p>
-//	* 
-//	*/
+
+	/**
+	* <h1>DisplayCrossSectionCommand</h1>
+	* The DisplayCrossSectionCommand class implements our Command interface
+	* for displaying a cross section for our 3d maze
+	* <p>
+	* 
+	*/
 	public class DisplayCrossSectionCommand implements Command	{
 		@Override
 		public void doCommand(String[] args) {

@@ -30,13 +30,13 @@ void generate3dMaze(String name,String generator,int x,int y,int z);
 * @param name is the name of the maze.
 */
 void getMazeByName(String name);
-///**
-//* This method is getting the cross section
-//* of a 3d maze
-//* @param axis is the dimension of the 3d maze.
-//* @param index is the index in the array.
-//* @param mazeName is the name of the 3d maze.
-//*/
+/**
+* This method is getting the cross section
+* of a 3d maze
+* @param axis is the dimension of the 3d maze.
+* @param index is the index in the array.
+* @param mazeName is the name of the 3d maze.
+*/
 void getCrossSection(char axis,int index,String mazeName);
 /**
 * This method is for saving the maze in a file
