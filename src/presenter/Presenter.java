@@ -58,7 +58,7 @@ public class Presenter implements Observer{
 		commands.put("dir", new DirCommand());
 		commands.put("generate3dMaze",new Generate3dMazeCommand());
 		commands.put("display", new DisplayCommand());
-//		commands.put("displayCrossSection", new DisplayCrossSectionCommand());
+		commands.put("displayCrossSection", new DisplayCrossSectionCommand());
 //		commands.put("saveMaze", new SaveMazeCommand());
 //		commands.put("loadMaze", new LoadMazeCommand());
 //		commands.put("mazeSize", new MazeSizeCommand());
@@ -168,18 +168,18 @@ public class Presenter implements Observer{
 //	* <p>
 //	* 
 //	*/
-//	public class DisplayCrossSectionCommand implements Command	{
-//		@Override
-//		public void doCommand(String[] args) {
-//			try {
-//				model.getCrossSection(args[0].charAt(0),Integer.decode(args[1]),args[2]);
-//			}
-//			catch(ArrayIndexOutOfBoundsException e)	{
-//				update("paramters missing");}
-//			catch (NumberFormatException e) {
-//				update("invalid paramters");}
-//		}				
-//	}
+	public class DisplayCrossSectionCommand implements Command	{
+		@Override
+		public void doCommand(String[] args) {
+			try {
+				model.getCrossSection(args[0].charAt(0),Integer.decode(args[1]),args[2]);
+			}
+			catch(ArrayIndexOutOfBoundsException e)	{
+				view.display("paramters missing");}
+			catch (NumberFormatException e) {
+				view.display("invalid paramters");}
+		}				
+	}
 //
 //	/**
 //	* <h1>SaveMazeCommand</h1>

@@ -37,7 +37,7 @@ void getMazeByName(String name);
 //* @param index is the index in the array.
 //* @param mazeName is the name of the 3d maze.
 //*/
-//void getCrossSection(char axis,int index,String mazeName);
+void getCrossSection(char axis,int index,String mazeName);
 ///**
 //* This method is for saving the maze in a file
 //* @param mazeName is the name of the maze.

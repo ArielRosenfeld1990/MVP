@@ -119,39 +119,40 @@ public class MyModel extends Observable implements Model {
 //	* @param index is the index in the array.
 //	* @param mazeName is the name of the 3d maze.
 //	*/
-//	@Override
-//	public void getCrossSection(char axis, int index, String mazeName){
-//		int[][] crossSection;
-//		try{
-//			Maze3d maze = getMaze(mazeName);
-//			switch (axis) {
-//			case 'x':
-//			case 'X':
-//				crossSection=maze.getCrossSectionByX(index);
-//				break;
-//			case 'y':
-//			case 'Y':
-//				crossSection=maze.getCrossSectionByY(index);
-//				break;
-//			case 'z':
-//			case 'Z':
-//				crossSection=maze.getCrossSectionByZ(index);
-//				break;
-//			default:
-//				throw new InvalidParameterException("invalid Axis");	
-//			}
-//		}
-//		catch(IndexOutOfBoundsException e){			
-//			controller.update("not a valid index for this maze");
-//			return;
-//		}
-//		catch (Exception e) {
-//			controller.update(e.getMessage());
-//			return;
-//		}
-//
-//		controller.update(crossSection);
-//	}
+	@Override
+	public void getCrossSection(char axis, int index, String mazeName){
+		int[][] crossSection;
+		try{
+			Maze3d maze = getMaze(mazeName);
+			setChanged();
+		switch (axis) {
+		case 'x':
+		case 'X':
+				crossSection=maze.getCrossSectionByX(index);
+				break;
+			case 'y':
+			case 'Y':
+				crossSection=maze.getCrossSectionByY(index);
+			break;
+			case 'z':
+			case 'Z':
+				crossSection=maze.getCrossSectionByZ(index);
+			break;
+			default:
+			throw new InvalidParameterException("invalid Axis");	
+			}
+		}
+		catch(IndexOutOfBoundsException e){			
+			notifyObservers("not a valid index for this maze");
+			return;
+		}
+		catch (Exception e) {
+			notifyObservers(e.getMessage());
+			return;
+		}
+		notifyObservers(crossSection);
+	
+	}
 //
 //	/**
 //	* This method is for saving the maze to a file
