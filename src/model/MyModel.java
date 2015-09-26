@@ -37,7 +37,7 @@ import io.MyDecompressorInputStream;
 * 
 */
 public class MyModel extends Observable implements Model {
-
+//
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<String, Solution> mazesSolution;
 	ExecutorService threadPool;
