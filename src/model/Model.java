@@ -6,5 +6,5 @@ public interface Model {
 	void moveDown();
 	void moveLeft();
 	void moveRight();
-	void getData();
+	int[][][] getData();
 }

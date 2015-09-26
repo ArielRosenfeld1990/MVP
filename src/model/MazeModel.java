@@ -29,9 +29,9 @@ public class MazeModel extends Observable implements Model {
 	}
 
 	@Override
-	public void getData() {
+	public int[][][] getData() {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 }
