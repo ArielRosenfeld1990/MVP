@@ -1,17 +1,18 @@
 package boot;
 
-import model.MazeModel;
+import model.MyModel;
 import presenter.Presenter;
-import view.MazeView;
+import view.MyView;
 
 public class Run {
 
 	public static void main(String[] args) {
-		MazeView ui = new MazeView();
-		MazeModel m = new MazeModel();
+		MyView ui = new MyView();
+		MyModel m = new MyModel();
 		Presenter p = new Presenter(ui,m);
 		ui.addObserver(p);
 		m.addObserver(p);
+		ui.start();
 	}
 
 }
