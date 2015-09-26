@@ -17,7 +17,17 @@ public class Presenter implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		if(o==ui)
+		{
+			int input=ui.getUSerCommand();
+			switch(input)
+			{
+			//case 2:model.moveUp();
+			}
+		}
+		if(o==model)
+		{
+			ui.displayData(model.getData());
+		}
 	}
 }
