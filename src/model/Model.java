@@ -38,44 +38,44 @@ void getMazeByName(String name);
 //* @param mazeName is the name of the 3d maze.
 //*/
 void getCrossSection(char axis,int index,String mazeName);
-///**
-//* This method is for saving the maze in a file
-//* @param mazeName is the name of the maze.
-//* @param fileName is the name of the file.
-//*/
-//void saveMaze(String mazeName, String fileName) throws IOException;
-///**
-//* This method is for loading the maze from a file
-//* @param mazeName is the name of the maze.
-//* @param fileName is the name of the file.
-//*/
-//void loadMaze(String fileName,String mazeName) throws IOException;
-///**
-//* This method is for getting the size of the maze 
-//* in the memory
-//* @param mazeName is the name of the maze.
-//*/
-//void getMazeSize(String mazeName);
-///**
-//* This method is for getting the size of a file
-//* @param fileName is the name of the file.
-//*/
-//public void getFileSize(String fileName);
-///**
-//* This method is for solving the maze
-//* with the different algorithms
-//* @param mazeName is the name of the maze.
-//* @param algorithm is the name of the algorithm.
-//*/
-//void solve(String mazeName,String algorithm);
-///**
-//* his method is for getting the solution
-//* for the 3d maze
-//* @param name is the name of the maze.
-//*/
-//void getSolutionForName(String name);
-///**
-//* This method is for closing the model
-//*/
-//void close();
+/**
+* This method is for saving the maze in a file
+* @param mazeName is the name of the maze.
+* @param fileName is the name of the file.
+*/
+void saveMaze(String mazeName, String fileName) throws IOException;
+/**
+* This method is for loading the maze from a file
+* @param mazeName is the name of the maze.
+* @param fileName is the name of the file.
+*/
+void loadMaze(String fileName,String mazeName) throws IOException;
+/**
+* This method is for getting the size of the maze 
+* in the memory
+* @param mazeName is the name of the maze.
+*/
+void getMazeSize(String mazeName);
+/**
+* This method is for getting the size of a file
+* @param fileName is the name of the file.
+*/
+public void getFileSize(String fileName);
+/**
+* This method is for solving the maze
+* with the different algorithms
+* @param mazeName is the name of the maze.
+* @param algorithm is the name of the algorithm.
+*/
+void solve(String mazeName,String algorithm);
+/**
+* his method is for getting the solution
+* for the 3d maze
+* @param name is the name of the maze.
+*/
+void getSolutionForName(String name);
+/**
+* This method is for closing the model
+*/
+void close();
 }

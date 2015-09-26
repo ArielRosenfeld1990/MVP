@@ -154,190 +154,194 @@ public class MyModel extends Observable implements Model {
 	
 	}
 //
-//	/**
-//	* This method is for saving the maze to a file
-//	* @param mazeName is the name of the maze.
-//	* @param fileName is the name of the file.
-//	*/
-//	@Override
-//	public void saveMaze(String mazeName, String fileName) throws IOException  {
-//		OutputStream out=null;
-//		try {
-//			Maze3d maze = getMaze(mazeName);
-//			out=new MyCompressorOutputStream(new FileOutputStream(fileName));
-//			out.write(maze.toByteArray());
-//			out.flush();	
-//			controller.update("file saved");
-//		} 
-//		catch (FileNotFoundException e) {
-//			controller.update(e.getMessage());
-//		}
-//		catch (IOException e) {
-//			controller.update(e.getMessage());
-//		}
-//		catch (Exception e) {
-//			controller.update(e.getMessage());
-//		}
-//		finally {
-//			if(out!=null)
-//				out.close();
-//		}
-//
-//	}
-//
-//	/**
-//	* This method is for loading the maze from a file
-//	* @param mazeName is the name of the maze.
-//	* @param fileName is the name of the file.
-//	*/
-//	@Override
-//	public void loadMaze(String fileName, String mazeName) throws IOException {
-//		InputStream in = null;
-//		ByteArrayOutputStream buffer=new ByteArrayOutputStream();;
-//		byte[] data=new byte[100];
-//
-//		if(mazes.containsKey(mazeName)){
-//			controller.update("maze with name "+mazeName+" exsits");
-//			return;
-//		}
-//		try{
-//			in =new MyDecompressorInputStream(new FileInputStream(fileName));
-//
-//			while(in.read(data)!=-1){
-//				buffer.write(data);
-//			}
-//			Maze3d loaded=new Maze3d(buffer.toByteArray());
-//			mazes.put(mazeName, loaded);
-//			controller.update("load successfuly");
-//		}
-//		catch (FileNotFoundException e) {
-//			controller.update(e.getMessage());
-//		}
-//		catch (IOException e) {
-//			controller.update(e.getMessage());
-//		}
-//		catch (ClassNotFoundException e) {
-//			controller.update(e.getMessage());
-//		}
-//		finally {
-//			if(in!=null)
-//				in.close();
-//			buffer.close();
-//		}
-//	}	
-//
-//	/**
-//	 * This method is for getting the size of the maze 
-//	 * in the memory
-//	 * @param mazeName is the name of the maze.
-//	 */
-//	@Override
-//	public void getMazeSize(String mazeName) {
-//
-//		try {
-//			Maze3d maze = getMaze(mazeName);
-//			controller.update(maze.toByteArray().length +" bytes");
-//		}
-//		catch (Exception e) {
-//			controller.update(e.getMessage());
-//		}
-//	}
-//	
-//	/**
-//	* This method is for getting the size of a file
-//	* @param fileName is the name of the file.
-//	*/
-//
-//	@Override
-//	public void getFileSize(String fileName) {
-//		try {
-//			
-//				File file=new File(fileName);
-//				if(file.exists()){
-//					controller.update(file.length()+" bytes");
-//				}
-//				else throw new FileNotFoundException("file"+ fileName + "not found");		
-//		} catch (FileNotFoundException e) {
-//			controller.update(e.getMessage());
-//		}
-//		
-//	}
-//	
-//	/**
-//	* This method is for solving the maze
-//	* with the different algorithms
-//	* @param mazeName is the name of the maze.
-//	* @param algorithm is the name of the algorithm.
-//	*/
-//	@Override
-//	public void solve(String mazeName, String algorithm) {
-//		threadPool.execute(new Runnable() {
-//			@Override
-//			public void run() {
-//				Searcher searcher;
-//				try{
-//					Maze3d maze = getMaze(mazeName);
-//					switch(algorithm)
-//					{
-//					case "bfs":
-//						searcher = new Bfs();
-//						break;
-//					case "aStarAir":
-//						searcher = new AStar(new MazeManhattanDistance());
-//						break;
-//					case "aStarManhattan":
-//						searcher = new AStar(new MazeAirDistance());
-//						break;
-//					default:
-//						throw new InvalidParameterException("invalid Axis");
-//					} 
-//					mazesSolution.put(mazeName, searcher.search(new Maze3dSearchable(maze)));
-//					controller.update("solution for "+ mazeName +" is ready");
-//				}
-//				catch (Exception e) {
-//					e.printStackTrace();
-//					controller.update(e.getMessage());
-//				}		
-//			}
-//		});
-//	}
-//
-//	/**
-//	* This method is for getting the solution
-//	* for the 3d maze
-//	* @param name is the name of the maze.
-//	*/
-//	@Override
-//	public void getSolutionForName(String name) {
-//		try{
-//			Solution solution = mazesSolution.get(name);
-//			if(solution==null) throw new Exception("solution dosent exsist");
-//			controller.update(solution);
-//		}catch(Exception e){
-//			controller.update(e.getMessage());	
-//		}
-//	}
-//
-//	/**
-//	* This method is for closing myModel
-//	*/
-//	@Override
-//	public void close() {
-//		threadPool.shutdown();
-//		try {
-//			while(!threadPool.awaitTermination(10, TimeUnit.SECONDS));
-//			controller.update("all the tasks have finished");
-//		} catch (InterruptedException e) {
-//			controller.update(e.getMessage());
-//		}
-//		controller.update("model is safely closed");
-//	}
-//	
-//	/**
-//	* This method is for getting a maze 
-//	* @param name is the name of the maze.
-//	*@return maze is our 3d maze.
-//	*/
+	/**
+	* This method is for saving the maze to a file
+	* @param mazeName is the name of the maze.
+	* @param fileName is the name of the file.
+	*/
+	@Override
+	public void saveMaze(String mazeName, String fileName) throws IOException  {
+		OutputStream out=null;
+		setChanged();
+		try {
+			Maze3d maze = getMaze(mazeName);
+			out=new MyCompressorOutputStream(new FileOutputStream(fileName));
+			out.write(maze.toByteArray());
+			out.flush();	
+			notifyObservers("file saved");
+		} 
+		catch (FileNotFoundException e) {
+			notifyObservers(e.getMessage());
+		}
+		catch (IOException e) {
+			notifyObservers(e.getMessage());
+		}
+		catch (Exception e) {
+			notifyObservers(e.getMessage());
+		}
+		finally {
+			if(out!=null)
+				out.close();
+		}
+
+	}
+
+	/**
+	* This method is for loading the maze from a file
+	* @param mazeName is the name of the maze.
+	* @param fileName is the name of the file.
+	*/
+	@Override
+	public void loadMaze(String fileName, String mazeName) throws IOException {
+		setChanged();
+		InputStream in = null;
+		ByteArrayOutputStream buffer=new ByteArrayOutputStream();;
+		byte[] data=new byte[100];
+
+		if(mazes.containsKey(mazeName)){
+			notifyObservers("maze with name "+mazeName+" exsits");
+			return;
+		}
+		try{
+			in =new MyDecompressorInputStream(new FileInputStream(fileName));
+
+			while(in.read(data)!=-1){
+				buffer.write(data);
+			}
+			Maze3d loaded=new Maze3d(buffer.toByteArray());
+			mazes.put(mazeName, loaded);
+			notifyObservers("load successfuly");
+		}
+		catch (FileNotFoundException e) {
+			notifyObservers(e.getMessage());
+		}
+		catch (IOException e) {
+			notifyObservers(e.getMessage());
+		}
+		catch (ClassNotFoundException e) {
+			notifyObservers(e.getMessage());
+		}
+		finally {
+			if(in!=null)
+				in.close();
+			buffer.close();
+		}
+	}	
+
+	/**
+	 * This method is for getting the size of the maze 
+	 * in the memory
+	 * @param mazeName is the name of the maze.
+	 */
+	@Override
+	public void getMazeSize(String mazeName) {
+		setChanged();
+		try {
+			Maze3d maze = getMaze(mazeName);
+			notifyObservers(maze.toByteArray().length +" bytes");
+		}
+		catch (Exception e) {
+			notifyObservers(e.getMessage());
+		}
+	}
+	
+	/**
+	* This method is for getting the size of a file
+	* @param fileName is the name of the file.
+	*/
+
+	@Override
+	public void getFileSize(String fileName) {
+		setChanged();
+		try {
+				File file=new File(fileName);
+				if(file.exists()){
+					notifyObservers(file.length()+" bytes");
+				}
+				else throw new FileNotFoundException("file"+ fileName + "not found");		
+		} catch (FileNotFoundException e) {
+			notifyObservers(e.getMessage());
+		}
+	}
+	
+	/**
+	* This method is for solving the maze
+	* with the different algorithms
+	* @param mazeName is the name of the maze.
+	* @param algorithm is the name of the algorithm.
+	*/
+	@Override
+	public void solve(String mazeName, String algorithm) {
+		threadPool.execute(new Runnable() {
+			@Override
+			public void run() {
+				setChanged();
+				Searcher searcher;
+				try{
+					Maze3d maze = getMaze(mazeName);
+					switch(algorithm)
+					{
+					case "bfs":
+						searcher = new Bfs();
+						break;
+					case "aStarAir":
+						searcher = new AStar(new MazeManhattanDistance());
+						break;
+					case "aStarManhattan":
+						searcher = new AStar(new MazeAirDistance());
+						break;
+					default:
+						throw new InvalidParameterException("invalid Axis");
+					} 
+					mazesSolution.put(mazeName, searcher.search(new Maze3dSearchable(maze)));
+					notifyObservers("solution for "+ mazeName +" is ready");
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					notifyObservers(e.getMessage());
+				}		
+			}
+		});
+	}
+
+	/**
+	* This method is for getting the solution
+	* for the 3d maze
+	* @param name is the name of the maze.
+	*/
+	@Override
+	public void getSolutionForName(String name) {
+		setChanged();
+		try{
+			Solution solution = mazesSolution.get(name);
+			if(solution==null) throw new Exception("solution dosent exsist");
+			notifyObservers(solution);
+		}catch(Exception e){
+			notifyObservers(e.getMessage());	
+		}
+	}
+
+	/**
+	* This method is for closing myModel
+	*/
+	@Override
+	public void close() {
+		threadPool.shutdown();
+		setChanged();
+		try {
+			while(!threadPool.awaitTermination(10, TimeUnit.SECONDS));
+			notifyObservers("all the tasks have finished");
+		} catch (InterruptedException e) {
+			notifyObservers(e.getMessage());
+		}
+		notifyObservers("model is safely closed");
+	}
+	
+	/**
+	* This method is for getting a maze 
+	* @param name is the name of the maze.
+	*@return maze is our 3d maze.
+	*/
 	private Maze3d getMaze(String mazeName) throws Exception
 	{
 		Maze3d maze = mazes.get(mazeName);

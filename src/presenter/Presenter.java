@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-
 import model.Model;
-import view.Displayer;
 import view.View;
 
 public class Presenter implements Observer{
@@ -59,13 +57,13 @@ public class Presenter implements Observer{
 		commands.put("generate3dMaze",new Generate3dMazeCommand());
 		commands.put("display", new DisplayCommand());
 		commands.put("displayCrossSection", new DisplayCrossSectionCommand());
-//		commands.put("saveMaze", new SaveMazeCommand());
-//		commands.put("loadMaze", new LoadMazeCommand());
-//		commands.put("mazeSize", new MazeSizeCommand());
-//		commands.put("fileSize", new FileSizeCommand());
-//		commands.put("solve", new SolveCommand());
-//		commands.put("displaySolution", new DisplaySolutionCommand());
-//		commands.put("exit", new ExitCommand());
+		commands.put("saveMaze", new SaveMazeCommand());
+		commands.put("loadMaze", new LoadMazeCommand());
+		commands.put("mazeSize", new MazeSizeCommand());
+		commands.put("fileSize", new FileSizeCommand());
+		commands.put("solve", new SolveCommand());
+		commands.put("displaySolution", new DisplaySolutionCommand());
+		commands.put("exit", new ExitCommand());
 	}
 
 	/**
@@ -180,139 +178,139 @@ public class Presenter implements Observer{
 				view.display("invalid paramters");}
 		}				
 	}
-//
-//	/**
-//	* <h1>SaveMazeCommand</h1>
-//	* The SaveMazeCommand class implements our Command interface
-//	* for saving the maze
-//	* <p>
-//	* 
-//	*/
-//	public class SaveMazeCommand implements Command	{
-//		@Override
-//		public void doCommand(String[] args) {
-//			try{
-//				model.saveMaze(args[0], args[1]);	
-//			}
-//			catch(ArrayIndexOutOfBoundsException e)	{
-//				update("paramters missing");
-//			} 
-//			catch (IOException e) {
-//				update(e.getMessage());
-//			}
-//		}
-//	}
-//
-//	/**
-//	* <h1>LoadMazeCommand</h1>
-//	* The LoadMazeCommand class implements our Command interface
-//	* for loading the maze
-//	* <p>
-//	* 
-//	*/
-//	public class LoadMazeCommand implements Command	{
-//		@Override
-//		public void doCommand(String[] args) {
-//			try{
-//				model.loadMaze(args[0], args[1]);	
-//			}
-//			catch(ArrayIndexOutOfBoundsException e)	{
-//				update("paramters missing");
-//			}
-//			catch (IOException e) {
-//				update(e.getMessage());
-//			}
-//		}
-//	}
-//
-//	/**
-//	* <h1>MazeSizeCommand</h1>
-//	* The MazeSizeCommand class implements our Command interface
-//	* for displaying the maze size
-//	* <p>
-//	* 
-//	*/
-//	public class MazeSizeCommand implements Command
-//	{
-//		@Override
-//		public void doCommand(String[] args) {
-//			try {
-//				model.getMazeSize(args[0]);
-//			}
-//			catch(ArrayIndexOutOfBoundsException e)	{
-//				update("must insert maze name");}
-//		}				
-//	}
-//	
-//	/**
-//	* <h1>FileSizeCommand</h1>
-//	* The FileSizeCommand class implements our Command interface
-//	* for displaying the size of a file
-//	* <p>
-//	* 
-//	*/
-//	public class FileSizeCommand implements Command
-//	{
-//		@Override
-//		public void doCommand(String[] args) {
-//			try {
-//				model.getFileSize(args[0]);
-//			}
-//			catch(ArrayIndexOutOfBoundsException e)	{
-//				update("must insert file name");}
-//		}				
-//	}
-//	
-//	/**
-//	* <h1>SolveCommand</h1>
-//	* The SolveCommand class implements our Command interface
-//	* for solving the maze for the different algorithms
-//	* <p>
-//	* 
-//	*/
-//	public class SolveCommand implements Command {
-//		@Override
-//		public void doCommand(String[] args) {
-//			try{
-//				model.solve(args[0],args[1]);
-//			}
-//			catch(ArrayIndexOutOfBoundsException e)	{
-//				update("paramters missing");
-//			}
-//		}
-//	}
-//
-//	/**
-//	* <h1>DisplaySolutionCommand</h1>
-//	* The DisplaySolutionCommand class implements our Command interface
-//	* for displaying the solution for a maze
-//	* <p>
-//	* 
-//	*/
-//	public class DisplaySolutionCommand implements Command	{
-//		@Override
-//		public void doCommand(String[] args) {
-//			try {
-//				model.getSolutionForName(args[0]);
-//			}
-//			catch(ArrayIndexOutOfBoundsException e)	{
-//				update("must insert maze name");}
-//		}				
-//	}
-//	
-//	/**
-//	* <h1>ExitCommand</h1>
-//	* The ExitCommand class implements our Command interface
-//	* for safely exiting the program
-//	* <p>
-//	* 
-//	*/
-//	public class ExitCommand implements Command{
-//		@Override
-//		public void doCommand(String[] args) {
-//			model.close();
-//			view.close();
-//		}
-//	}
+
+	/**
+	* <h1>SaveMazeCommand</h1>
+	* The SaveMazeCommand class implements our Command interface
+	* for saving the maze
+	* <p>
+	* 
+	*/
+	public class SaveMazeCommand implements Command	{
+		@Override
+		public void doCommand(String[] args) {
+			try{
+				model.saveMaze(args[0], args[1]);	
+			}
+			catch(ArrayIndexOutOfBoundsException e)	{
+				view.display("paramters missing");
+			} 
+			catch (IOException e) {
+				view.display(e.getMessage());
+			}
+		}
+	}
+
+	/**
+	* <h1>LoadMazeCommand</h1>
+	* The LoadMazeCommand class implements our Command interface
+	* for loading the maze
+	* <p>
+	* 
+	*/
+	public class LoadMazeCommand implements Command	{
+		@Override
+		public void doCommand(String[] args) {
+			try{
+				model.loadMaze(args[0], args[1]);	
+			}
+			catch(ArrayIndexOutOfBoundsException e)	{
+				view.display("paramters missing");
+			}
+			catch (IOException e) {
+				view.display(e.getMessage());
+			}
+		}
+	}
+
+	/**
+	* <h1>MazeSizeCommand</h1>
+	* The MazeSizeCommand class implements our Command interface
+	* for displaying the maze size
+	* <p>
+	* 
+	*/
+	public class MazeSizeCommand implements Command
+	{
+		@Override
+		public void doCommand(String[] args) {
+			try {
+				model.getMazeSize(args[0]);
+			}
+			catch(ArrayIndexOutOfBoundsException e)	{
+				view.display("must insert maze name");}
+		}				
+	}
+	
+	/**
+	* <h1>FileSizeCommand</h1>
+	* The FileSizeCommand class implements our Command interface
+	* for displaying the size of a file
+	* <p>
+	* 
+	*/
+	public class FileSizeCommand implements Command
+	{
+		@Override
+		public void doCommand(String[] args) {
+			try {
+				model.getFileSize(args[0]);
+			}
+			catch(ArrayIndexOutOfBoundsException e)	{
+				view.display("must insert file name");}
+		}				
+	}
+	
+	/**
+	* <h1>SolveCommand</h1>
+	* The SolveCommand class implements our Command interface
+	* for solving the maze for the different algorithms
+	* <p>
+	* 
+	*/
+	public class SolveCommand implements Command {
+		@Override
+		public void doCommand(String[] args) {
+			try{
+				model.solve(args[0],args[1]);
+			}
+			catch(ArrayIndexOutOfBoundsException e)	{
+				view.display("paramters missing");
+			}
+		}
+	}
+
+	/**
+	* <h1>DisplaySolutionCommand</h1>
+	* The DisplaySolutionCommand class implements our Command interface
+	* for displaying the solution for a maze
+	* <p>
+	* 
+	*/
+	public class DisplaySolutionCommand implements Command	{
+		@Override
+		public void doCommand(String[] args) {
+			try {
+				model.getSolutionForName(args[0]);
+			}
+			catch(ArrayIndexOutOfBoundsException e)	{
+				view.display("must insert maze name");}
+		}				
+	}
+	
+	/**
+	* <h1>ExitCommand</h1>
+	* The ExitCommand class implements our Command interface
+	* for safely exiting the program
+	* <p>
+	* 
+	*/
+	public class ExitCommand implements Command{
+		@Override
+		public void doCommand(String[] args) {
+			model.close();
+			view.close();
+		}
+	}
 
 }
