@@ -13,13 +13,13 @@ import java.util.Observer;
 *
 * 
 */
-public class MyView extends Observable implements View, Observer{
+public class MyObservableCliView extends Observable implements View, Observer{
 
 	private CLI ui;
 	/**
 	* constructor for MyView
 	*/
-	public MyView() {
+	public MyObservableCliView() {
 	}
 	/**
 	* this method is used for starting interaction between the user and the CLI
