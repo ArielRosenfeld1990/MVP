@@ -29,7 +29,8 @@ import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 /**
 * <h1>MyModel</h1>
-* The MyModel class implements our Model interface
+* The MyModel class implements our Model interface,extending Observable so that the Presenter
+* can Observe the class
 * <p>
 *
 * @author  Ariel Rosenfeld,Ofir Calif

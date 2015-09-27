@@ -7,18 +7,36 @@ import java.util.Observer;
 import model.Model;
 import view.View;
 
+/**
+* <h1>Presenter</h1>
+* The Presenter class implements the Observer interface so that we can Observe
+* the MyModel and MyObservableCliView
+* <p>
+*
+* @author  Ariel Rosenfeld,Ofir Calif
+*
+* 
+*/
 public class Presenter implements Observer{
 	private View view;
 	private Model model;
 	private HashMap<String, Command> commands;
 	
-	
+	/**
+	* constructor for Presenter
+	*/
 	public Presenter(View view,Model model) {
 		this.view = view;
 		this.model = model;
 		initilaizeCommands();
 	}
-	
+	/**
+	* This method is used when change has occured either on the Model or the View layer
+	* to handle the change and react, in this case we distinguish between the Model and the View
+	* layer and we response differently
+	* @param o is the Observable that notified us that something changed.
+	*  @param o is the object that we got from the change.
+	*/
 	@Override
 	public void update(Observable o, Object arg) {
 		if(o==view)
@@ -37,7 +55,12 @@ public class Presenter implements Observer{
 		view.display(arg);
 		}
 	}
-	
+	/**
+	* This method is for seperating between the command and the parameters
+	* @param stringArray is the full command that was inserted.
+	* @param numberOfcellsToIgnore is the number of cells in the array
+	* that we need to ignore in order to perform the seperation.
+	*/
 	private String[] extractParamters(String[] stringArray,int numberOfcellsToIgnore)
 	{
 		String[] params=new String[stringArray.length-numberOfcellsToIgnore];

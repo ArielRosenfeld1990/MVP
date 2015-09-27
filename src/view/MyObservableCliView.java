@@ -5,8 +5,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
-* <h1>MyView</h1>
-* The MyView class implements our View interface
+* <h1>MyObservableCliView</h1>
+* The MyObservableCliView class implements our View interface,extending Observable so out
+* Present can observe it and see if something has changed,implements Observer so our MyObservableCliView
+* can observe the CLI to see if something happened
 * <p>
 *
 * @author  Ariel Rosenfeld,Ofir Calif
@@ -35,7 +37,6 @@ public class MyObservableCliView extends Observable implements View, Observer{
 	/**
 	* This method is for displaying the object
 	* @param obj is the object that we need to display.
-	* @param out is from where we are going to display it.
 	*/
 	@Override
 	public void display(Object obj) {
@@ -63,16 +64,25 @@ public class MyObservableCliView extends Observable implements View, Observer{
 		}
 	}
 	/**
-	 * this method close the view
+	 * this method closes the view
 	 */
 	@Override
 	public void close() {
 		ui.close();
 	}
+	/**
+	 * this method is used to get a command from the CLI
+	 */
 	@Override
 	public String[] getUserCommand() {
 		return ui.getUserCommand();
 	}
+	/**
+	* This method is used when change has occured on the CLI
+	* to handle the change and react, in this case we notify the Presenter that something happened
+	* @param o is the Observable that notified us that something changed.
+	*  @param o is the object that we got from the change.
+	*/
 	@Override
 	public void update(Observable o, Object arg) {
 		if(o==ui)

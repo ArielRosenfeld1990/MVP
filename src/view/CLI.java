@@ -10,7 +10,8 @@ import java.util.Observable;
 
 /**
 * <h1>CLI</h1>
-* The CLI class represents our Command Line Interface
+* The CLI class represents our Command Line Interface,this class is extending Observable
+* so that our MyObservableCliView can observe the CLI 
 * <p>
 *
 * @author  Ariel Rosenfeld,Ofir Calif
@@ -76,6 +77,9 @@ public class CLI extends Observable {
 		out.println("bye");
 		out.flush();
 	}
+	/**
+	 * this method is used to get the user command
+	 */
 	
 	public String[] getUserCommand()
 	{
