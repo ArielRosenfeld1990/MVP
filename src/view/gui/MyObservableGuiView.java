@@ -1,9 +1,10 @@
 
 //for deletion
-package view;
+package view.gui;
 
 import java.util.Observable;
 
+import view.View;
 import view.cli.Maze3dCliDisplayer;
 
 public class MyObservableGuiView extends Observable implements View {

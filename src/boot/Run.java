@@ -2,9 +2,9 @@ package boot;
 
 import model.MyModel;
 import presenter.Presenter;
-import view.MazeWindow;
-import view.MyObservableGuiView;
 import view.cli.MyObservableCliView;
+import view.gui.MazeWindow;
+import view.gui.MyObservableGuiView;
 
 public class Run {
 
