@@ -24,7 +24,7 @@ void dir(String path);
 * @param y is the y dimension for the maze
 * @param z is the z dimension for the maze
 */
-void generate3dMaze(String name,String generator,int x,int y,int z);
+void generate3dMaze(String name,String generator,int x,int y,int z) throws Exception;
 /**
 * This method is for getting the maze by his name
 * @param name is the name of the maze.

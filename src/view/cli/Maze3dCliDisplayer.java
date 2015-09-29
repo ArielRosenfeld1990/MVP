@@ -1,4 +1,4 @@
-package view;
+package view.cli;
 
 import java.io.PrintWriter;
 
@@ -12,7 +12,7 @@ import algorithms.mazeGenerators.Maze3d;
 *
 * 
 */
-public class Maze3dDisplayer implements Displayer {
+public class Maze3dCliDisplayer implements CliDisplayer {
 	/**
 	* This method is for displaying the 3d maze
 	* @param obj is the object that we need to display.

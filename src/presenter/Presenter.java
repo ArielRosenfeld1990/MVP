@@ -157,6 +157,8 @@ public class Presenter implements Observer{
 				view.display("paramters missing"); }
 			catch (NumberFormatException e) {
 				view.display("invalid paramters");}
+			catch(Exception e) //check if needed
+			{view.display(e.getMessage());}
 		}}
 
 	/**

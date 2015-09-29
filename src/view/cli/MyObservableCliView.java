@@ -1,8 +1,10 @@
-package view;
+package view.cli;
 
 
 import java.util.Observable;
 import java.util.Observer;
+
+import view.View;
 
 /**
 * <h1>MyObservableCliView</h1>
@@ -44,19 +46,19 @@ public class MyObservableCliView extends Observable implements View, Observer{
 		{
 			switch (obj.getClass().getSimpleName()) {
 			case "String":
-				ui.display(obj, new StringDisplayer());
+				ui.display(obj, new StringCliDisplayer());
 				break;
 			case "String[]":
-				ui.display(obj, new StringArrayDisplayer());
+				ui.display(obj, new StringArrayCliDisplayer());
 				break;
 			case "Maze3d":
-				ui.display(obj, new Maze3dDisplayer());
+				ui.display(obj, new Maze3dCliDisplayer());
 				break;
 			case "int[][]":
-				ui.display(obj, new CrossSectionDisplayer());
+				ui.display(obj, new CrossSectionCliDisplayer());
 				break;
 			case "Solution":
-				ui.display(obj, new SolutionDisplayer());
+				ui.display(obj, new SolutionCliDisplayer());
 				break;
 			default:
 				break;

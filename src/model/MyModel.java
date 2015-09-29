@@ -12,8 +12,10 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import algorithms.demo.Maze3dSearchable;
 import algorithms.mazeGenerators.Maze3d;
@@ -76,26 +78,47 @@ public class MyModel extends Observable implements Model {
 	* @param z is the z dimension for the maze
 	*/
 	@Override
-	public void generate3dMaze(String name,String generator,int x,int y,int z) {
-		threadPool.execute(new Runnable() {
-			@Override
-			public void run() {
-				Maze3d maze;
-				setChanged();
-				if(!mazes.containsKey(name))
-				{
+	public void generate3dMaze(String name,String generator,int x,int y,int z) throws Exception {
+		if(!mazes.containsKey(name))
+		{
+			Future<Maze3d> mazeFuture = threadPool.submit(new Callable<Maze3d>() {
+				@Override
+				public Maze3d call() throws Exception {
+					Maze3d maze;
+					setChanged();
+
 					if(generator.startsWith("simple"))
 						maze = new SimpleMaze3dGenerator().generate(x, y, z);
 					else
 						maze = new MyMaze3dGenerator().generate(x, y, z);
-
-					mazes.put(name, maze);
-					notifyObservers("maze "+ name +" is ready");
+					return maze;
 				}
-				else
-					notifyObservers("maze with name "+name+" exsits");
-			}
-		});
+			});
+			mazes.put(name, mazeFuture.get());
+			notifyObservers("maze "+ name +" is ready");
+		}
+		else
+			throw new Exception("maze with name "+name+" exsits");
+	
+//		threadPool.execute(new Runnable() {
+//			@Override
+//			public void run() {
+//				Maze3d maze;
+//				setChanged();
+//				if(!mazes.containsKey(name))
+//				{
+//					if(generator.startsWith("simple"))
+//						maze = new SimpleMaze3dGenerator().generate(x, y, z);
+//					else
+//						maze = new MyMaze3dGenerator().generate(x, y, z);
+//
+//					mazes.put(name, maze);
+//					notifyObservers("maze "+ name +" is ready");
+//				}
+//				else
+//					notifyObservers("maze with name "+name+" exsits");
+//			}
+//		});
 	}
 
 	/**
@@ -143,7 +166,7 @@ public class MyModel extends Observable implements Model {
 			throw new InvalidParameterException("invalid Axis");	
 			}
 		}
-		catch(IndexOutOfBoundsException e){			
+		catch(IndexOutOfBoundsException e){	
 			notifyObservers("not a valid index for this maze");
 			return;
 		}

@@ -1,4 +1,4 @@
-package view;
+package view.cli;
 
 import java.io.PrintWriter;
 
@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 *
 * 
 */
-public class StringDisplayer implements Displayer {
+public class StringCliDisplayer implements CliDisplayer {
 	/**
 	* This method is for displaying the String 
 	* @param obj is the object that we need to display.

@@ -1,4 +1,4 @@
-package view;
+package view.cli;
 
 import java.io.PrintWriter;
 /**
@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 *
 * 
 */
-public class CrossSectionDisplayer implements Displayer {
+public class CrossSectionCliDisplayer implements CliDisplayer {
 	/**
 	* This method is for displaying the cross section
 	* @param obj is the object that we need to display.

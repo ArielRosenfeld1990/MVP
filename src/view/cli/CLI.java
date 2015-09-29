@@ -1,4 +1,4 @@
-package view;
+package view.cli;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class CLI extends Observable {
 	* @param obj is the object that we got.
 	* @param displayer is the kind of displayer we need to show in the CLI.
 	*/
-	public void display(Object obj,Displayer displayer)
+	public void display(Object obj,CliDisplayer displayer)
 	{
 		displayer.display(obj, out);
 	}
