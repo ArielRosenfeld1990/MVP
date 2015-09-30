@@ -95,10 +95,10 @@ public class MyModel extends Observable implements Model {
 				}
 			});
 			mazes.put(name, mazeFuture.get());
-			notifyObservers("maze "+ name +" is ready");
+			notifyObservers("The maze is ready");
 		}
 		else
-			throw new Exception("maze with name "+name+" exsits");
+			throw new Exception("the maze already exists");
 	
 //		threadPool.execute(new Runnable() {
 //			@Override
