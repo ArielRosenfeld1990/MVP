@@ -5,10 +5,12 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 
+import algorithms.mazeGenerators.Position;
+
 
 public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
-	
-	
+
+
 
 	Maze3dGuiDisplayer(Composite parent, int style) {
 		super(parent, style);
@@ -34,32 +36,35 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	 */
 	@Override
 	public void moveUp() {
-		//		int x=characterX;
-		//		int y=characterY;
-		//		y=y-1;
-		//		moveCharacter(x, y);
+		Position current = character.getPosition();
+		int x = current.getX()+1;
+		int y = current.getY();
+		int z = current.getZ();
+		moveCharacter(new Position(x, y, z));
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see view.MazeDisplayer#moveDown()
 	 */
 	@Override
 	public void moveDown() {
-		//		int x=characterX;
-		//		int y=characterY;
-		//		y=y+1;
-		//		moveCharacter(x, y);
+		Position current = character.getPosition();
+		int x = current.getX()-1;
+		int y = current.getY();
+		int z = current.getZ();
+		moveCharacter(new Position(x, y, z));
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see view.MazeDisplayer#moveLeft()
 	 */
 	@Override
 	public void moveLeft() {
-		//		int x=characterX;
-		//		int y=characterY;
-		//		x=x-1;
-		//		moveCharacter(x, y);
+		Position current = character.getPosition();
+		int x = current.getX();
+		int y = current.getY();
+		int z = current.getZ()-1;
+		moveCharacter(new Position(x, y, z));
 	}
 
 	/* (non-Javadoc)
@@ -67,10 +72,11 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	 */
 	@Override
 	public void moveRight() {
-		//		int x=characterX;
-		//		int y=characterY;
-		//		x=x+1;
-		//		moveCharacter(x, y);
+		Position current = character.getPosition();
+		int x = current.getX();
+		int y = current.getY();
+		int z = current.getZ()+1;
+		moveCharacter(new Position(x, y, z));
 	}
 
 	/* (non-Javadoc)
@@ -78,7 +84,11 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	 */
 	@Override
 	public void moveForward() {
-		// TODO Auto-generated method stub
+		Position current = character.getPosition();
+		int x = current.getX();
+		int y = current.getY()-1;
+		int z = current.getZ();
+		moveCharacter(new Position(x, y, z));
 
 	}
 
@@ -87,14 +97,18 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	 */
 	@Override
 	public void moveBackward() {
-		// TODO Auto-generated method stub
+		Position current = character.getPosition();
+		int x = current.getX();
+		int y = current.getY()+1;
+		int z = current.getZ();
+		moveCharacter(new Position(x, y, z));
 
 	}
-	
-	
+
+
 	private void drawMaze(PaintEvent e)
 	{
-		if(currentCrossSection!=null)
+		if(currentCrossSection!=null && maze3d!=null)
 		{
 			int width = getSize().x;
 			int height = getSize().y;
@@ -114,17 +128,19 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 					if(currentCrossSection[i][j]!=0)
 						paintCube(dpoints,cheight,e);
 
-					if(i==getCharacterYDisplay() && j==getCharacterXDisplay()){
+					if(i==getCrossYDisplay(character.getPosition()) && j==getCrossXDisplay(character.getPosition())){
 						character.drawCharcter(e,(int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
-
+						}	
+					
+					if(i==getCrossYDisplay(maze3d.getGoalPosition()) && j==getCrossXDisplay(maze3d.getGoalPosition())){
+						e.gc.setBackground(new Color(null,130,120,200));
+						e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
+						e.gc.setBackground(new Color(null,0,0,0));
 					}
 				}
 			}
 		}
 	}
-	
-
-
 
 	private void paintCube(double[] p,double h,PaintEvent e){
 		int[] f=new int[p.length];
@@ -143,52 +159,80 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 
 		e.gc.fillPolygon(r);
 	}
-	
-	private int getCharacterXDisplay() {
-		switch (currentAxis) {
-		case 'X':
-		case 'x':
-			return character.getPosition().getZ();
-		case 'Y':
-		case 'y':
-			return character.getPosition().getZ();
-		case 'Z':
-		case 'z':
-			return character.getPosition().getY();
-		default:
-			return -1;
-		}
-	}
-	
-	private int getCharacterYDisplay() {
-		switch (currentAxis) {
-		case 'X':
-		case 'x':
-			return character.getPosition().getY();
-		case 'Y':
-		case 'y':
-			return character.getPosition().getX();
-		case 'Z':
-		case 'z':
-			return character.getPosition().getX();
-		default:
-			return -1;
-		}
-	}
-	
-//	private void moveCharacter(int x,int y){
-//
-//		if(x>=0 && x<mazeData[0].length && y>=0 && y<mazeData.length && mazeData[y][x]==0){
-//			//characterX=x;
-//			//characterY=y;
-//			getDisplay().syncExec(new Runnable() {
-//
-//				@Override
-//				public void run() {
-//					redraw();
-//				}
-//			});
-//		}
-//	}
 
+	private int getCrossXDisplay(Position position) {
+		switch (currentAxis) {
+		case 'X':
+		case 'x':
+			if(position.getX()==character.getPosition().getX())
+				return position.getZ();
+			break;
+		case 'Y':
+		case 'y':
+			if(position.getY()==character.getPosition().getY())
+				return position.getZ();
+			break;
+		case 'Z':
+		case 'z':
+			if(position.getZ()==character.getPosition().getZ())
+				return position.getY();
+			break;
+		default:
+			return -1;
+		}
+		return -1;
+	}
+
+	private int getCrossYDisplay(Position position) {
+		switch (currentAxis) {
+		case 'X':
+		case 'x':
+			if(position.getX()==character.getPosition().getX())
+				return position.getY();
+			break;
+		case 'Y':
+		case 'y':
+			if(position.getY()==character.getPosition().getY())
+				return position.getX();
+			break;
+		case 'Z':
+		case 'z':
+			if(position.getZ()==character.getPosition().getZ())
+				return position.getX();
+			break;
+		default:
+			return -1;
+		}
+		return -1;
+	}
+
+	private void moveCharacter(Position position){
+		if(maze3d.InMaze(position) && maze3d.getCell(position)==0){
+			if(getCrossXDisplay(position)==-1)
+				updateCross(position);
+			character.setPosition(position);
+			getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					redraw();
+				}
+			});
+		}
+	}
+
+	private void updateCross(Position position){
+		switch (getCurrentAxis()) {
+		case 'X':
+			setCurrentCrossSection(maze3d.getCrossSectionByX(position.getX()));
+			break;
+		case 'Y':
+			setCurrentCrossSection(maze3d.getCrossSectionByY(position.getY()));
+			break;
+		case 'Z':
+			setCurrentCrossSection(maze3d.getCrossSectionByZ(position.getZ()));
+			break;
+		default:
+			break;
+		}
+	}
 }

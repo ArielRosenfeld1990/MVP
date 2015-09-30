@@ -8,6 +8,10 @@ import java.util.TimerTask;
 import javax.swing.plaf.synth.Region;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -71,7 +75,7 @@ public class MazeWindow extends BasicWindow implements View{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				mazeName="ofir"+counter;
-				inputStrings = new String[]{"generate3dMaze",mazeName,"my","10","10","10"}; 
+				inputStrings = new String[]{"generate3dMaze",mazeName,"my","2","10","10"}; 
 				setChanged();
 				notifyObservers();	
 				inputStrings = new String[]{"display",mazeName};
@@ -87,7 +91,40 @@ public class MazeWindow extends BasicWindow implements View{
 
 		maze=new Maze3dGuiDisplayer(shell, SWT.BORDER);
 		maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,3));
-
+		maze.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				switch (e.keyCode) {
+				case 16777217:
+					maze.moveForward();
+					break;
+				case 16777218:
+					maze.moveBackward();
+					break;
+				case 16777219:
+					maze.moveLeft();
+					break;
+				case 16777220:
+					maze.moveRight();
+					break;
+				case 16777221:
+					maze.moveUp();
+					break;
+				case 16777222:
+					maze.moveDown();
+					break;
+				default:
+					break;
+				}
+			}
+		});
+		maze.setFocus();
+		
 		SelectionListener axisSelectionListener = new SelectionListener() {
 
 			@Override
@@ -138,6 +175,17 @@ public class MazeWindow extends BasicWindow implements View{
 		axisZ = new Button(axisGroup, SWT.RADIO);
 		axisZ.setText("Z");
 		axisZ.addSelectionListener(axisSelectionListener);
+		
+		shell.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent arg0) {	
+			}
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				maze.setFocus();
+			}
+		});
+		
 	}
 
 	@Override
@@ -151,7 +199,6 @@ public class MazeWindow extends BasicWindow implements View{
 		{
 			switch (obj.getClass().getSimpleName()) {
 			case "String":
-				System.out.println((String)obj);
 				MessageBox mBox =new MessageBox(shell,SWT.OK);
 				mBox.setMessage((String)obj);
 				mBox.open();
@@ -174,8 +221,6 @@ public class MazeWindow extends BasicWindow implements View{
 						maze.redraw();
 					}
 				});
-				System.out.println(maze.getCharacter().getPosition());
-				System.out.println(maze.maze3d.getMaze()[maze.getCharacter().getPosition().getX()][maze.getCharacter().getPosition().getY()][maze.getCharacter().getPosition().getZ()]);
 				break;
 				//			case "Solution":
 				//				ui.display(obj, new SolutionCliDisplayer());
@@ -183,7 +228,8 @@ public class MazeWindow extends BasicWindow implements View{
 			default:
 				break;
 			}
-		}		
+		}	
+		maze.setFocus();
 	}
 
 	@Override
@@ -200,11 +246,11 @@ public class MazeWindow extends BasicWindow implements View{
 	private char getCurrentAxis()
 	{
 		if(axisX.getSelection())
-			return 'x';
+			return 'X';
 		if(axisY.getSelection())
-			return 'y';
+			return 'Y';
 		if(axisZ.getSelection())
-			return 'z';
+			return 'Z';
 		return 'x';
 	}
 }
