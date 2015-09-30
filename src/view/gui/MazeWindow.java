@@ -75,7 +75,7 @@ public class MazeWindow extends BasicWindow implements View{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				mazeName="ofir"+counter;
-				inputStrings = new String[]{"generate3dMaze",mazeName,"my","2","10","10"}; 
+				inputStrings = new String[]{"generate3dMaze",mazeName,"my","10","10","10"}; 
 				setChanged();
 				notifyObservers();	
 				inputStrings = new String[]{"display",mazeName};
