@@ -1,9 +1,16 @@
 package view.gui;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MessageBox;
 
 import algorithms.mazeGenerators.Position;
 
@@ -128,15 +135,19 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 					if(currentCrossSection[i][j]!=0)
 						paintCube(dpoints,cheight,e);
 
+					if(i==getCrossYDisplay(maze3d.getGoalPosition()) && j==getCrossXDisplay(maze3d.getGoalPosition())){
+						try {
+							BufferedInputStream exitImageInputStream = new BufferedInputStream(new FileInputStream("lib/exit.png"));
+							Image im = new Image(null, exitImageInputStream);
+							e.gc.drawImage(im, 0, 0, im.getImageData().width, im.getImageData().height, (int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
+						} catch (FileNotFoundException ex) {
+							ex.printStackTrace();
+						}
+					}
+					
 					if(i==getCrossYDisplay(character.getPosition()) && j==getCrossXDisplay(character.getPosition())){
 						character.drawCharcter(e,(int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
-						}	
-					
-					if(i==getCrossYDisplay(maze3d.getGoalPosition()) && j==getCrossXDisplay(maze3d.getGoalPosition())){
-						e.gc.setBackground(new Color(null,130,120,200));
-						e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
-						e.gc.setBackground(new Color(null,0,0,0));
-					}
+					}	
 				}
 			}
 		}
@@ -217,6 +228,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 					redraw();
 				}
 			});
+			checkIfSolved();
 		}
 	}
 
@@ -233,6 +245,14 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			break;
 		default:
 			break;
+		}
+	}
+
+	private void checkIfSolved(){
+		if(character.getPosition().equals(maze3d.getGoalPosition())) {
+			MessageBox mBox =new MessageBox(getShell(),SWT.OK);
+			mBox.setMessage("You solve the Maze");
+			mBox.open();
 		}
 	}
 }
