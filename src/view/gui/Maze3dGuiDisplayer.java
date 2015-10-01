@@ -32,7 +32,10 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			public void paintControl(PaintEvent e) {
 				e.gc.setForeground(new Color(null, 0,0,0));
 				e.gc.setBackground(new Color(null, 0,0,0));
-				drawMaze(e);
+				if(currentAxis=='X')
+				drawMazeByX(e);
+				else
+					drawMazeByY(e);
 			}
 		});
 	}
@@ -113,7 +116,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	}
 
 
-	private void drawMaze(PaintEvent e)
+	private void drawMazeByX(PaintEvent e)
 	{
 		if(currentCrossSection!=null && maze3d!=null)
 		{
@@ -131,7 +134,8 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 				for(int j=0;j<currentCrossSection[i].length;j++){
 					double []dpoints={start+j*w0,i*h,start+j*w0+w0,i*h,start1+j*w1+w1,i*h+h,start1+j*w1,i*h+h};
 					double cheight=h/2;
-
+					
+					
 					if(currentCrossSection[i][j]!=0)
 						paintCube(dpoints,cheight,e);
 
@@ -152,6 +156,51 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			}
 		}
 	}
+	
+	private void drawMazeByY(PaintEvent e)
+	{
+		if(currentCrossSection!=null && maze3d!=null)
+		{
+					
+			int width = getSize().x;
+			int height = getSize().y;
+			int mx = height/2; 
+			double w =(double)width/currentCrossSection[0].length;
+			double h = (double)height/currentCrossSection.length;
+
+			for(int i=0;i<currentCrossSection.length;i++){
+				
+				for(int j=0;j<currentCrossSection[i].length;j++){
+					double h0 = 0.7*h+0.3*h*j/currentCrossSection[i].length;
+					double h1 = 0.7*h+0.3*h*(j+1)/currentCrossSection[i].length;
+					double start = mx-h0*currentCrossSection.length/2;
+					double start1 = mx-h1*currentCrossSection.length/2;
+					
+					double []dpoints={j*w,start+i*h0,j*w,start+i*h0+h0,j*w+w,start1+i*h1+h1,j*w+w,start1+i*h1};
+					
+					double cheight=w/2;
+					
+					
+					if(currentCrossSection[i][j]!=0)
+						paintCube(dpoints,cheight,e);
+
+					if(i==getCrossYDisplay(maze3d.getGoalPosition()) && j==getCrossXDisplay(maze3d.getGoalPosition())){
+						try {
+							BufferedInputStream exitImageInputStream = new BufferedInputStream(new FileInputStream("lib/exit.png"));
+							Image im = new Image(null, exitImageInputStream);
+							e.gc.drawImage(im, 0, 0, im.getImageData().width, im.getImageData().height, (int)Math.round(dpoints[0]-cheight/2), (int)Math.round(dpoints[1]), (int)Math.round(w), (int)Math.round((h0+h)/2));
+						} catch (FileNotFoundException ex) {
+							ex.printStackTrace();
+						}
+					}
+					
+					if(i==getCrossYDisplay(character.getPosition()) && j==getCrossXDisplay(character.getPosition())){
+						character.drawCharcter(e,(int)Math.round(dpoints[0]-cheight/2), (int)Math.round(dpoints[1]), (int)Math.round(w), (int)Math.round((h0+h)/2));// for y cross
+					}	
+				}
+			}
+		}
+	}
 
 	private void paintCube(double[] p,double h,PaintEvent e){
 		int[] f=new int[p.length];
@@ -160,15 +209,18 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		e.gc.drawPolygon(f);
 
 		int[] r=f.clone();
-		for(int k=1;k<r.length;r[k]=f[k]-(int)(h),k+=2);
-
-
+		if(currentAxis=='X')
+		for(int k=1;k<r.length;r[k]=f[k]-(int)(h),k+=2); 
+		else
+			for(int k=0;k<r.length;r[k]=f[k]-(int)(h),k+=2); //change k=0 for cross y
+		
 		int[] b={r[0],r[1],r[2],r[3],f[2],f[3],f[0],f[1]};
 		e.gc.drawPolygon(b);
 		int[] fr={r[6],r[7],r[4],r[5],f[4],f[5],f[6],f[7]};
 		e.gc.drawPolygon(fr);
 
 		e.gc.fillPolygon(r);
+
 	}
 
 	private int getCrossXDisplay(Position position) {

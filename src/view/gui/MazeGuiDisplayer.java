@@ -11,7 +11,7 @@ public abstract class MazeGuiDisplayer extends Canvas {
 	protected MazeCharacterGuiDisplayer character;
 	protected int[][] currentCrossSection;
 	protected char currentAxis;
-	
+
 	public MazeGuiDisplayer(Composite parent,int style) {
 		super(parent,style);
 		

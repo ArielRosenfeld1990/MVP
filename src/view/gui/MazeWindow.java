@@ -99,6 +99,7 @@ public class MazeWindow extends BasicWindow implements View{
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});	
 		generateButton.setEnabled(true);
+		
 		maze=new Maze3dGuiDisplayer(shell, SWT.BORDER);
 		maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,3));
 		maze.addKeyListener(new KeyListener() {
