@@ -9,13 +9,13 @@ import view.cli.Maze3dCliDisplayer;
 
 public class MyObservableGuiView extends Observable implements View {
 	MazeWindow win;
-	
+
 	public MyObservableGuiView(String title, int width, int height) {
 		win = new MazeWindow(title, width, height);
 	}
 
 	@Override
-	public void start() {	
+	public void start() {
 		win.run();
 	}
 
