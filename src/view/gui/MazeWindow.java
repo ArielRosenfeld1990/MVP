@@ -9,6 +9,8 @@ import java.util.TimerTask;
 import javax.swing.plaf.synth.Region;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
@@ -80,6 +82,7 @@ public class MazeWindow extends BasicWindow implements View{
 		generateButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				generateButton.setEnabled(false);
 				GenerateWindow(shell);
 /*				mazeName="ofir"+counter;
 				inputStrings = new String[]{"generate3dMaze",mazeName,"my","7","7","7"}; 
@@ -95,7 +98,7 @@ public class MazeWindow extends BasicWindow implements View{
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});	
-
+		generateButton.setEnabled(true);
 		maze=new Maze3dGuiDisplayer(shell, SWT.BORDER);
 		maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,3));
 		maze.addKeyListener(new KeyListener() {
@@ -261,43 +264,50 @@ public class MazeWindow extends BasicWindow implements View{
 		return 'x';
 	}
 	private void GenerateWindow(Shell shell){
-		final Shell shell1 = new Shell();
-		shell1.setLayout(new GridLayout(2,false));
-        Label l=new Label(shell1,1);
-        l.setText("Please enter a name for the maze:");
-        l.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-		Text mazeNameText=new Text(shell1, 1);
+		final Shell generateShell = new Shell(display,SWT.CLOSE | SWT.TITLE | SWT.MIN);
+		generateShell.setSize(300, 175);
+		generateShell.setLayout(new GridLayout(2,false));
+        Label NameLabel=new Label(generateShell,1);
+        NameLabel.setText("Please enter a name for the maze:");
+        NameLabel.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
+		Text mazeNameText=new Text(generateShell, SWT.BORDER);
 		mazeNameText.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-        l=new Label(shell1,1);
-        l.setText("Please enter the x dimension:");
-        l.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-		Text xDimensionText=new Text(shell1,1);
+		mazeNameText.setTextLimit(20);
+		NameLabel=new Label(generateShell,1);
+		NameLabel.setText("Please enter the x dimension:");
+		NameLabel.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
+		Text xDimensionText=new Text(generateShell,SWT.BORDER);
 		xDimensionText.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-        l=new Label(shell1,1);
-        l.setText("Please enter the y dimension:");
-        l.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-		Text yDimensionText=new Text(shell1, 1);
+		xDimensionText.setTextLimit(3);
+		NameLabel=new Label(generateShell,1);
+		NameLabel.setText("Please enter the y dimension:");
+		NameLabel.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
+		Text yDimensionText=new Text(generateShell, SWT.BORDER);
 		yDimensionText.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-        l=new Label(shell1,1);
-        l.setText("Please enter the z dimension:");
-        l.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-		Text zDimensionText=new Text(shell1, 1);
+		yDimensionText.setTextLimit(3);
+		NameLabel=new Label(generateShell,1);
+		NameLabel.setText("Please enter the z dimension:");
+		NameLabel.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
+		Text zDimensionText=new Text(generateShell, SWT.BORDER);
 		zDimensionText.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-		generateButton=new Button(shell1, SWT.PUSH);
-		generateButton.setText("Generate");
-		generateButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 0, 2));
-		generateButton.addSelectionListener(new SelectionListener() {
+		zDimensionText.setTextLimit(3);
+		Button newgenerateButton=new Button(generateShell, SWT.PUSH);
+		newgenerateButton.setText("Generate");
+		newgenerateButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 0, 2));
+		newgenerateButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-			//	System.out.println(mazeNameText.getText());
+			// 	System.out.println(mazeNameText.getText());
+			 	mazeName=mazeNameText.getText();
 				inputStrings = new String[]{"generate3dMaze",mazeName,"my",xDimensionText.getText(),yDimensionText.getText(),zDimensionText.getText()}; 
 				setChanged();
 				notifyObservers();	
 				inputStrings = new String[]{"display",mazeName};
 				setChanged();
 				notifyObservers();
-				shell1.close();
+				generateShell.close();
+				generateButton.setEnabled(true);
 				
 			}
 			
@@ -307,7 +317,14 @@ public class MazeWindow extends BasicWindow implements View{
 				
 			}
 		});
-		
-		shell1.setVisible(true);
+		generateShell.setVisible(true);
+		generateShell.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent arg0) {
+				generateButton.setEnabled(true);
+				
+			}
+		});
 	}
 }
