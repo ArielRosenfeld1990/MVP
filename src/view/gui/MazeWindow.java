@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 import algorithms.mazeGenerators.Maze3d;
+import presenter.Properties;
 import view.View;
 
 public class MazeWindow extends BasicWindow implements View {
@@ -356,7 +357,7 @@ public class MazeWindow extends BasicWindow implements View {
 			public void widgetSelected(SelectionEvent arg0) {
 				// System.out.println(mazeNameText.getText());
 				mazeName = mazeNameText.getText();
-				inputStrings = new String[] { "generate3dMaze", mazeName, "my", xDimensionText.getText(),
+				inputStrings = new String[] { "generate3dMaze", mazeName, Properties.getMazeGenerator(), xDimensionText.getText(),
 						yDimensionText.getText(), zDimensionText.getText() };
 				setChanged();
 				notifyObservers();

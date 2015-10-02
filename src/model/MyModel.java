@@ -28,6 +28,7 @@ import algorithms.search.Searcher;
 import algorithms.search.Solution;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
+import presenter.Properties;
 
 /**
  * <h1>MyModel</h1> The MyModel class implements our Model interface,extending
@@ -41,7 +42,7 @@ import io.MyDecompressorInputStream;
 public class MyModel extends Observable implements Model {
 	//
 	private HashMap<String, Maze3d> mazes;
-	private HashMap<String, Solution> mazesSolution;
+	private HashMap<Maze3d, Solution> mazesSolution;
 	ExecutorService threadPool;
 
 	/**
@@ -49,8 +50,8 @@ public class MyModel extends Observable implements Model {
 	 */
 	public MyModel() {
 		mazes = new HashMap<String, Maze3d>();
-		mazesSolution = new HashMap<String, Solution>();
-		threadPool = Executors.newFixedThreadPool(5);
+		mazesSolution = new HashMap<Maze3d, Solution>();
+		threadPool = Executors.newFixedThreadPool(Properties.getNumOfThreads());
 	}
 
 	/**
@@ -85,45 +86,32 @@ public class MyModel extends Observable implements Model {
 	 *            is the z dimension for the maze
 	 */
 	@Override
-	public void generate3dMaze(String name, String generator, int x, int y, int z) throws Exception {
-		if (!mazes.containsKey(name)) {
-			Future<Maze3d> mazeFuture = threadPool.submit(new Callable<Maze3d>() {
-				@Override
-				public Maze3d call() throws Exception {
-					Maze3d maze;
-					setChanged();
+	public void generate3dMaze(String name, String generator, int x, int y, int z) {
+		setChanged();
+		if (mazes.containsKey(name)) {
+			notifyObservers("the maze already exists");
+		}
 
-					if (generator.startsWith("simple"))
-						maze = new SimpleMaze3dGenerator().generate(x, y, z);
-					else
-						maze = new MyMaze3dGenerator().generate(x, y, z);
-					return maze;
-				}
-			});
+		Future<Maze3d> mazeFuture = threadPool.submit(new Callable<Maze3d>() {
+			@Override
+			public Maze3d call() throws Exception {
+				Maze3d maze;
+				setChanged();
+
+				if (generator.startsWith("simple"))
+					maze = new SimpleMaze3dGenerator().generate(x, y, z);
+				else
+					maze = new MyMaze3dGenerator().generate(x, y, z);
+				return maze;
+			}
+		});
+		try{
 			mazes.put(name, mazeFuture.get());
 			notifyObservers("The maze is ready");
-		} else
-			throw new Exception("the maze already exists");
-
-		// threadPool.execute(new Runnable() {
-		// @Override
-		// public void run() {
-		// Maze3d maze;
-		// setChanged();
-		// if(!mazes.containsKey(name))
-		// {
-		// if(generator.startsWith("simple"))
-		// maze = new SimpleMaze3dGenerator().generate(x, y, z);
-		// else
-		// maze = new MyMaze3dGenerator().generate(x, y, z);
-		//
-		// mazes.put(name, maze);
-		// notifyObservers("maze "+ name +" is ready");
-		// }
-		// else
-		// notifyObservers("maze with name "+name+" exsits");
-		// }
-		// });
+		}
+		catch (Exception e) {
+			notifyObservers(e.getMessage());
+		}
 	}
 
 	/**
@@ -304,16 +292,24 @@ public class MyModel extends Observable implements Model {
 	 *            is the name of the maze.
 	 * @param algorithm
 	 *            is the name of the algorithm.
+	 * @throws Exception 
 	 */
 	@Override
 	public void solve(String mazeName, String algorithm) {
-		threadPool.execute(new Runnable() {
-			@Override
-			public void run() {
-				setChanged();
-				Searcher searcher;
-				try {
-					Maze3d maze = getMaze(mazeName);
+		try{
+			Maze3d maze = getMaze(mazeName);
+			setChanged();
+
+			if (mazesSolution.containsKey(maze)){
+				notifyObservers("solution is ready1");
+				return;
+			}
+
+
+			Future<Solution> solutionFuture = threadPool.submit(new Callable<Solution>() {
+				@Override
+				public Solution call() throws Exception {
+					Searcher searcher;
 					switch (algorithm) {
 					case "bfs":
 						searcher = new Bfs();
@@ -325,16 +321,20 @@ public class MyModel extends Observable implements Model {
 						searcher = new AStar(new MazeAirDistance());
 						break;
 					default:
-						throw new InvalidParameterException("invalid Axis");
+						throw new InvalidParameterException("invalid searcher");
 					}
-					mazesSolution.put(mazeName, searcher.search(new Maze3dSearchable(maze)));
-					notifyObservers("solution for " + mazeName + " is ready");
-				} catch (Exception e) {
-					e.printStackTrace();
-					notifyObservers(e.getMessage());
+
+					return searcher.search(new Maze3dSearchable(maze));
 				}
-			}
-		});
+			});
+
+			mazesSolution.put(maze,solutionFuture.get() );
+
+			notifyObservers("solution is ready");
+		}
+		catch (Exception e) {
+			notifyObservers(e.getMessage());
+		}
 	}
 
 	/**
@@ -347,7 +347,7 @@ public class MyModel extends Observable implements Model {
 	public void getSolutionForName(String name) {
 		setChanged();
 		try {
-			Solution solution = mazesSolution.get(name);
+			Solution solution = mazesSolution.get(getMaze(name));
 			if (solution == null)
 				throw new Exception("solution dosent exsist");
 			notifyObservers(solution);

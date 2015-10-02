@@ -11,9 +11,10 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 public class Properties implements Serializable {
-	String searcher;
-	String mazeGenerator;
-	int numOfThreads;
+	static String searcher;
+	static String mazeGenerator;
+	static int numOfThreads;
+	static String TypeOfView;
 
 	/**
 	 * 
@@ -24,6 +25,7 @@ public class Properties implements Serializable {
 		searcher = "Bfs";
 		numOfThreads = 7;
 		mazeGenerator = "myMazeGenerator";
+		TypeOfView="GUI";
 
 	}
 
@@ -44,6 +46,9 @@ public class Properties implements Serializable {
 			Element Generator = doc.createElement("Generator");
 			Generator.appendChild(doc.createTextNode(mazeGenerator));
 			Properties.appendChild(Generator);
+			Element typeofView = doc.createElement("typeofView");
+			typeofView.appendChild(doc.createTextNode(TypeOfView));
+			Properties.appendChild(typeofView);
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
@@ -75,7 +80,7 @@ public class Properties implements Serializable {
 						String numThreads = eElement.getElementsByTagName("ThreadsNum").item(0).getTextContent();
 						numOfThreads = Integer.parseInt(numThreads);
 						mazeGenerator = eElement.getElementsByTagName("Generator").item(0).getTextContent();
-
+						TypeOfView=eElement.getElementsByTagName("typeofView").item(0).getTextContent();
 					}
 					System.out.println("file loaded successfuly");
 				}
@@ -88,28 +93,36 @@ public class Properties implements Serializable {
 
 	}
 
-	public String getSearcher() {
+	static public String getSearcher() {
 		return searcher;
 	}
 
-	public void setSearcher(String searcher) {
-		this.searcher = searcher;
+	static public void setSearcher(String s) {
+		searcher = s;
 	}
 
-	public String getMazeGenerator() {
+	static public String getMazeGenerator() {
 		return mazeGenerator;
 	}
 
-	public void setMazeGenerator(String mazeGenerator) {
-		this.mazeGenerator = mazeGenerator;
+	static public void setMazeGenerator(String MG) {
+		mazeGenerator = MG;
 	}
 
-	public int getNumOfThreads() {
+	static public int getNumOfThreads() {
 		return numOfThreads;
 	}
 
-	public void setNumOfThreads(int numOfThreads) {
-		this.numOfThreads = numOfThreads;
+	static public void setNumOfThreads(int NoT) {
+		numOfThreads =  NoT;
+	}
+
+	public static String getTypeOfView() {
+		return TypeOfView;
+	}
+
+	public static void setTypeOfView(String typeOfView) {
+		TypeOfView = typeOfView;
 	}
 
 }
