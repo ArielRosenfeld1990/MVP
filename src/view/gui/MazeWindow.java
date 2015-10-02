@@ -357,7 +357,7 @@ public class MazeWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (FileSaveName.getText()!=""){
-				System.out.print(FileSaveName.getText());
+			//	System.out.print(FileSaveName.getText());
 				inputStrings = new String[] { "saveMaze", mazeName,FileSaveName.getText() };
 				setChanged();
 				notifyObservers();
