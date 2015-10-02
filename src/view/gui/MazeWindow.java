@@ -45,6 +45,7 @@ public class MazeWindow extends BasicWindow implements View {
 
 	MazeGuiDisplayer maze;
 	Button generateButton;
+	Button saveButton;
 	Group axisGroup;
 	Button axisX;
 	Button axisY;
@@ -65,7 +66,6 @@ public class MazeWindow extends BasicWindow implements View {
 	@Override
 	void initWidgets() {
 		shell.setLayout(new GridLayout(4, false));
-
 		generateButton = new Button(shell, SWT.PUSH);
 		generateButton.setText("Generate");
 		generateButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
@@ -189,7 +189,25 @@ public class MazeWindow extends BasicWindow implements View {
 				maze.setFocus();
 			}
 		});
-
+		saveButton = new Button(shell, SWT.PUSH);
+		saveButton.setText("Save");
+		saveButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
+		saveButton.setEnabled(false);
+		saveButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				SaveWindow(shell);
+				saveButton.setEnabled(false);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 
 	@Override
@@ -209,7 +227,7 @@ public class MazeWindow extends BasicWindow implements View {
 			case "Maze3d":
 				Maze3d mazeObject = (Maze3d) obj;
 				maze.setMazeData(mazeObject);
-
+				saveButton.setEnabled(true);
 				axisX.setSelection(true);
 				axisY.setSelection(false);
 				axisZ.setSelection(false);
@@ -318,6 +336,55 @@ public class MazeWindow extends BasicWindow implements View {
 			public void widgetDisposed(DisposeEvent arg0) {
 				generateButton.setEnabled(true);
 
+			}
+		});
+	}
+	private void SaveWindow(Shell shell){
+		final Shell saveShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
+		saveShell.setSize(250, 150);
+		saveShell.setLayout(new GridLayout(2, false));
+		Label SaveNameLabel = new Label(saveShell, 1);
+		SaveNameLabel.setText("Save name:");
+		SaveNameLabel.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
+		Text FileSaveName = new Text(saveShell, SWT.BORDER);
+		FileSaveName.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
+		FileSaveName.setTextLimit(20);
+		Button newSaveButton = new Button(saveShell, SWT.PUSH);
+		newSaveButton.setText("Save");
+		newSaveButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 0, 2));
+		newSaveButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if (FileSaveName.getText()!=""){
+				System.out.print(FileSaveName.getText());
+				inputStrings = new String[] { "saveMaze", mazeName,FileSaveName.getText() };
+				setChanged();
+				notifyObservers();
+				saveShell.close();
+				saveButton.setEnabled(true);
+				}
+				else {
+					MessageBox mBox = new MessageBox(saveShell, SWT.OK);
+					mBox.setMessage("you must enter a name for the save");
+					mBox.open();
+					
+				}
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		saveShell.setVisible(true);
+		saveShell.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent arg0) {
+				saveButton.setEnabled(true);
+				
 			}
 		});
 	}
