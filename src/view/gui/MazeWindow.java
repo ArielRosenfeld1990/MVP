@@ -276,6 +276,7 @@ public class MazeWindow extends BasicWindow implements View {
 
 	private void GenerateWindow(Shell shell) {
 		final Shell generateShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
+		generateShell.setText("Generating maze window");
 		generateShell.setSize(300, 175);
 		generateShell.setLayout(new GridLayout(2, false));
 		Label NameLabel = new Label(generateShell, 1);
@@ -341,6 +342,7 @@ public class MazeWindow extends BasicWindow implements View {
 	}
 	private void SaveWindow(Shell shell){
 		final Shell saveShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
+		saveShell.setText("Save maze window");
 		saveShell.setSize(250, 150);
 		saveShell.setLayout(new GridLayout(2, false));
 		Label SaveNameLabel = new Label(saveShell, 1);
