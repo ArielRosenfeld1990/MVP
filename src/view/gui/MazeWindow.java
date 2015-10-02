@@ -46,6 +46,7 @@ public class MazeWindow extends BasicWindow implements View {
 	MazeGuiDisplayer maze;
 	Button generateButton;
 	Button saveButton;
+	Button loadButton;
 	Group axisGroup;
 	Button axisX;
 	Button axisY;
@@ -73,7 +74,7 @@ public class MazeWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				generateButton.setEnabled(false);
-				GenerateWindow(shell);
+				GenerateWindow();
 				/*
 				 * mazeName="ofir"+counter; inputStrings = new
 				 * String[]{"generate3dMaze",mazeName,"my","7","7","7"};
@@ -197,8 +198,8 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				SaveWindow(shell);
 				saveButton.setEnabled(false);
+				SaveWindow();
 			}
 			
 			@Override
@@ -207,7 +208,24 @@ public class MazeWindow extends BasicWindow implements View {
 				
 			}
 		});
-		
+		loadButton = new Button(shell, SWT.PUSH);
+		loadButton.setText("Load");
+		loadButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
+		loadButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				LoadWindow(shell);
+				loadButton.setEnabled(false);
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	@Override
@@ -274,7 +292,7 @@ public class MazeWindow extends BasicWindow implements View {
 		return 'x';
 	}
 
-	private void GenerateWindow(Shell shell) {
+	private void GenerateWindow() {
 		final Shell generateShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
 		generateShell.setText("Generating maze window");
 		generateShell.setSize(300, 175);
@@ -340,7 +358,7 @@ public class MazeWindow extends BasicWindow implements View {
 			}
 		});
 	}
-	private void SaveWindow(Shell shell){
+	private void SaveWindow(){
 		final Shell saveShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
 		saveShell.setText("Save maze window");
 		saveShell.setSize(250, 150);
@@ -364,7 +382,6 @@ public class MazeWindow extends BasicWindow implements View {
 				setChanged();
 				notifyObservers();
 				saveShell.close();
-				saveButton.setEnabled(true);
 				}
 				else {
 					MessageBox mBox = new MessageBox(saveShell, SWT.OK);
@@ -389,5 +406,8 @@ public class MazeWindow extends BasicWindow implements View {
 				
 			}
 		});
+	}
+	private void LoadWindow(Shell shell){
+		
 	}
 }
