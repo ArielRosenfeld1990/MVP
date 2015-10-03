@@ -15,6 +15,7 @@ public class Properties implements Serializable {
 	static String mazeGenerator;
 	static int numOfThreads;
 	static String TypeOfView;
+	static String TypeOfCache;
 
 	/**
 	 * 
@@ -26,6 +27,7 @@ public class Properties implements Serializable {
 		numOfThreads = 7;
 		mazeGenerator = "myMazeGenerator";
 		TypeOfView="GUI";
+		TypeOfCache="ZipCache";
 
 	}
 
@@ -49,6 +51,9 @@ public class Properties implements Serializable {
 			Element typeofView = doc.createElement("typeofView");
 			typeofView.appendChild(doc.createTextNode(TypeOfView));
 			Properties.appendChild(typeofView);
+			Element Caching = doc.createElement("typeofCache");
+			Caching.appendChild(doc.createTextNode(TypeOfCache));
+			Properties.appendChild(Caching);
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
@@ -81,8 +86,9 @@ public class Properties implements Serializable {
 						numOfThreads = Integer.parseInt(numThreads);
 						mazeGenerator = eElement.getElementsByTagName("Generator").item(0).getTextContent();
 						TypeOfView=eElement.getElementsByTagName("typeofView").item(0).getTextContent();
+						TypeOfCache=eElement.getElementsByTagName("typeofCache").item(0).getTextContent();
 					}
-					System.out.println("file loaded successfuly");
+					System.out.println("file loaded successfully");
 				}
 			} else
 				System.out.println("XML Properties file wasnt found");
