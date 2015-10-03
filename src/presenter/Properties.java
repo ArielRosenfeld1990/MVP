@@ -1,6 +1,7 @@
 package presenter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.xml.parsers.*;
@@ -68,7 +69,7 @@ public class Properties implements Serializable {
 
 	}
 
-	public void loadFromXML() {
+	public void loadFromXML() throws FileNotFoundException {
 
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -94,7 +95,7 @@ public class Properties implements Serializable {
 				System.out.println("XML Properties file wasnt found");
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new FileNotFoundException("Properties file wasnt found");
 		}
 
 	}

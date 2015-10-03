@@ -11,8 +11,11 @@ import view.gui.MyObservableGuiView;
 public class Run {
 	static Properties properties=new Properties();
 	public static void main(String[] args) {
-		properties.saveToXML();
+		try{
 		properties.loadFromXML();
+		}
+		catch(Exception e){ properties.saveToXML();
+		}   
 		if (Properties.getTypeOfView().equals("GUI")){
 		// MyObservableCliView ui = new MyObservableCliView();
 		MazeWindow ui = new MazeWindow("MyMaze", 1000, 600);
