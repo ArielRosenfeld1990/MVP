@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
@@ -16,6 +18,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
 import algorithms.demo.Maze3dSearchable;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
@@ -48,10 +53,10 @@ public class MyModel extends Observable implements Model {
 	/**
 	 * constructor for MyModel
 	 */
-	public MyModel() {
+	public MyModel(int NumOfThreads) {
 		mazes = new HashMap<String, Maze3d>();
-		mazesSolution = new HashMap<Maze3d, Solution>();
-		threadPool = Executors.newFixedThreadPool(Properties.getNumOfThreads());
+		loadCache();
+		threadPool = Executors.newFixedThreadPool(NumOfThreads);
 	}
 
 	/**
@@ -361,16 +366,50 @@ public class MyModel extends Observable implements Model {
 	 */
 	@Override
 	public void close() {
+
 		threadPool.shutdown();
 		setChanged();
 		try {
-			while (!threadPool.awaitTermination(10, TimeUnit.SECONDS))
-				;
+			while (!threadPool.awaitTermination(10, TimeUnit.SECONDS));
+			saveCache();
 			notifyObservers("all the tasks have finished");
 		} catch (InterruptedException e) {
 			notifyObservers(e.getMessage());
 		}
 		notifyObservers("model is safely closed");
+	}
+
+	private void saveCache()
+	{
+		ObjectOutputStream out=null;
+		try {
+			out = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("Cache.zip")));
+			out.writeObject(mazesSolution);
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(out!=null)
+				try {out.close();} catch (IOException e) {e.printStackTrace();}
+		}
+	}
+
+	private void loadCache()
+	{
+		ObjectInputStream in=null;
+		try {
+			in = new ObjectInputStream(new GZIPInputStream(new FileInputStream("Cache.zip")));
+			@SuppressWarnings("unchecked")
+			HashMap<Maze3d, Solution> temp =(HashMap<Maze3d, Solution>)in.readObject();
+			mazesSolution=temp;
+		} catch (IOException e) {
+			mazesSolution= new HashMap<Maze3d, Solution>();
+		} catch (ClassNotFoundException e) {
+			mazesSolution= new HashMap<Maze3d, Solution>();
+		}finally {
+			if(in!=null)
+				try {in.close();} catch (IOException e) {e.printStackTrace();}
+		}
 	}
 
 	/**

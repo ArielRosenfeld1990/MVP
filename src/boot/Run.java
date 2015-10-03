@@ -19,7 +19,7 @@ public class Run {
 		if (Properties.getTypeOfView().equals("GUI")){
 		// MyObservableCliView ui = new MyObservableCliView();
 		MazeWindow ui = new MazeWindow("MyMaze", 1000, 600);
-		MyModel m = new MyModel();
+		MyModel m = new MyModel(Properties.getNumOfThreads());
 		Presenter p = new Presenter(ui, m);
 		ui.addObserver(p);
 		m.addObserver(p);
@@ -27,7 +27,7 @@ public class Run {
 	}
 		else if (Properties.getTypeOfView().equals("CLI")){
 			MyObservableCliView CliView=new MyObservableCliView();
-			MyModel m = new MyModel();
+			MyModel m = new MyModel(Properties.getNumOfThreads());
 			Presenter p = new Presenter(CliView, m);
 			CliView.addObserver(p);
 			m.addObserver(p);
