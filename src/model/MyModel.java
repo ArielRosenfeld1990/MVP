@@ -377,6 +377,7 @@ public class MyModel extends Observable implements Model {
 		} catch (InterruptedException e) {
 			notifyObservers(e.getMessage());
 		}
+		setChanged();
 		notifyObservers("model is safely closed");
 	}
 

@@ -47,6 +47,7 @@ public class MazeWindow extends BasicWindow implements View {
 	Button saveButton;
 	Button loadButton;
 	Button openPropertiesButton;
+	Button exitButton;
 	Group axisGroup;
 	Button axisX;
 	Button axisY;
@@ -287,6 +288,33 @@ public class MazeWindow extends BasicWindow implements View {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
+				
+			}
+		});
+		exitButton = new Button(shell, SWT.PUSH);
+		exitButton.setText("Exit");
+		exitButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
+		exitButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.dispose();
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		shell.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent arg0) {
+				inputStrings = new String[] { "exit"};
+				setChanged();
+				notifyObservers();
 				
 			}
 		});
