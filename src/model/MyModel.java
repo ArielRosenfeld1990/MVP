@@ -34,6 +34,7 @@ import algorithms.search.Solution;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 import presenter.Properties;
+import boot.Run;
 
 /**
  * <h1>MyModel</h1> The MyModel class implements our Model interface,extending
@@ -424,5 +425,30 @@ public class MyModel extends Observable implements Model {
 		if (maze == null)
 			throw new Exception("maze dosent exsist");
 		return maze;
+	}
+	/**
+	 * his method is for loading the XML from the gui
+	 * 
+	 * @param name
+	 *            is the name of the Properties file.
+	 */
+	@Override
+	public void loadXML(String fileNamePath) {
+		if (fileNamePath.contains("Properties.xml")==false){
+			setChanged();
+			notifyObservers("only Properties.xml file could be loaded");
+		}
+		else {
+			try{
+				Run.properties=new Properties(new FileInputStream(fileNamePath));
+				setChanged();
+				notifyObservers("Properties loaded successfully");
+				
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }

@@ -1,5 +1,9 @@
 package boot;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import model.MyModel;
 import presenter.Presenter;
 import presenter.Properties;
@@ -9,10 +13,12 @@ import view.gui.MazeWindow;
 import view.gui.MyObservableGuiView;
 
 public class Run {
-	static Properties properties=new Properties();
+	static public Properties properties=new Properties();
 	public static void main(String[] args) {
 		try{
-		properties.loadFromXML();
+		//	properties=new Properties(new FileInputStream("lib\\Properties.xml"));
+	    	properties.loadFromXML();
+	    	System.out.println(properties.getNumOfThreads());
 		}
 		catch(Exception e){ properties.saveToXML();
 		}   

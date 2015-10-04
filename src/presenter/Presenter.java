@@ -89,6 +89,7 @@ public class Presenter implements Observer {
 		commands.put("solve", new SolveCommand());
 		commands.put("displaySolution", new DisplaySolutionCommand());
 		commands.put("exit", new ExitCommand());
+		commands.put("loadXML", new LoadXMLCommand());
 	}
 
 	/**
@@ -319,6 +320,22 @@ public class Presenter implements Observer {
 		public void doCommand(String[] args) {
 			model.close();
 			view.close();
+		}
+	}
+	/**
+	 * <h1>LoadXMLCommand</h1> The LoadXMLCommand class
+	 * implements our Command interface for loading XML Properties file
+	 * <p>
+	 * 
+	 */
+	public class LoadXMLCommand implements Command {
+		@Override
+		public void doCommand(String[] args) {
+			try {
+				model.loadXML(args[0]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				view.display("Unsupported XML file");
+			}
 		}
 	}
 

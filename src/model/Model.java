@@ -33,7 +33,7 @@ public interface Model {
 	 * @param z
 	 *            is the z dimension for the maze
 	 */
-	void generate3dMaze(String name, String generator, int x, int y, int z) throws Exception;
+	void generate3dMaze(String name, String generator, int x, int y, int z);
 
 	/**
 	 * This method is for getting the maze by his name
@@ -113,4 +113,11 @@ public interface Model {
 	 * This method is for closing the model
 	 */
 	void close();
+	/**
+	 * his method is for loading the XML from the gui
+	 * 
+	 * @param name
+	 *            is the name of the Properties file.
+	 */
+	void loadXML(String name);
 }

@@ -3,6 +3,7 @@ package presenter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -17,7 +18,7 @@ public class Properties implements Serializable {
 	static int numOfThreads;
 	static String TypeOfView;
 	static String TypeOfCache;
-
+    Document docXML;
 	/**
 	 * 
 	 */
@@ -29,7 +30,29 @@ public class Properties implements Serializable {
 		mazeGenerator = "myMazeGenerator";
 		TypeOfView="GUI";
 		TypeOfCache="ZipCache";
+		docXML=null;
 
+	}
+	public Properties(InputStream doc) throws FileNotFoundException{
+		try {	
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	    	DocumentBuilder dBuilder;
+	    	dBuilder = dbFactory.newDocumentBuilder();
+			docXML=dBuilder.parse(doc);
+			 loadFromXML();
+		}
+		catch (FileNotFoundException e){
+			throw new FileNotFoundException("Properties file wasnt found");
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void saveToXML() {
@@ -72,12 +95,14 @@ public class Properties implements Serializable {
 	public void loadFromXML() throws FileNotFoundException {
 
 		try {
+			if (docXML==null) {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder;
 			dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse("Properties.xml");
-			if (doc != null) {
-				NodeList nList = doc.getElementsByTagName("Properties");
+			docXML = dBuilder.parse("Properties.xml");
+			}
+			
+				NodeList nList = docXML.getElementsByTagName("Properties");
 				for (int temp = 0; temp < nList.getLength(); temp++) {
 					Node nNode = nList.item(temp);
 					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -91,8 +116,6 @@ public class Properties implements Serializable {
 					}
 					System.out.println("file loaded successfully");
 				}
-			} else
-				System.out.println("XML Properties file wasnt found");
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			// TODO Auto-generated catch block
 			throw new FileNotFoundException("Properties file wasnt found");

@@ -46,6 +46,7 @@ public class MazeWindow extends BasicWindow implements View {
 	Button generateButton;
 	Button saveButton;
 	Button loadButton;
+	Button openPropertiesButton;
 	Group axisGroup;
 	Button axisX;
 	Button axisY;
@@ -83,7 +84,7 @@ public class MazeWindow extends BasicWindow implements View {
 		generateButton.setEnabled(true);
 
 		maze = new Maze3dGuiDisplayer(shell, SWT.BORDER);
-		maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
+		maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 5));
 		maze.addKeyListener(new KeyListener() {
 
 			@Override
@@ -180,6 +181,7 @@ public class MazeWindow extends BasicWindow implements View {
 				maze.setFocus();
 			}
 		});
+		
 		saveButton = new Button(shell, SWT.PUSH);
 		saveButton.setText("Save");
 		saveButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
@@ -195,6 +197,7 @@ public class MazeWindow extends BasicWindow implements View {
 			    saveDialog.setFilterPath("lib\\");
 			    saveDialog.setFileName(mazeName);
 		        String selected = saveDialog.open();
+		        if (selected!=null){
 		        if (selected.contains(".")==false){
 				inputStrings = new String[] { "saveMaze",mazeName,selected };
 				
@@ -205,6 +208,7 @@ public class MazeWindow extends BasicWindow implements View {
 					MessageBox mSaveBox = new MessageBox(shell, SWT.OK);
 					mSaveBox.setMessage("invalid maze file name!");
 					mSaveBox.open();
+		        }
 		        }
 			}
 			
@@ -228,8 +232,9 @@ public class MazeWindow extends BasicWindow implements View {
 		        String[] filterExt = { "*.*" };
 		        loadDialog.setFilterExtensions(filterExt);
 		        String selected = loadDialog.open();
+		        if (loadDialog.getFileName().equals("")==false){
 				mazeName =  loadDialog.getFileName();
-			    if (mazeName.contains(".")==false){
+			    if ((mazeName.contains(".")==false)){
 				inputStrings = new String[] { "loadMaze",selected,mazeName };
 				setChanged();
 				notifyObservers();
@@ -237,9 +242,43 @@ public class MazeWindow extends BasicWindow implements View {
 				setChanged();
 				notifyObservers();
 			    }
-			    else {
+			    else{
 					MessageBox mLoadBox = new MessageBox(shell, SWT.OK);
 					mLoadBox.setMessage("invalid maze file!");
+					mLoadBox.open();
+			    }
+		        }
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		openPropertiesButton = new Button(shell, SWT.PUSH);
+		openPropertiesButton.setText("Open Properties");
+		openPropertiesButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
+		openPropertiesButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+		        FileDialog OpenPropertiesDialog = new FileDialog(shell, SWT.OPEN);
+		        OpenPropertiesDialog.setText("Open");
+		        OpenPropertiesDialog.setFilterPath("");
+		        String[] filterExt = { "*.xml*" };
+		        OpenPropertiesDialog.setFilterExtensions(filterExt);
+		        String selected = OpenPropertiesDialog.open();
+				String PropertiesFile =  OpenPropertiesDialog.getFileName();
+			    if (PropertiesFile.contains("Properties")==true){
+				inputStrings = new String[] { "loadXML",selected };
+				setChanged();
+				notifyObservers();
+			    }
+			    else if (PropertiesFile.equals("")==false){
+					MessageBox mLoadBox = new MessageBox(shell, SWT.OK);
+					mLoadBox.setMessage("invalid properties file!!!");
 					mLoadBox.open();
 			    }
 				
