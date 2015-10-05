@@ -275,6 +275,9 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				maze.setEnabled(false);
+				hintButton.setEnabled(false);
+				
 				requestSolve();
 				
 			}
@@ -326,7 +329,7 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				shell.dispose();
+				close();
 				
 			}
 			
@@ -343,7 +346,6 @@ public class MazeWindow extends BasicWindow implements View {
 				inputStrings = new String[] { "exit"};
 				setChanged();
 				notifyObservers();
-				
 			}
 		});
 	}
@@ -377,12 +379,6 @@ public class MazeWindow extends BasicWindow implements View {
 			case "int[][]":
 				maze.setCurrentCrossSection((int[][]) obj);
 				maze.setCurrentAxis(getCurrentAxis());
-				display.syncExec(new Runnable() {
-					@Override
-					public void run() {
-						maze.redraw();
-					}
-				});
 				break;
 			 case "Solution":
 				 maze.displaySolution((Solution)obj);
@@ -399,8 +395,7 @@ public class MazeWindow extends BasicWindow implements View {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
-
+		shell.dispose();
 	}
 
 	@Override

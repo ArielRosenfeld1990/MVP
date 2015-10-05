@@ -41,6 +41,7 @@ public abstract class MazeGuiDisplayer extends Canvas {
 
 	public void setCurrentCrossSection(int[][] currentCrossSection) {
 		this.currentCrossSection = currentCrossSection;
+		redraw();
 	}
 
 	public char getCurrentAxis() {
@@ -49,6 +50,7 @@ public abstract class MazeGuiDisplayer extends Canvas {
 
 	public void setCurrentAxis(char currentAxis) {
 		this.currentAxis = currentAxis;
+		redraw();
 	} 
 
 	public abstract void moveUp();

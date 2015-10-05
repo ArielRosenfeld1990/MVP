@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -32,9 +33,9 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		super(parent, style);
 		drawHint=false;
 		currentHint=null;
-		
+
 		setCharacter(new MyCharcter());
-		
+
 		final Color white = new Color(null, 255, 255, 255);
 		setBackground(white);
 
@@ -139,7 +140,12 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	}
 
 	@Override
-	public void displaySolution(Solution solution) {
+	public void displaySolution(Solution solution) {	
+		if(timer!=null){
+			task.cancel();
+			timer.cancel();
+		}
+
 		LinkedList<State> path= solution.getPath();
 		if(path.isEmpty())
 			return;
@@ -155,31 +161,32 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 				}
 
 				Position to=((Maze3dState)path.poll()).getPosition();
-				getDisplay().syncExec(new Runnable() {
+				if(!isDisposed())
+					getDisplay().syncExec(new Runnable() {
 
-					@Override
-					public void run() {
-						if(to.getX()>character.getPosition().getX()){
-							moveUp();
-						}
-						if(to.getX()<character.getPosition().getX()){
-							moveDown();
-						}
-						if(to.getY()>character.getPosition().getY()){
-							moveBackward();
-						}
-						if(to.getY()<character.getPosition().getY()){
-							moveForward();
-						}
-						if(to.getZ()>character.getPosition().getZ()){
-							moveRight();
-						}
-						if(to.getZ()<character.getPosition().getZ()){
-							moveLeft();
-						}
+						@Override
+						public void run() {
+							if(to.getX()>character.getPosition().getX()){
+								moveUp();
+							}
+							if(to.getX()<character.getPosition().getX()){
+								moveDown();
+							}
+							if(to.getY()>character.getPosition().getY()){
+								moveBackward();
+							}
+							if(to.getY()<character.getPosition().getY()){
+								moveForward();
+							}
+							if(to.getZ()>character.getPosition().getZ()){
+								moveRight();
+							}
+							if(to.getZ()<character.getPosition().getZ()){
+								moveLeft();
+							}
 
-					}
-				});
+						}
+					});
 
 			}
 		};
@@ -192,6 +199,15 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		drawHint=true;
 		this.redraw();
 	}
+
+	@Override
+	public void dispose() {
+		if(timer!=null){
+			task.cancel();
+			timer.cancel();
+		}
+		super.dispose();
+	};
 
 	private void drawMazeByX(PaintEvent e) {
 		if (currentCrossSection != null && maze3d != null) {
@@ -230,11 +246,11 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 								(int) Math.round((w0 + w1) / 2)-50, (int) Math.round(h)-50);
 
 						drawHint=false;
-						}
 					}
 				}
 			}
 		}
+	}
 
 	private void drawImage(String imageFile,PaintEvent paintEvent, int x, int y, int width, int height) {
 		try {
@@ -292,8 +308,8 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 							&& j == getCrossXDisplay(character.getPosition())) {
 						character.drawCharcter(e, (int) Math.round(dpoints[0] - cheight / 2),
 								(int) Math.round(dpoints[1]), (int) Math.round(w), (int) Math.round((h0 + h) / 2));// for
-																													// y
-																													// cross
+						// y
+						// cross
 					}
 				}
 			}
@@ -376,7 +392,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			if (getCrossXDisplay(position) == -1)
 				updateCross(position);
 			character.setPosition(position);
-					redraw();
+			redraw();
 			checkIfSolved();
 		}
 	}
