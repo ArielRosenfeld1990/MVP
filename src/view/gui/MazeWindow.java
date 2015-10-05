@@ -1,11 +1,5 @@
 package view.gui;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -18,27 +12,20 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Widget;
 
 import algorithms.mazeGenerators.Maze3d;
+import algorithms.search.Maze3dState;
+import algorithms.search.Solution;
 import presenter.Properties;
 import view.View;
 
 public class MazeWindow extends BasicWindow implements View {
-
-	Timer timer; // להבין את השימוש
-	TimerTask task;
 
 	String[] inputStrings;
 	String mazeName;
@@ -46,6 +33,8 @@ public class MazeWindow extends BasicWindow implements View {
 	Button generateButton;
 	Button saveButton;
 	Button loadButton;
+        Button hintButton;
+	Button solveButton;
 	Button openPropertiesButton;
 	Button exitButton;
 	Group axisGroup;
@@ -85,7 +74,7 @@ public class MazeWindow extends BasicWindow implements View {
 		generateButton.setEnabled(true);
 
 		maze = new Maze3dGuiDisplayer(shell, SWT.BORDER);
-		maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 5));
+		maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 8));
 		maze.addKeyListener(new KeyListener() {
 
 			@Override
@@ -258,6 +247,45 @@ public class MazeWindow extends BasicWindow implements View {
 				
 			}
 		});
+
+	        hintButton = new Button(shell, SWT.PUSH);
+		hintButton.setText("Hint");
+		hintButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
+		hintButton.setEnabled(false);
+		hintButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				requestHint();
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		solveButton = new Button(shell, SWT.PUSH);
+		solveButton.setText("Solve");
+		solveButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
+		solveButton.setEnabled(false);
+		solveButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				requestSolve();
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
 		openPropertiesButton = new Button(shell, SWT.PUSH);
 		openPropertiesButton.setText("Open Properties");
 		openPropertiesButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 3, 1));
@@ -338,7 +366,8 @@ public class MazeWindow extends BasicWindow implements View {
 				Maze3d mazeObject = (Maze3d) obj;
 				maze.setMazeData(mazeObject);
 				saveButton.setEnabled(true);
-				
+				hintButton.setEnabled(true);
+				solveButton.setEnabled(true);
 				axisGroup.setEnabled(true);
 				axisX.setSelection(true);
 				axisY.setSelection(false);
@@ -355,9 +384,12 @@ public class MazeWindow extends BasicWindow implements View {
 					}
 				});
 				break;
-			// case "Solution":
-			// ui.display(obj, new SolutionCliDisplayer());
-			// break;
+			 case "Solution":
+				 maze.displaySolution((Solution)obj);
+			 break;
+			 case "Maze3dState":
+				 maze.displayHint((Maze3dState)obj);
+			 break;
 			default:
 				break;
 			}
@@ -386,6 +418,20 @@ public class MazeWindow extends BasicWindow implements View {
 		return 'x';
 	}
 
+	private void requestHint()
+	{
+		inputStrings = new String[] { "displayHintFromPosition", mazeName, Properties.getSearcher(),maze.getCharacter().getPosition().toString()  };
+		setChanged();
+		notifyObservers();
+	}
+	
+	private void requestSolve()
+	{
+		inputStrings = new String[] { "displaySolutionFromPosition", mazeName, Properties.getSearcher(),maze.getCharacter().getPosition().toString()  };
+		setChanged();
+		notifyObservers();
+	}
+	
 	private void GenerateWindow() {
 		final Shell generateShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
 		generateShell.setText("Generating maze window");
