@@ -108,8 +108,12 @@ public interface Model {
 	 *            is the name of the maze.
 	 */
 	void getSolutionForName(String name);
+	
+	void getSolutionFromPosition(String mazeName,String algorithm,String position);
+	
+	public void getHintFromPosition(String mazeName,String algorithm,String position);
 
-	/**
+	/** 
 	 * This method is for closing the model
 	 */
 	void close();

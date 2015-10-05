@@ -11,7 +11,7 @@ public abstract class MazeCharacterGuiDisplayer {
 	}
 
 	public abstract void drawCharcter(PaintEvent paintEvent, int x, int y, int characterWidth, int characterHeight);
-
+ 
 	public Position getPosition() {
 		return position;
 	}

@@ -4,6 +4,8 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import algorithms.mazeGenerators.Maze3d;
+import algorithms.search.Maze3dState;
+import algorithms.search.Solution;
 
 public abstract class MazeGuiDisplayer extends Canvas {
 
@@ -11,6 +13,7 @@ public abstract class MazeGuiDisplayer extends Canvas {
 	protected MazeCharacterGuiDisplayer character;
 	protected int[][] currentCrossSection;
 	protected char currentAxis;
+
 
 	public MazeGuiDisplayer(Composite parent, int style) {
 		super(parent, style);
@@ -27,6 +30,7 @@ public abstract class MazeGuiDisplayer extends Canvas {
 		this.character = character;
 	}
 
+	
 	public MazeCharacterGuiDisplayer getCharacter() {
 		return character;
 	}
@@ -45,7 +49,7 @@ public abstract class MazeGuiDisplayer extends Canvas {
 
 	public void setCurrentAxis(char currentAxis) {
 		this.currentAxis = currentAxis;
-	}
+	} 
 
 	public abstract void moveUp();
 
@@ -58,4 +62,8 @@ public abstract class MazeGuiDisplayer extends Canvas {
 	public abstract void moveForward();
 
 	public abstract void moveBackward();
+	
+	public abstract void displaySolution(Solution solution);
+	
+	public abstract void displayHint(Maze3dState hint);
 }

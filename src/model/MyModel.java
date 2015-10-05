@@ -24,6 +24,7 @@ import java.util.zip.GZIPOutputStream;
 import algorithms.demo.Maze3dSearchable;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
+import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.SimpleMaze3dGenerator;
 import algorithms.search.AStar;
 import algorithms.search.Bfs;
@@ -303,39 +304,9 @@ public class MyModel extends Observable implements Model {
 	@Override
 	public void solve(String mazeName, String algorithm) {
 		try{
-			Maze3d maze = getMaze(mazeName);
 			setChanged();
-
-			if (mazesSolution.containsKey(maze)){
-				notifyObservers("solution is ready1");
-				return;
-			}
-
-
-			Future<Solution> solutionFuture = threadPool.submit(new Callable<Solution>() {
-				@Override
-				public Solution call() throws Exception {
-					Searcher searcher;
-					switch (algorithm) {
-					case "bfs":
-						searcher = new Bfs();
-						break;
-					case "aStarAir":
-						searcher = new AStar(new MazeManhattanDistance());
-						break;
-					case "aStarManhattan":
-						searcher = new AStar(new MazeAirDistance());
-						break;
-					default:
-						throw new InvalidParameterException("invalid searcher");
-					}
-
-					return searcher.search(new Maze3dSearchable(maze));
-				}
-			});
-
-			mazesSolution.put(maze,solutionFuture.get() );
-
+			Maze3d maze = getMaze(mazeName);
+			solveByMaze(maze, algorithm);
 			notifyObservers("solution is ready");
 		}
 		catch (Exception e) {
@@ -362,6 +333,43 @@ public class MyModel extends Observable implements Model {
 		}
 	}
 
+	@Override
+	public void getSolutionFromPosition(String mazeName,String algorithm,String position) {
+		try{
+			setChanged();
+			Maze3d maze=createRequestedSolution(mazeName, algorithm, position);
+			notifyObservers(mazesSolution.get(maze));
+		}
+		catch (IndexOutOfBoundsException e) {
+			notifyObservers("position format error");
+		}
+		catch (NumberFormatException e) {
+			notifyObservers("position format error");
+		} catch (Exception e) {
+			notifyObservers(e.getMessage());
+		}
+	}
+
+	@Override
+	public void getHintFromPosition(String mazeName,String algorithm,String position) {
+		try {
+			setChanged();
+			Maze3d maze = createRequestedSolution(mazeName, algorithm, position);
+			if(mazesSolution.get(maze).getPath().size()>1)
+				notifyObservers(mazesSolution.get(maze).getPath().get(1));
+
+		}
+		catch (IndexOutOfBoundsException e) {
+			notifyObservers("position format error");
+		}
+		catch (NumberFormatException e) {
+			notifyObservers("position format error");
+		}
+		catch (Exception e)	{
+			notifyObservers(e.getMessage());
+		}
+	}
+
 	/**
 	 * This method is for closing myModel
 	 */
@@ -377,8 +385,23 @@ public class MyModel extends Observable implements Model {
 		} catch (InterruptedException e) {
 			notifyObservers(e.getMessage());
 		}
-		setChanged();
 		notifyObservers("model is safely closed");
+	}
+
+	private Maze3d createRequestedSolution(String mazeName,String algorithm,String position) throws Exception
+	{
+		Maze3d maze = getMaze(mazeName).clone();
+		maze.setStart(convertToPosition(position));
+		solveByMaze(maze, algorithm);
+		return maze;
+	}
+
+	private Position convertToPosition(String position) {
+		position=position.replace("{", "");
+		position=position.replace("}", "");
+		String[] positionNums = position.split(",");
+		Position current = new Position(Integer.decode(positionNums[0]), Integer.decode(positionNums[1]), Integer.decode(positionNums[2]));
+		return current;
 	}
 
 	private void saveCache()
@@ -419,13 +442,49 @@ public class MyModel extends Observable implements Model {
 	 * 
 	 * @param name
 	 *            is the name of the maze.
-	 * @return maze is our 3d maze.
+	 * @return maze is our 3d maze. 
 	 */
 	private Maze3d getMaze(String mazeName) throws Exception {
 		Maze3d maze = mazes.get(mazeName);
 		if (maze == null)
 			throw new Exception("maze dosent exsist");
 		return maze;
+	}
+
+	private void solveByMaze(Maze3d maze,String algorithm) {
+
+		setChanged();
+		if (mazesSolution.containsKey(maze)){
+			return;
+		}
+
+		Future<Solution> solutionFuture = threadPool.submit(new Callable<Solution>() {
+			@Override
+			public Solution call() throws Exception {
+				Searcher searcher;
+				switch (algorithm) {
+				case "bfs":
+					searcher = new Bfs();
+					break;
+				case "aStarAir":
+					searcher = new AStar(new MazeManhattanDistance());
+					break;
+				case "aStarManhattan":
+					searcher = new AStar(new MazeAirDistance());
+					break;
+				default:
+					throw new InvalidParameterException("invalid searcher");
+				}
+				return searcher.search(new Maze3dSearchable(maze));
+			}
+		});
+
+		try{
+			mazesSolution.put(maze,solutionFuture.get() );
+		}
+		catch (Exception e) {
+			notifyObservers(e.getMessage());
+		}
 	}
 	/**
 	 * his method is for loading the XML from the gui

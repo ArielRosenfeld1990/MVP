@@ -6,7 +6,7 @@ import java.io.PrintWriter;
  * <h1>Displayer</h1> The Displayer interface represents our way to display
  * differenct objects in the CLI
  * <p>
- *
+ * 
  * @author Ariel Rosenfeld,Ofir Calif
  *
  * 

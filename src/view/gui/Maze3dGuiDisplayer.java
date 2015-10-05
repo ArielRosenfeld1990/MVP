@@ -3,6 +3,10 @@ package view.gui;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -13,15 +17,25 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 
 import algorithms.mazeGenerators.Position;
+import algorithms.search.Maze3dState;
+import algorithms.search.Solution;
+import algorithms.search.State;
+
 
 public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
+	private boolean drawHint;
+	private Position currentHint;
+	Timer timer;
+	TimerTask task;
 
-	Maze3dGuiDisplayer(Composite parent, int style) {
+	public Maze3dGuiDisplayer(Composite parent, int style) {
 		super(parent, style);
-		setCharacter(new EliExampleCharcter());
-
+		drawHint=false;
+		currentHint=null;
+		
+		setCharacter(new MyCharcter());
+		
 		final Color white = new Color(null, 255, 255, 255);
-		// final Color black = new Color(null, 150,150,150);
 		setBackground(white);
 
 		addPaintListener(new PaintListener() {
@@ -36,6 +50,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			}
 		});
 	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -123,6 +138,61 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 
 	}
 
+	@Override
+	public void displaySolution(Solution solution) {
+		LinkedList<State> path= solution.getPath();
+		if(path.isEmpty())
+			return;
+		path.poll();
+		timer = new Timer();
+		task = new TimerTask() {
+			@Override
+			public void run() {
+				if(path.isEmpty()){
+					task.cancel();
+					timer.cancel();
+					return;
+				}
+
+				Position to=((Maze3dState)path.poll()).getPosition();
+				getDisplay().syncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						if(to.getX()>character.getPosition().getX()){
+							moveUp();
+						}
+						if(to.getX()<character.getPosition().getX()){
+							moveDown();
+						}
+						if(to.getY()>character.getPosition().getY()){
+							moveBackward();
+						}
+						if(to.getY()<character.getPosition().getY()){
+							moveForward();
+						}
+						if(to.getZ()>character.getPosition().getZ()){
+							moveRight();
+						}
+						if(to.getZ()<character.getPosition().getZ()){
+							moveLeft();
+						}
+
+					}
+				});
+
+			}
+		};
+		timer.scheduleAtFixedRate(task, 0, 500);
+	}
+
+	@Override
+	public void displayHint(Maze3dState hint) {
+		currentHint=hint.getPosition();
+		drawHint=true;
+		this.redraw();
+	}
+
 	private void drawMazeByX(PaintEvent e) {
 		if (currentCrossSection != null && maze3d != null) {
 			int width = getSize().x;
@@ -144,29 +214,39 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 					if (currentCrossSection[i][j] != 0)
 						paintCube(dpoints, cheight, e);
 
-					if (i == getCrossYDisplay(maze3d.getGoalPosition())
-							&& j == getCrossXDisplay(maze3d.getGoalPosition())) {
-						try {
-							BufferedInputStream exitImageInputStream = new BufferedInputStream(
-									new FileInputStream("lib/exit.png"));
-							Image im = new Image(null, exitImageInputStream);
-							e.gc.drawImage(im, 0, 0, im.getImageData().width, im.getImageData().height,
-									(int) Math.round(dpoints[0]), (int) Math.round(dpoints[1] - cheight / 2),
-									(int) Math.round((w0 + w1) / 2), (int) Math.round(h));
-						} catch (FileNotFoundException ex) {
-							ex.printStackTrace();
-						}
-					}
+					if (i == getCrossYDisplay(maze3d.getGoalPosition()) && j == getCrossXDisplay(maze3d.getGoalPosition())) 
+						drawImage("lib/exit.png", e,
+								(int) Math.round(dpoints[0])+25, (int) Math.round(dpoints[1] - cheight / 2)+25,
+								(int) Math.round((w0 + w1) / 2)-50, (int) Math.round(h)-50);
 
-					if (i == getCrossYDisplay(character.getPosition())
-							&& j == getCrossXDisplay(character.getPosition())) {
-						character.drawCharcter(e, (int) Math.round(dpoints[0]),
-								(int) Math.round(dpoints[1] - cheight / 2), (int) Math.round((w0 + w1) / 2),
-								(int) Math.round(h));
+					if (i == getCrossYDisplay(character.getPosition()) && j == getCrossXDisplay(character.getPosition()))
+						character.drawCharcter(e, (int) Math.round(dpoints[0])+25,
+								(int) Math.round(dpoints[1] - cheight / 2)+25, (int) Math.round((w0 + w1) / 2)-50,
+								(int) Math.round(h)-50);
+
+					if(drawHint&&currentHint!=null&&i==getCrossYDisplay(currentHint)&&j==getCrossXDisplay(currentHint)) {
+						drawImage("lib/star1.jpg", e,
+								(int) Math.round(dpoints[0])+25, (int) Math.round(dpoints[1] - cheight / 2)+25,
+								(int) Math.round((w0 + w1) / 2)-50, (int) Math.round(h)-50);
+
+						drawHint=false;
+						}
 					}
 				}
 			}
 		}
+
+	private void drawImage(String imageFile,PaintEvent paintEvent, int x, int y, int width, int height) {
+		try {
+			BufferedInputStream ImageInputStream = new BufferedInputStream(new FileInputStream(imageFile));
+			Image im = new Image(null, ImageInputStream);
+			paintEvent.gc.drawImage(im, 0, 0, im.getImageData().width, im.getImageData().height,	x, y,width, height);
+			ImageInputStream.close();
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}	
 	}
 
 	private void drawMazeByY(PaintEvent e) {
@@ -219,6 +299,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			}
 		}
 	}
+
 
 	private void paintCube(double[] p, double h, PaintEvent e) {
 		int[] f = new int[p.length];
@@ -295,12 +376,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			if (getCrossXDisplay(position) == -1)
 				updateCross(position);
 			character.setPosition(position);
-			getDisplay().syncExec(new Runnable() {
-				@Override
-				public void run() {
 					redraw();
-				}
-			});
 			checkIfSolved();
 		}
 	}
@@ -319,7 +395,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		default:
 			break;
 		}
-	}
+	} 
 
 	private void checkIfSolved() {
 		if (character.getPosition().equals(maze3d.getGoalPosition())) {
@@ -328,4 +404,5 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			mBox.open();
 		}
 	}
+
 }

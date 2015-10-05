@@ -16,7 +16,7 @@ public interface View {
 
 	/**
 	 * This method is for displaying the object
-	 * 
+	 *  
 	 * @param obj
 	 *            is the object that we need to display.
 	 * @param out

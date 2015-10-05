@@ -9,7 +9,7 @@ import java.io.PrintWriter;
  *
  * @author Ariel Rosenfeld,Ofir Calif
  *
- * 
+ *  
  */
 public class StringCliDisplayer implements CliDisplayer {
 	/**

@@ -18,7 +18,7 @@ import java.util.Observable;
  * 
  */
 public class CLI extends Observable {
-	private BufferedReader in;
+	private BufferedReader in; 
 	private PrintWriter out;
 	private String[] splitedCommand;
 	Thread mainThread;

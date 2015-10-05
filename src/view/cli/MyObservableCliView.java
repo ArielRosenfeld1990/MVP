@@ -11,7 +11,7 @@ import view.View;
  * something has changed,implements Observer so our MyObservableCliView can
  * observe the CLI to see if something happened
  * <p>
- *
+ * 
  * @author Ariel Rosenfeld,Ofir Calif
  *
  * 

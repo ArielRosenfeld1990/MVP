@@ -8,7 +8,7 @@ import java.io.PrintWriter;
  * <p>
  *
  * @author Ariel Rosenfeld,Ofir Calif
- *
+ * 
  * 
  */
 public class StringArrayCliDisplayer implements CliDisplayer {

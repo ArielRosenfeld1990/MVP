@@ -88,8 +88,10 @@ public class Presenter implements Observer {
 		commands.put("fileSize", new FileSizeCommand());
 		commands.put("solve", new SolveCommand());
 		commands.put("displaySolution", new DisplaySolutionCommand());
+		commands.put("displaySolutionFromPosition", new DisplaySolutionFromPositionCommand());
+		commands.put("displayHintFromPosition", new DisplayHintSolutionFromPositionCommand());
 		commands.put("exit", new ExitCommand());
-		commands.put("loadXML", new LoadXMLCommand());
+		commands.put("loadXML", new LoadXMLCommand()); 
 	}
 
 	/**
@@ -308,7 +310,28 @@ public class Presenter implements Observer {
 			}
 		}
 	}
-
+	
+	public class DisplaySolutionFromPositionCommand implements Command {
+		@Override
+		public void doCommand(String[] args) {
+			try {
+				model.getSolutionFromPosition(args[0], args[1], args[2]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				view.display("paramters missing");
+			}
+		}
+	}
+	
+	public class DisplayHintSolutionFromPositionCommand implements Command {
+		@Override
+		public void doCommand(String[] args) {
+			try {
+				model.getHintFromPosition(args[0], args[1], args[2]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				view.display("paramters missing");
+			}
+		}
+	}
 	/**
 	 * <h1>ExitCommand</h1> The ExitCommand class implements our Command
 	 * interface for safely exiting the program

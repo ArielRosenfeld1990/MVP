@@ -17,7 +17,7 @@ public abstract class BasicWindow extends Observable implements Runnable {
 	}
 
 	abstract void initWidgets();
-
+ 
 	@Override
 	public void run() {
 		initWidgets();

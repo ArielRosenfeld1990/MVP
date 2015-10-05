@@ -8,7 +8,7 @@ import algorithms.mazeGenerators.Maze3d;
  * <h1>Maze3dDisplayer</h1> The Maze3dDisplayer class implements our Displayer
  * interface
  * <p>
- *
+ * 
  * @author Ariel Rosenfeld,Ofir Calif
  *
  * 

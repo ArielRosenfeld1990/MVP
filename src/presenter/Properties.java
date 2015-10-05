@@ -117,7 +117,7 @@ public class Properties implements Serializable {
 					System.out.println("file loaded successfully");
 				}
 		} catch (ParserConfigurationException | SAXException | IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch block 
 			throw new FileNotFoundException("Properties file wasnt found");
 		}
 

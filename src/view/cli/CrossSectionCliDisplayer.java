@@ -6,7 +6,7 @@ import java.io.PrintWriter;
  * <h1>CrossSectionDisplayer</h1> The CrossSectionDisplayer class implements our
  * Displayer interface
  * <p>
- *
+ * 
  * @author Ariel Rosenfeld,Ofir Calif
  *
  * 

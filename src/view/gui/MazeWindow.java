@@ -568,7 +568,7 @@ public class MazeWindow extends BasicWindow implements View {
 		newLoadButton.setText("Load");
 		newLoadButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 0, 2));
 		newLoadButton.addSelectionListener(new SelectionListener() {
-			
+			 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (MazeFilelist.getSelectionCount()!=1){

@@ -11,7 +11,7 @@ import algorithms.search.State;
  * <p>
  *
  * @author Ariel Rosenfeld,Ofir Calif
- *
+ * 
  * 
  */
 public class SolutionCliDisplayer implements CliDisplayer {
