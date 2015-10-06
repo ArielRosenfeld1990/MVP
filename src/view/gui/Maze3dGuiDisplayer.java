@@ -9,11 +9,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 
@@ -21,33 +23,67 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Maze3dState;
 import algorithms.search.Solution;
 import algorithms.search.State;
-
+/**
+ * <h1>Maze3dGuiDisplayer</h1> The Maze3dGuiDisplayer class extends our MazeGuiDisplayer
+ * <p>
+ *
+ * @author Ariel Rosenfeld,Ofir Calif
+ *
+ * 
+ */
 
 public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
-	private boolean drawHint;
-	private Position currentHint;
 	Timer timer;
 	TimerTask task;
-
+	CrossDisplayer crossX;
+	CrossDisplayer crossY;
+	/**
+	 * constructor for Maze3dGuiDisplayer
+	 */
 	public Maze3dGuiDisplayer(Composite parent, int style) {
 		super(parent, style);
-		drawHint=false;
-		currentHint=null;
 
 		setCharacter(new MyCharcter());
 
-		final Color white = new Color(null, 255, 255, 255);
-		setBackground(white);
-
+		setLayout(new GridLayout(2, false));
+		crossX = new CrossXDisplayer(this, style, character);
+		crossY = new CrossYDisplayer(this, style, character);
+		crossX.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		crossY.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		try{
+			BufferedInputStream InputStream = new BufferedInputStream(new FileInputStream("lib/exit.png"));
+			Image Image = new Image(null, InputStream);
+			crossX.setGoalImage(Image);
+			crossY.setGoalImage(Image);
+			InputStream.close();
+			
+			InputStream = new BufferedInputStream(new FileInputStream("lib/myStar.png"));
+			Image = new Image(null, InputStream);
+			crossX.setHintImage(Image);
+			crossY.setHintImage(Image);
+			InputStream.close();
+		}catch(FileNotFoundException e){
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
-				e.gc.setForeground(new Color(null, 0, 0, 0));
-				e.gc.setBackground(new Color(null, 0, 0, 0));
-				if (currentAxis == 'X')
-					drawMazeByX(e);
-				else
-					drawMazeByY(e);
+				crossX.redraw();
+				crossY.redraw();
+			}
+		});
+
+		addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent arg0) {
+				if(timer!=null){
+					task.cancel();
+					timer.cancel();
+				};
+
 			}
 		});
 	}
@@ -138,7 +174,10 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		moveCharacter(new Position(x, y, z));
 
 	}
-
+	/**
+	 * This method is for displaying the solution for the maze
+	 *@param solution is the solution for the maze
+	 */
 	@Override
 	public void displaySolution(Solution solution) {	
 		if(timer!=null){
@@ -192,227 +231,55 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		};
 		timer.scheduleAtFixedRate(task, 0, 500);
 	}
-
+	/**
+	 * This method is for displaying the hint for a specific Maze3dState
+	 *@param hint is the hint for the Maze3dState
+	 */
 	@Override
 	public void displayHint(Maze3dState hint) {
-		currentHint=hint.getPosition();
-		drawHint=true;
-		this.redraw();
+		crossX.displayHint(hint.getPosition());
+		crossY.displayHint(hint.getPosition());
+		redraw();
 	}
-
+	/**
+	 * this method sets the maze and initializes our maze and the character
+	 * starting position
+	 */
 	@Override
-	public void dispose() {
+	public void initilaize(algorithms.mazeGenerators.Maze3d maze3d) {
+		super.initilaize(maze3d);
 		if(timer!=null){
 			task.cancel();
 			timer.cancel();
 		}
-		super.dispose();
-	};
-
-	private void drawMazeByX(PaintEvent e) {
-		if (currentCrossSection != null && maze3d != null) {
-			int width = getSize().x;
-			int height = getSize().y;
-			int mx = width / 2;
-			double w = (double) width / currentCrossSection[0].length;
-			double h = (double) height / currentCrossSection.length;
-
-			for (int i = 0; i < currentCrossSection.length; i++) {
-				double w0 = 0.7 * w + 0.3 * w * i / currentCrossSection.length;
-				double w1 = 0.7 * w + 0.3 * w * (i + 1) / currentCrossSection.length;
-				double start = mx - w0 * currentCrossSection[i].length / 2;
-				double start1 = mx - w1 * currentCrossSection[i].length / 2;
-				for (int j = 0; j < currentCrossSection[i].length; j++) {
-					double[] dpoints = { start + j * w0, i * h, start + j * w0 + w0, i * h, start1 + j * w1 + w1,
-							i * h + h, start1 + j * w1, i * h + h };
-					double cheight = h / 2;
-
-					if (currentCrossSection[i][j] != 0)
-						paintCube(dpoints, cheight, e);
-
-					if (i == getCrossYDisplay(maze3d.getGoalPosition()) && j == getCrossXDisplay(maze3d.getGoalPosition())) 
-						drawImage("lib/exit.png", e,
-								(int) Math.round(dpoints[0])+25, (int) Math.round(dpoints[1] - cheight / 2)+25,
-								(int) Math.round((w0 + w1) / 2)-50, (int) Math.round(h)-50);
-
-					if (i == getCrossYDisplay(character.getPosition()) && j == getCrossXDisplay(character.getPosition()))
-						character.drawCharcter(e, (int) Math.round(dpoints[0])+25,
-								(int) Math.round(dpoints[1] - cheight / 2)+25, (int) Math.round((w0 + w1) / 2)-50,
-								(int) Math.round(h)-50);
-
-					if(drawHint&&currentHint!=null&&i==getCrossYDisplay(currentHint)&&j==getCrossXDisplay(currentHint)) {
-						drawImage("lib/star1.jpg", e,
-								(int) Math.round(dpoints[0])+25, (int) Math.round(dpoints[1] - cheight / 2)+25,
-								(int) Math.round((w0 + w1) / 2)-50, (int) Math.round(h)-50);
-
-						drawHint=false;
-					}
-				}
-			}
-		}
-	}
-
-	private void drawImage(String imageFile,PaintEvent paintEvent, int x, int y, int width, int height) {
-		try {
-			BufferedInputStream ImageInputStream = new BufferedInputStream(new FileInputStream(imageFile));
-			Image im = new Image(null, ImageInputStream);
-			paintEvent.gc.drawImage(im, 0, 0, im.getImageData().width, im.getImageData().height,	x, y,width, height);
-			ImageInputStream.close();
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}	
-	}
-
-	private void drawMazeByY(PaintEvent e) {
-		if (currentCrossSection != null && maze3d != null) {
-
-			int width = getSize().x;
-			int height = getSize().y;
-			int mx = height / 2;
-			double w = (double) width / currentCrossSection[0].length;
-			double h = (double) height / currentCrossSection.length;
-
-			for (int i = 0; i < currentCrossSection.length; i++) {
-
-				for (int j = 0; j < currentCrossSection[i].length; j++) {
-					double h0 = 0.7 * h + 0.3 * h * j / currentCrossSection[i].length;
-					double h1 = 0.7 * h + 0.3 * h * (j + 1) / currentCrossSection[i].length;
-					double start = mx - h0 * currentCrossSection.length / 2;
-					double start1 = mx - h1 * currentCrossSection.length / 2;
-
-					double[] dpoints = { j * w, start + i * h0, j * w, start + i * h0 + h0, j * w + w,
-							start1 + i * h1 + h1, j * w + w, start1 + i * h1 };
-
-					double cheight = w / 2;
-
-					if (currentCrossSection[i][j] != 0)
-						paintCube(dpoints, cheight, e);
-
-					if (i == getCrossYDisplay(maze3d.getGoalPosition())
-							&& j == getCrossXDisplay(maze3d.getGoalPosition())) {
-						try {
-							BufferedInputStream exitImageInputStream = new BufferedInputStream(
-									new FileInputStream("lib/exit.png"));
-							Image im = new Image(null, exitImageInputStream);
-							e.gc.drawImage(im, 0, 0, im.getImageData().width, im.getImageData().height,
-									(int) Math.round(dpoints[0] - cheight / 2), (int) Math.round(dpoints[1]),
-									(int) Math.round(w), (int) Math.round((h0 + h) / 2));
-						} catch (FileNotFoundException ex) {
-							ex.printStackTrace();
-						}
-					}
-
-					if (i == getCrossYDisplay(character.getPosition())
-							&& j == getCrossXDisplay(character.getPosition())) {
-						character.drawCharcter(e, (int) Math.round(dpoints[0] - cheight / 2),
-								(int) Math.round(dpoints[1]), (int) Math.round(w), (int) Math.round((h0 + h) / 2));// for
-						// y
-						// cross
-					}
-				}
-			}
-		}
-	}
-
-
-	private void paintCube(double[] p, double h, PaintEvent e) {
-		int[] f = new int[p.length];
-		for (int k = 0; k < f.length; f[k] = (int) Math.round(p[k]), k++)
-			;
-
-		e.gc.drawPolygon(f);
-
-		int[] r = f.clone();
-		if (currentAxis == 'X')
-			for (int k = 1; k < r.length; r[k] = f[k] - (int) (h), k += 2)
-				;
-		else
-			for (int k = 0; k < r.length; r[k] = f[k] - (int) (h), k += 2)
-				; // change k=0 for cross y
-
-		int[] b = { r[0], r[1], r[2], r[3], f[2], f[3], f[0], f[1] };
-		e.gc.drawPolygon(b);
-		int[] fr = { r[6], r[7], r[4], r[5], f[4], f[5], f[6], f[7] };
-		e.gc.drawPolygon(fr);
-
-		e.gc.fillPolygon(r);
+		crossX.setGoal(maze3d.getGoalPosition());
+		crossY.setGoal(maze3d.getGoalPosition());
+		updateCross();
 
 	}
-
-	private int getCrossXDisplay(Position position) {
-		switch (currentAxis) {
-		case 'X':
-		case 'x':
-			if (position.getX() == character.getPosition().getX())
-				return position.getZ();
-			break;
-		case 'Y':
-		case 'y':
-			if (position.getY() == character.getPosition().getY())
-				return position.getZ();
-			break;
-		case 'Z':
-		case 'z':
-			if (position.getZ() == character.getPosition().getZ())
-				return position.getY();
-			break;
-		default:
-			return -1;
-		}
-		return -1;
-	}
-
-	private int getCrossYDisplay(Position position) {
-		switch (currentAxis) {
-		case 'X':
-		case 'x':
-			if (position.getX() == character.getPosition().getX())
-				return position.getY();
-			break;
-		case 'Y':
-		case 'y':
-			if (position.getY() == character.getPosition().getY())
-				return position.getX();
-			break;
-		case 'Z':
-		case 'z':
-			if (position.getZ() == character.getPosition().getZ())
-				return position.getX();
-			break;
-		default:
-			return -1;
-		}
-		return -1;
-	}
-
+	/**
+	 * This method is for moving a character from a certain position to another position
+	 * @param position is the given position.
+	 */
 	private void moveCharacter(Position position) {
 		if (maze3d.InMaze(position) && maze3d.getCell(position) == 0) {
-			if (getCrossXDisplay(position) == -1)
-				updateCross(position);
 			character.setPosition(position);
+			updateCross();
 			redraw();
 			checkIfSolved();
 		}
 	}
-
-	private void updateCross(Position position) {
-		switch (getCurrentAxis()) {
-		case 'X':
-			setCurrentCrossSection(maze3d.getCrossSectionByX(position.getX()));
-			break;
-		case 'Y':
-			setCurrentCrossSection(maze3d.getCrossSectionByY(position.getY()));
-			break;
-		case 'Z':
-			setCurrentCrossSection(maze3d.getCrossSectionByZ(position.getZ()));
-			break;
-		default:
-			break;
-		}
+	/**
+	 * This method is for updating the cross section
+	 */
+	private void updateCross() {
+		crossX.setCrossSection(maze3d.getCrossSectionByX(character.getPosition().getX()));
+		crossY.setCrossSection(maze3d.getCrossSectionByY(character.getPosition().getY()));
+		redraw();
 	} 
-
+	/**
+	 * This method is for checking if we reached our goal position in the maze
+	 */
 	private void checkIfSolved() {
 		if (character.getPosition().equals(maze3d.getGoalPosition())) {
 			MessageBox mBox = new MessageBox(getShell(), SWT.OK);

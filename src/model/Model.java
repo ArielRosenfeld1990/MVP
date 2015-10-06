@@ -102,14 +102,26 @@ public interface Model {
 	void solve(String mazeName, String algorithm);
 
 	/**
-	 * his method is for getting the solution for the 3d maze
+	 * This method is for getting the solution for the 3d maze
 	 * 
 	 * @param name
 	 *            is the name of the maze.
 	 */
 	void getSolutionForName(String name);
+	/**
+	 * This method is for getting the solution from a certain position in the maze
+	 * @param mazeName is the name of the maze
+	 * @param algorithm is the algorithm
+	 * @param position is the given position.
+	 */
 	
 	void getSolutionFromPosition(String mazeName,String algorithm,String position);
+	/**
+	 * This method is for getting a hint for a certain position in the maze
+	 * @param mazeName is the name of the maze
+	 * @param algorithm is the algorithm
+	 * @param position is the given position.
+	 */
 	
 	public void getHintFromPosition(String mazeName,String algorithm,String position);
 
@@ -118,7 +130,7 @@ public interface Model {
 	 */
 	void close();
 	/**
-	 * his method is for loading the XML from the gui
+	 * This method is for loading the XML from the gui
 	 * 
 	 * @param name
 	 *            is the name of the Properties file.

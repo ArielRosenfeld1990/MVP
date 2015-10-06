@@ -310,7 +310,13 @@ public class Presenter implements Observer {
 			}
 		}
 	}
-	
+	/**
+	 * <h1>DisplaySolutionCommand</h1> The DisplaySolutionCommand class
+	 * implements our Command interface for displaying the solution from a specific
+	 * position in the maze
+	 * <p>
+	 * 
+	 */
 	public class DisplaySolutionFromPositionCommand implements Command {
 		@Override
 		public void doCommand(String[] args) {
@@ -321,7 +327,13 @@ public class Presenter implements Observer {
 			}
 		}
 	}
-	
+	/**
+	 * <h1>DisplaySolutionCommand</h1> The DisplaySolutionCommand class
+	 * implements our Command interface for displaying a hint for a specific
+	 * position in the maze
+	 * <p>
+	 * 
+	 */
 	public class DisplayHintSolutionFromPositionCommand implements Command {
 		@Override
 		public void doCommand(String[] args) {

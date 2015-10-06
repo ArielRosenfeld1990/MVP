@@ -96,7 +96,8 @@ public class MyModel extends Observable implements Model {
 	public void generate3dMaze(String name, String generator, int x, int y, int z) {
 		setChanged();
 		if (mazes.containsKey(name)) {
-			notifyObservers("the maze already exists");
+			notifyObservers("this maze name already exists");
+			return;
 		}
 
 		Future<Maze3d> mazeFuture = threadPool.submit(new Callable<Maze3d>() {
@@ -229,7 +230,7 @@ public class MyModel extends Observable implements Model {
 		byte[] data = new byte[100];
 
 		if (mazes.containsKey(mazeName)) {
-			notifyObservers("maze with name " + mazeName + " exsits");
+			notifyObservers("maze with that name exsits");
 			return;
 		}
 		try {
@@ -240,7 +241,7 @@ public class MyModel extends Observable implements Model {
 			}
 			Maze3d loaded = new Maze3d(buffer.toByteArray());
 			mazes.put(mazeName, loaded);
-			notifyObservers("load successfuly");
+			notifyObservers(mazeName + " load successfuly");
 		} catch (FileNotFoundException e) {
 			notifyObservers(e.getMessage());
 		} catch (IOException e) {
@@ -332,7 +333,12 @@ public class MyModel extends Observable implements Model {
 			notifyObservers(e.getMessage());
 		}
 	}
-
+	/**
+	 * This method is for getting the solution from a certain position in the maze
+	 * @param mazeName is the name of the maze
+	 * @param algorithm is the algorithm
+	 * @param position is the given position.
+	 */
 	@Override
 	public void getSolutionFromPosition(String mazeName,String algorithm,String position) {
 		try{
@@ -349,7 +355,12 @@ public class MyModel extends Observable implements Model {
 			notifyObservers(e.getMessage());
 		}
 	}
-
+	/**
+	 * This method is for getting a hint for a certain position in the maze
+	 * @param mazeName is the name of the maze
+	 * @param algorithm is the algorithm
+	 * @param position is the given position.
+	 */
 	@Override
 	public void getHintFromPosition(String mazeName,String algorithm,String position) {
 		try {
@@ -387,7 +398,13 @@ public class MyModel extends Observable implements Model {
 		}
 		notifyObservers("model is safely closed");
 	}
-
+	/**
+	 * This method is for creating a clone maze and solving it
+	 * @param mazeName is the name of the maze
+	 * @param algorithm is the algorithm
+	 * @param position is the given position.
+	 * @return maze is the clone maze which was solved with the requested algorithm
+	 */
 	private Maze3d createRequestedSolution(String mazeName,String algorithm,String position) throws Exception
 	{
 		Maze3d maze = getMaze(mazeName).clone();
@@ -395,7 +412,11 @@ public class MyModel extends Observable implements Model {
 		solveByMaze(maze, algorithm);
 		return maze;
 	}
-
+	/**
+	 * This method is used for converting a string to Position
+	 * @param position is the Position represented by String
+	 * @return current is the converted Position
+	 */
 	private Position convertToPosition(String position) {
 		position=position.replace("{", "");
 		position=position.replace("}", "");
@@ -403,7 +424,9 @@ public class MyModel extends Observable implements Model {
 		Position current = new Position(Integer.decode(positionNums[0]), Integer.decode(positionNums[1]), Integer.decode(positionNums[2]));
 		return current;
 	}
-
+	/**
+	 * This method is used for saving our hashmap with the solutions to a Cache.zip file
+	 */
 	private void saveCache()
 	{
 		ObjectOutputStream out=null;
@@ -418,7 +441,9 @@ public class MyModel extends Observable implements Model {
 				try {out.close();} catch (IOException e) {e.printStackTrace();}
 		}
 	}
-
+	/**
+	 * This method is used for loading our hashmap with the solutions from a Cache.zip file
+	 */
 	private void loadCache()
 	{
 		ObjectInputStream in=null;
@@ -450,7 +475,11 @@ public class MyModel extends Observable implements Model {
 			throw new Exception("maze dosent exsist");
 		return maze;
 	}
-
+	/**
+	 * This method is for solving a maze by a requested algorithm
+	 * @param maze is our maze.
+	 * @param algorithm is the algorithm for solving the maze. 
+	 */
 	private void solveByMaze(Maze3d maze,String algorithm) {
 
 		setChanged();
@@ -487,7 +516,7 @@ public class MyModel extends Observable implements Model {
 		}
 	}
 	/**
-	 * his method is for loading the XML from the gui
+	 * This method is for loading the XML from the gui
 	 * 
 	 * @param name
 	 *            is the name of the Properties file.

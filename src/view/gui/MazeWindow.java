@@ -24,6 +24,16 @@ import algorithms.search.Solution;
 import presenter.Properties;
 import view.View;
 
+/**
+ * <h1>MazeWindow</h1> The MazeWindow class represents our main GUI
+ * window,extends BasicWindow,implements our View interface
+ * <p>
+ *
+ * @author Ariel Rosenfeld,Ofir Calif
+ *
+ * 
+ */
+
 public class MazeWindow extends BasicWindow implements View {
 
 	String[] inputStrings;
@@ -36,12 +46,16 @@ public class MazeWindow extends BasicWindow implements View {
 	Button solveButton;
 	Button openPropertiesButton;
 	Button exitButton;
-
+	/**
+	 * constructor for MazeWindow
+	 */
 
 	public MazeWindow(String title, int width, int height) {
 		super(title, width, height);
 	}
-
+	/**
+	 * this method sets the window and initializes our widgets
+	 */
 	@Override
 	void initWidgets() {
 		shell.setLayout(new GridLayout(2, false));
@@ -285,12 +299,16 @@ public class MazeWindow extends BasicWindow implements View {
 			}
 		});
 	}
-
+	/**
+	 * this method runs our shell,display and the widgets
+	 */
 	@Override
 	public void start() {
 		run();
 	}
-
+	/**
+	 * this method displaying given results
+	 */
 	@Override
 	public void display(Object obj) {
 		if (obj != null) {
@@ -333,29 +351,39 @@ public class MazeWindow extends BasicWindow implements View {
 		}
 		maze.forceFocus();
 	}
-
+	/**
+	 * this method disposes our shell
+	 */
 	@Override
 	public void close() {
 		shell.dispose();
 	}
-
+	/**
+	 * this method is used for getting a command from the user
+	 */
 	@Override
 	public String[] getUserCommand() {
 		return inputStrings;
 	}
-
+	/**
+	 * this method is used for getting the requested hint and displaying it
+	 */
 	private void requestHint()	{
 		inputStrings = new String[] { "displayHintFromPosition", mazeName, Properties.getSearcher(),maze.getCharacter().getPosition().toString()  };
 		setChanged();
 		notifyObservers();
 	}
-
+	/**
+	 * this method is used for getting the requested solution and displaying it
+	 */
 	private void requestSolve()	{
 		inputStrings = new String[] { "displaySolutionFromPosition", mazeName, Properties.getSearcher(),maze.getCharacter().getPosition().toString()  };
 		setChanged();
 		notifyObservers();
 	}
-	
+	/**
+	 * this method is used for enabling certain widgets
+	 */
 	private void enableWidgets() {
 		generateButton.setEnabled(true);
 		maze.setEnabled(true);
@@ -365,7 +393,9 @@ public class MazeWindow extends BasicWindow implements View {
 		solveButton.setEnabled(true);
 		maze.forceFocus();
 	}
-	
+	/**
+	 * this method is used for disabling certain widgets
+	 */
 	private void disableWidgets(){
 		maze.setEnabled(false);
 		hintButton.setEnabled(false);
@@ -373,7 +403,9 @@ public class MazeWindow extends BasicWindow implements View {
 		hintButton.setEnabled(false);
 		solveButton.setEnabled(false);
 	}
-
+	/**
+	 * this method is used for generating a maze from a different shell
+	 */
 	private void GenerateWindow() {
 		final Shell generateShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
 		generateShell.setText("Generating maze window");
@@ -436,6 +468,9 @@ public class MazeWindow extends BasicWindow implements View {
 			}
 		});
 	}
+	/**
+	 * this method is used for loading a maze from a file in a different shell
+	 */
 	private void LoadWindow(){
 		final Shell loadShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
 		loadShell.setText("Loading maze window");

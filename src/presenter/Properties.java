@@ -11,7 +11,15 @@ import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
-
+/**
+ * <h1>Properties</h1> The Properties class is used for saving 
+ * our properties in XML file - to save our setting
+ * <p>
+ *
+ * @author Ariel Rosenfeld,Ofir Calif
+ *
+ * 
+ */
 public class Properties implements Serializable {
 	static String searcher;
 	static String mazeGenerator;
@@ -23,7 +31,9 @@ public class Properties implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * constructor for Properties
+	 */
 	public Properties() {
 		searcher = "Bfs";
 		numOfThreads = 7;
@@ -33,6 +43,10 @@ public class Properties implements Serializable {
 		docXML=null;
 
 	}
+	/**
+	 * constructor for Properties
+	 * @param doc is XML file that from it we will build our Properties object
+	 */
 	public Properties(InputStream doc) throws FileNotFoundException{
 		try {	
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -54,7 +68,9 @@ public class Properties implements Serializable {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 *this method is used to save our setting in XML file
+	 */
 	public void saveToXML() {
 		try {
 			Integer num1 = numOfThreads;
@@ -91,7 +107,9 @@ public class Properties implements Serializable {
 		}
 
 	}
-
+	/**
+	 *this method is used to load from XML file the requested settings
+	 */
 	public void loadFromXML() throws FileNotFoundException {
 
 		try {
@@ -122,35 +140,59 @@ public class Properties implements Serializable {
 		}
 
 	}
-
+	/**
+	 *this method is a getter for our searcher
+	 *@return searcher is the algorithm which will solve the maze
+	 */
 	static public String getSearcher() {
 		return searcher;
 	}
-
+	/**
+	 *this method is a setter for our searcher
+	 *@param s is the algorithm which will solve the maze
+	 */
 	static public void setSearcher(String s) {
 		searcher = s;
 	}
-
+	/**
+	 *this method is a getter for our maze generator
+	 *@return mazeGenerator is the generator which will generate our maze
+	 */
 	static public String getMazeGenerator() {
 		return mazeGenerator;
 	}
-
+	/**
+	 *this method is a setter for our maze generator
+	 *@param MG is the generator which will generate our maze
+	 */
 	static public void setMazeGenerator(String MG) {
 		mazeGenerator = MG;
 	}
-
+	/**
+	 *this method is a getter for our number of threads
+	 *@return numOfThreads is the number of threads that would define our thread pool
+	 */
 	static public int getNumOfThreads() {
 		return numOfThreads;
 	}
-
+	/**
+	 *this method is a setter for our number of threads
+	 *@param numOfThreads is the number of threads that would define our thread pool
+	 */
 	static public void setNumOfThreads(int NoT) {
 		numOfThreads =  NoT;
 	}
-
+	/**
+	 *this method is a getter for our type of view
+	 *@return TypeOfView is the the way we will implement our view - gui or cli
+	 */
 	public static String getTypeOfView() {
 		return TypeOfView;
 	}
-
+	/**
+	 *this method is a getter for our type of view
+	 *@param TypeOfView is the the way we will implement our view - gui or cli
+	 */
 	public static void setTypeOfView(String typeOfView) {
 		TypeOfView = typeOfView;
 	}
