@@ -455,26 +455,37 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				mazeName =  mazeNameText.getText();
+				if (mazeName.equals("")==false){
 				FileDialog loadDialog = new FileDialog(loadShell, SWT.OPEN);
 				loadDialog.setText("Open");
 				loadDialog.setFilterPath("lib\\");
 				String[] filterExt = { "*.*" };
 				loadDialog.setFilterExtensions(filterExt);
 				String selected = loadDialog.open();
-				if (loadDialog.getFileName().equals("")==false){
+				
 					String LoadedFileName=loadDialog.getFileName();
 					mazeName =  mazeNameText.getText();
+					if (mazeName.equals("")==false){
 					if ((LoadedFileName.contains(".")==false)){
 						inputStrings = new String[] { "loadMaze",selected,mazeName };
 						setChanged();
 						notifyObservers();
+						loadShell.close();
 					}
 					else{
 						MessageBox mLoadBox = new MessageBox(shell, SWT.OK);
 						mLoadBox.setMessage("invalid maze file!");
 						mLoadBox.open();
 					}
-					loadShell.close();
+					} 
+					
+				}
+				else {
+					MessageBox mLoadBox = new MessageBox(shell, SWT.OK);
+					mLoadBox.setMessage("you must enter a maze name!");
+					mLoadBox.open();
+					loadShell.forceFocus();
 				}
 				
 			}
