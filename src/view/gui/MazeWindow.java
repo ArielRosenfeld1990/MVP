@@ -502,6 +502,7 @@ public class MazeWindow extends BasicWindow implements View {
 					String LoadedFileName=loadDialog.getFileName();
 					mazeName =  mazeNameText.getText();
 					if (mazeName.equals("")==false){
+					if (LoadedFileName.equals("")==false){
 					if ((LoadedFileName.contains(".")==false)){
 						inputStrings = new String[] { "loadMaze",selected,mazeName };
 						setChanged();
@@ -512,6 +513,8 @@ public class MazeWindow extends BasicWindow implements View {
 						MessageBox mLoadBox = new MessageBox(shell, SWT.OK);
 						mLoadBox.setMessage("invalid maze file!");
 						mLoadBox.open();
+						loadShell.forceFocus();
+					}
 					}
 					} 
 					
