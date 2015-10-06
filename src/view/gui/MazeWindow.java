@@ -490,8 +490,8 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				mazeName =  mazeNameText.getText();
-				if (mazeName.equals("")==false){
+				String newMazeName =  mazeNameText.getText();
+				if (newMazeName.equals("")==false){
 				FileDialog loadDialog = new FileDialog(loadShell, SWT.OPEN);
 				loadDialog.setText("Open");
 				loadDialog.setFilterPath("lib\\");
@@ -500,11 +500,9 @@ public class MazeWindow extends BasicWindow implements View {
 				String selected = loadDialog.open();
 				
 					String LoadedFileName=loadDialog.getFileName();
-					mazeName =  mazeNameText.getText();
-					if (mazeName.equals("")==false){
 					if (LoadedFileName.equals("")==false){
 					if ((LoadedFileName.contains(".")==false)){
-						inputStrings = new String[] { "loadMaze",selected,mazeName };
+						inputStrings = new String[] { "loadMaze",selected,newMazeName };
 						setChanged();
 						notifyObservers();
 						loadShell.close();
@@ -516,7 +514,7 @@ public class MazeWindow extends BasicWindow implements View {
 						loadShell.forceFocus();
 					}
 					}
-					} 
+					 
 					
 				}
 				else {
