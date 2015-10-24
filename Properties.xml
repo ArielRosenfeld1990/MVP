@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><Properties><searcher>bfs</searcher><ThreadsNum>7</ThreadsNum><Generator>myMazeGenerator</Generator><typeofView>GUI</typeofView><typeofCache>ZipCache</typeofCache></Properties>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Properties><RemoteIPaddress>127.0.0.1</RemoteIPaddress><ThreadsNum>7</ThreadsNum><Generator>myMazeGenerator</Generator><typeofView>GUI</typeofView><typeofCache>ZipCache</typeofCache><RemotePort>5400</RemotePort></Properties>

@@ -10,7 +10,10 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.Callable;
@@ -18,19 +21,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
-import algorithms.demo.Maze3dSearchable;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.SimpleMaze3dGenerator;
-import algorithms.search.AStar;
-import algorithms.search.Bfs;
-import algorithms.search.MazeAirDistance;
-import algorithms.search.MazeManhattanDistance;
-import algorithms.search.Searcher;
 import algorithms.search.Solution;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
@@ -49,16 +44,19 @@ import boot.Run;
 public class MyModel extends Observable implements Model {
 	//
 	private HashMap<String, Maze3d> mazes;
-	private HashMap<Maze3d, Solution> mazesSolution;
+	//private HashMap<Maze3d, Solution> mazesSolution;
 	ExecutorService threadPool;
+
 
 	/**
 	 * constructor for MyModel
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
 	public MyModel(int NumOfThreads) {
 		mazes = new HashMap<String, Maze3d>();
-		loadCache();
 		threadPool = Executors.newFixedThreadPool(NumOfThreads);
+
 	}
 
 	/**
@@ -133,7 +131,7 @@ public class MyModel extends Observable implements Model {
 		try {
 			setChanged();
 			Maze3d maze = getMaze(name);
-			notifyObservers(maze);
+			notifyObservers(maze.clone());
 		} catch (Exception e) {
 			notifyObservers(e.getMessage());
 		}
@@ -303,11 +301,11 @@ public class MyModel extends Observable implements Model {
 	 * @throws Exception 
 	 */
 	@Override
-	public void solve(String mazeName, String algorithm) {
+	public void solve(String mazeName) {
 		try{
 			setChanged();
 			Maze3d maze = getMaze(mazeName);
-			solveByMaze(maze, algorithm);
+			solveByMaze(maze);
 			notifyObservers("solution is ready");
 		}
 		catch (Exception e) {
@@ -325,10 +323,10 @@ public class MyModel extends Observable implements Model {
 	public void getSolutionForName(String name) {
 		setChanged();
 		try {
-			Solution solution = mazesSolution.get(getMaze(name));
+			Solution solution = solveByMaze(getMaze(name));
 			if (solution == null)
 				throw new Exception("solution dosent exsist");
-			notifyObservers(solution);
+			notifyObservers(solution.clone());
 		} catch (Exception e) {
 			notifyObservers(e.getMessage());
 		}
@@ -340,11 +338,11 @@ public class MyModel extends Observable implements Model {
 	 * @param position is the given position.
 	 */
 	@Override
-	public void getSolutionFromPosition(String mazeName,String algorithm,String position) {
+	public void getSolutionFromPosition(String mazeName,String position) {
 		try{
 			setChanged();
-			Maze3d maze=createRequestedSolution(mazeName, algorithm, position);
-			notifyObservers(mazesSolution.get(maze));
+			Solution solution=createRequestedSolution(mazeName, position);
+			notifyObservers(solution.clone());
 		}
 		catch (IndexOutOfBoundsException e) {
 			notifyObservers("position format error");
@@ -362,12 +360,12 @@ public class MyModel extends Observable implements Model {
 	 * @param position is the given position.
 	 */
 	@Override
-	public void getHintFromPosition(String mazeName,String algorithm,String position) {
+	public void getHintFromPosition(String mazeName,String position) {
 		try {
 			setChanged();
-			Maze3d maze = createRequestedSolution(mazeName, algorithm, position);
-			if(mazesSolution.get(maze).getPath().size()>1)
-				notifyObservers(mazesSolution.get(maze).getPath().get(1));
+			Solution solution = createRequestedSolution(mazeName, position);
+			if(solution.getPath().size()>1)
+				notifyObservers(solution.getPath().get(1));
 
 		}
 		catch (IndexOutOfBoundsException e) {
@@ -386,17 +384,22 @@ public class MyModel extends Observable implements Model {
 	 */
 	@Override
 	public void close() {
-
+		closeServerConnection();
 		threadPool.shutdown();
 		setChanged();
 		try {
 			while (!threadPool.awaitTermination(10, TimeUnit.SECONDS));
-			saveCache();
 			notifyObservers("all the tasks have finished");
 		} catch (InterruptedException e) {
 			notifyObservers(e.getMessage());
 		}
 		notifyObservers("model is safely closed");
+	}
+
+	private void closeServerConnection()
+	{
+
+
 	}
 	/**
 	 * This method is for creating a clone maze and solving it
@@ -405,12 +408,11 @@ public class MyModel extends Observable implements Model {
 	 * @param position is the given position.
 	 * @return maze is the clone maze which was solved with the requested algorithm
 	 */
-	private Maze3d createRequestedSolution(String mazeName,String algorithm,String position) throws Exception
+	private Solution createRequestedSolution(String mazeName,String position) throws Exception
 	{
 		Maze3d maze = getMaze(mazeName).clone();
 		maze.setStart(convertToPosition(position));
-		solveByMaze(maze, algorithm);
-		return maze;
+		return solveByMaze(maze);
 	}
 	/**
 	 * This method is used for converting a string to Position
@@ -424,43 +426,7 @@ public class MyModel extends Observable implements Model {
 		Position current = new Position(Integer.decode(positionNums[0]), Integer.decode(positionNums[1]), Integer.decode(positionNums[2]));
 		return current;
 	}
-	/**
-	 * This method is used for saving our hashmap with the solutions to a Cache.zip file
-	 */
-	private void saveCache()
-	{
-		ObjectOutputStream out=null;
-		try {
-			out = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("Cache.zip")));
-			out.writeObject(mazesSolution);
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(out!=null)
-				try {out.close();} catch (IOException e) {e.printStackTrace();}
-		}
-	}
-	/**
-	 * This method is used for loading our hashmap with the solutions from a Cache.zip file
-	 */
-	private void loadCache()
-	{
-		ObjectInputStream in=null;
-		try {
-			in = new ObjectInputStream(new GZIPInputStream(new FileInputStream("Cache.zip")));
-			@SuppressWarnings("unchecked")
-			HashMap<Maze3d, Solution> temp =(HashMap<Maze3d, Solution>)in.readObject();
-			mazesSolution=temp;
-		} catch (IOException e) {
-			mazesSolution= new HashMap<Maze3d, Solution>();
-		} catch (ClassNotFoundException e) {
-			mazesSolution= new HashMap<Maze3d, Solution>();
-		}finally {
-			if(in!=null)
-				try {in.close();} catch (IOException e) {e.printStackTrace();}
-		}
-	}
+
 
 	/**
 	 * This method is for getting a maze
@@ -480,40 +446,39 @@ public class MyModel extends Observable implements Model {
 	 * @param maze is our maze.
 	 * @param algorithm is the algorithm for solving the maze. 
 	 */
-	private void solveByMaze(Maze3d maze,String algorithm) {
+	private Solution solveByMaze(Maze3d maze) {
+		Socket server=null;
+		ObjectOutputStream problemToServer=null;
+		ObjectInputStream solutionFromServer=null;
 
-		setChanged();
-		if (mazesSolution.containsKey(maze)){
-			return;
-		}
+		try {
+			server = new Socket(Properties.getRemoteIPaddress(),Properties.getRemotePort());//configuration
+				problemToServer = new ObjectOutputStream(server.getOutputStream());
+				ArrayList<Object> problem = new ArrayList<>();
+				problem.add("get solution");
+				problem.add(maze);
+				problemToServer.writeObject(problem);
+				problemToServer.flush();
+				
+				solutionFromServer = new ObjectInputStream(server.getInputStream());
+				Solution solution =(Solution)solutionFromServer.readObject();
+				
+				problemToServer.writeObject("done");
+				problemToServer.flush();
+				
+				problemToServer.close();
+				solutionFromServer.close();
+				server.close();
+				
+				return solution;
 
-		Future<Solution> solutionFuture = threadPool.submit(new Callable<Solution>() {
-			@Override
-			public Solution call() throws Exception {
-				Searcher searcher;
-				switch (algorithm) {
-				case "bfs":
-					searcher = new Bfs();
-					break;
-				case "aStarAir":
-					searcher = new AStar(new MazeManhattanDistance());
-					break;
-				case "aStarManhattan":
-					searcher = new AStar(new MazeAirDistance());
-					break;
-				default:
-					throw new InvalidParameterException("invalid searcher");
-				}
-				return searcher.search(new Maze3dSearchable(maze));
 			}
-		});
+			catch (Exception e) {
+				notifyObservers(e.getMessage());
+			}	
 
-		try{
-			mazesSolution.put(maze,solutionFuture.get() );
-		}
-		catch (Exception e) {
-			notifyObservers(e.getMessage());
-		}
+		return null;
+
 	}
 	/**
 	 * This method is for loading the XML from the gui
@@ -532,12 +497,12 @@ public class MyModel extends Observable implements Model {
 				Run.properties=new Properties(new FileInputStream(fileNamePath));
 				setChanged();
 				notifyObservers("Properties loaded successfully");
-				
+
 			}
 			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 }

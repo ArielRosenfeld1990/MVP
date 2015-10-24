@@ -21,11 +21,12 @@ import org.xml.sax.SAXException;
  * 
  */
 public class Properties implements Serializable {
-	static String searcher;
+	static String RemoteIPaddress;
 	static String mazeGenerator;
 	static int numOfThreads;
 	static String TypeOfView;
 	static String TypeOfCache;
+	static int RemotePort;
     Document docXML;
 	/**
 	 * 
@@ -35,7 +36,8 @@ public class Properties implements Serializable {
 	 * constructor for Properties
 	 */
 	public Properties() {
-		searcher = "Bfs";
+		RemoteIPaddress = "127.0.0.1";
+		RemotePort=5400;
 		numOfThreads = 7;
 		mazeGenerator = "myMazeGenerator";
 		TypeOfView="GUI";
@@ -74,14 +76,15 @@ public class Properties implements Serializable {
 	public void saveToXML() {
 		try {
 			Integer num1 = numOfThreads;
+			Integer num2 = RemotePort;
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 			Document doc = docBuilder.newDocument();
 			Element Properties = doc.createElement("Properties");
 			doc.appendChild(Properties);
-			Element Search = doc.createElement("searcher");
-			Search.appendChild(doc.createTextNode(searcher));
-			Properties.appendChild(Search);
+			Element IPaddress = doc.createElement("RemoteIPaddress");
+			IPaddress.appendChild(doc.createTextNode(RemoteIPaddress));
+			Properties.appendChild(IPaddress);
 			Element ThreadsNum = doc.createElement("ThreadsNum");
 			ThreadsNum.appendChild(doc.createTextNode(num1.toString()));
 			Properties.appendChild(ThreadsNum);
@@ -94,6 +97,9 @@ public class Properties implements Serializable {
 			Element Caching = doc.createElement("typeofCache");
 			Caching.appendChild(doc.createTextNode(TypeOfCache));
 			Properties.appendChild(Caching);
+			Element PortNum = doc.createElement("RemotePort");
+			PortNum.appendChild(doc.createTextNode(num2.toString()));
+			Properties.appendChild(PortNum);
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
@@ -125,12 +131,14 @@ public class Properties implements Serializable {
 					Node nNode = nList.item(temp);
 					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 						Element eElement = (Element) nNode;
-						searcher = eElement.getElementsByTagName("searcher").item(0).getTextContent();
+						RemoteIPaddress = eElement.getElementsByTagName("searcher").item(0).getTextContent();
 						String numThreads = eElement.getElementsByTagName("ThreadsNum").item(0).getTextContent();
 						numOfThreads = Integer.parseInt(numThreads);
 						mazeGenerator = eElement.getElementsByTagName("Generator").item(0).getTextContent();
 						TypeOfView=eElement.getElementsByTagName("typeofView").item(0).getTextContent();
 						TypeOfCache=eElement.getElementsByTagName("typeofCache").item(0).getTextContent();
+						String PortNum = eElement.getElementsByTagName("RemotePort").item(0).getTextContent();
+						RemotePort = Integer.parseInt(PortNum);
 					}
 					System.out.println("file loaded successfully");
 				}
@@ -140,20 +148,7 @@ public class Properties implements Serializable {
 		}
 
 	}
-	/**
-	 *this method is a getter for our searcher
-	 *@return searcher is the algorithm which will solve the maze
-	 */
-	static public String getSearcher() {
-		return searcher;
-	}
-	/**
-	 *this method is a setter for our searcher
-	 *@param s is the algorithm which will solve the maze
-	 */
-	static public void setSearcher(String s) {
-		searcher = s;
-	}
+
 	/**
 	 *this method is a getter for our maze generator
 	 *@return mazeGenerator is the generator which will generate our maze
@@ -195,6 +190,24 @@ public class Properties implements Serializable {
 	 */
 	public static void setTypeOfView(String typeOfView) {
 		TypeOfView = typeOfView;
+	}
+	public static String getRemoteIPaddress() {
+		return RemoteIPaddress;
+	}
+	public static void setRemoteIPaddress(String remoteIPaddress) {
+		RemoteIPaddress = remoteIPaddress;
+	}
+	public static String getTypeOfCache() {
+		return TypeOfCache;
+	}
+	public static void setTypeOfCache(String typeOfCache) {
+		TypeOfCache = typeOfCache;
+	}
+	public static int getRemotePort() {
+		return RemotePort;
+	}
+	public static void setRemotePort(int remotePort) {
+		RemotePort = remotePort;
 	}
 
 }
