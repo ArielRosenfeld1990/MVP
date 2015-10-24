@@ -286,7 +286,7 @@ public class MazeWindow extends BasicWindow implements View {
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
 
-			}
+			} 
 		});
 
 		shell.addDisposeListener(new DisposeListener() {
@@ -369,7 +369,7 @@ public class MazeWindow extends BasicWindow implements View {
 	 * this method is used for getting the requested hint and displaying it
 	 */
 	private void requestHint()	{
-		inputStrings = new String[] { "displayHintFromPosition", mazeName, Properties.getSearcher(),maze.getCharacter().getPosition().toString()  };
+		inputStrings = new String[] { "displayHintFromPosition", mazeName,maze.getCharacter().getPosition().toString()  };
 		setChanged();
 		notifyObservers();
 	}
@@ -377,7 +377,7 @@ public class MazeWindow extends BasicWindow implements View {
 	 * this method is used for getting the requested solution and displaying it
 	 */
 	private void requestSolve()	{
-		inputStrings = new String[] { "displaySolutionFromPosition", mazeName, Properties.getSearcher(),maze.getCharacter().getPosition().toString()  };
+		inputStrings = new String[] { "displaySolutionFromPosition",mazeName,maze.getCharacter().getPosition().toString()  };
 		setChanged();
 		notifyObservers();
 	}

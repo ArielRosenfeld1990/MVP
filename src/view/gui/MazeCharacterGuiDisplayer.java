@@ -17,7 +17,7 @@ public abstract class MazeCharacterGuiDisplayer {
 	private Position position;
 
 	public MazeCharacterGuiDisplayer() {
-	}
+	} 
 	/**
 	 * This method is for drawing the character in the maze
 	 * @param paintEvent is the given paint event.

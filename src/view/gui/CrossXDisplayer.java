@@ -68,7 +68,7 @@ public class CrossXDisplayer extends CrossDisplayer {
 						character.drawCharcter(e, (int) Math.round(dpoints[0]),
 								(int) Math.round(dpoints[1] - cheight / 2), (int) Math.round((w0 + w1) / 2),
 								(int) Math.round(h));
-
+ 
 					if(drawHint&&currentHint!=null&&i==getCrossYDisplay(currentHint)&&j==getCrossXDisplay(currentHint)) 
 						e.gc.drawImage(hintImage,0, 0, hintImage.getImageData().width, hintImage.getImageData().height,
 								(int) Math.round(dpoints[0]), (int) Math.round(dpoints[1] - cheight / 2),

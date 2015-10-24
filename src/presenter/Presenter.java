@@ -91,7 +91,7 @@ public class Presenter implements Observer {
 		commands.put("displaySolutionFromPosition", new DisplaySolutionFromPositionCommand());
 		commands.put("displayHintFromPosition", new DisplayHintSolutionFromPositionCommand());
 		commands.put("exit", new ExitCommand());
-		commands.put("loadXML", new LoadXMLCommand()); 
+		commands.put("loadXML", new LoadXMLCommand());  
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class Presenter implements Observer {
 		@Override
 		public void doCommand(String[] args) {
 			try {
-				model.solve(args[0], args[1]);
+				model.solve(args[0]);
 			} catch (ArrayIndexOutOfBoundsException e) {
 				view.display("paramters missing");
 			}
@@ -321,7 +321,7 @@ public class Presenter implements Observer {
 		@Override
 		public void doCommand(String[] args) {
 			try {
-				model.getSolutionFromPosition(args[0], args[1], args[2]);
+				model.getSolutionFromPosition(args[0], args[1]);
 			} catch (ArrayIndexOutOfBoundsException e) {
 				view.display("paramters missing");
 			}
@@ -338,7 +338,7 @@ public class Presenter implements Observer {
 		@Override
 		public void doCommand(String[] args) {
 			try {
-				model.getHintFromPosition(args[0], args[1], args[2]);
+				model.getHintFromPosition(args[0], args[1]);
 			} catch (ArrayIndexOutOfBoundsException e) {
 				view.display("paramters missing");
 			}

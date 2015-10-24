@@ -13,8 +13,10 @@ public class Run {
 		//	properties=new Properties(new FileInputStream("lib\\Properties.xml"));
 	    	properties.loadFromXML();
 		}
-		catch(Exception e){ properties.saveToXML();
+		catch(Exception e){ properties.saveToXML(); 
 		}   
+		
+
 		if (Properties.getTypeOfView().equals("GUI")){
 		MazeWindow ui = new MazeWindow("MyMaze", 1000, 600);
 		MyModel m = new MyModel(Properties.getNumOfThreads());
@@ -32,6 +34,7 @@ public class Run {
 			m.addObserver(p);
 			CliView.start();
 		}
+		
 
 	}
 

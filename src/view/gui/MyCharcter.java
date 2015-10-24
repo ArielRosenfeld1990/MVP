@@ -14,7 +14,7 @@ import org.eclipse.swt.graphics.Image;
  *
  * @author Ariel Rosenfeld,Ofir Calif
  *
- * 
+ *  
  */
 public class MyCharcter extends MazeCharacterGuiDisplayer {
 	BufferedInputStream character;;
@@ -24,7 +24,7 @@ public class MyCharcter extends MazeCharacterGuiDisplayer {
 	 */
 	public MyCharcter() {
 		try {
-			character = new BufferedInputStream(new FileInputStream("lib/minionSuper.png"));
+			character = new BufferedInputStream(new FileInputStream("resources/minionSuper.png"));
 			im = new Image(null, character);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

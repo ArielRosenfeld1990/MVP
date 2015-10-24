@@ -15,7 +15,7 @@ import algorithms.search.State;
  * 
  */
 public class SolutionCliDisplayer implements CliDisplayer {
-	/**
+	/** 
 	 * This method is for displaying the solution for the 3d maze
 	 * 
 	 * @param obj

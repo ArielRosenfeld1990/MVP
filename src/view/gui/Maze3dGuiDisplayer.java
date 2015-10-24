@@ -39,7 +39,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	CrossDisplayer crossY;
 	/**
 	 * constructor for Maze3dGuiDisplayer
-	 */
+	 */ 
 	public Maze3dGuiDisplayer(Composite parent, int style) {
 		super(parent, style);
 
@@ -51,13 +51,13 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		crossX.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		crossY.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		try{
-			BufferedInputStream InputStream = new BufferedInputStream(new FileInputStream("lib/exit.png"));
+			BufferedInputStream InputStream = new BufferedInputStream(new FileInputStream("resources/exit.png"));
 			Image Image = new Image(null, InputStream);
 			crossX.setGoalImage(Image);
 			crossY.setGoalImage(Image);
 			InputStream.close();
 			
-			InputStream = new BufferedInputStream(new FileInputStream("lib/myStar.png"));
+			InputStream = new BufferedInputStream(new FileInputStream("resources/myStar.png"));
 			Image = new Image(null, InputStream);
 			crossX.setHintImage(Image);
 			crossY.setHintImage(Image);

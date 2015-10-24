@@ -14,7 +14,7 @@ import algorithms.search.Solution;
  *
  * @author Ariel Rosenfeld,Ofir Calif
  *
- * 
+ *  
  */
 public abstract class MazeGuiDisplayer extends Canvas {
 

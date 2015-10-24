@@ -10,7 +10,7 @@ import java.io.PrintWriter;
  * @author Ariel Rosenfeld,Ofir Calif
  * 
  * 
- */
+ */ 
 public class StringArrayCliDisplayer implements CliDisplayer {
 	/**
 	 * This method is for displaying the String Array

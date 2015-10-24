@@ -14,7 +14,7 @@ public interface View {
 	 */
 	void start();
 
-	/**
+	/** 
 	 * This method is for displaying the object
 	 *  
 	 * @param obj

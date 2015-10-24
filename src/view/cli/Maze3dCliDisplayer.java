@@ -11,7 +11,7 @@ import algorithms.mazeGenerators.Maze3d;
  * 
  * @author Ariel Rosenfeld,Ofir Calif
  *
- * 
+ *  
  */
 public class Maze3dCliDisplayer implements CliDisplayer {
 	/**

@@ -34,7 +34,7 @@ public class MyObservableCliView extends Observable implements View, Observer {
 		ui = new CLI(System.in, System.out);
 		ui.addObserver(this);
 		ui.start();
-	}
+	} 
 
 	/**
 	 * This method is for displaying the object

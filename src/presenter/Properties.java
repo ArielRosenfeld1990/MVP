@@ -37,7 +37,7 @@ public class Properties implements Serializable {
 	 */
 	public Properties() {
 		RemoteIPaddress = "127.0.0.1";
-		RemotePort=5400;
+		RemotePort=5400; 
 		numOfThreads = 7;
 		mazeGenerator = "myMazeGenerator";
 		TypeOfView="GUI";

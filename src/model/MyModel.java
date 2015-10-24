@@ -335,7 +335,7 @@ public class MyModel extends Observable implements Model {
 	 * This method is for getting the solution from a certain position in the maze
 	 * @param mazeName is the name of the maze
 	 * @param algorithm is the algorithm
-	 * @param position is the given position.
+	 * @param position is the given position. 
 	 */
 	@Override
 	public void getSolutionFromPosition(String mazeName,String position) {

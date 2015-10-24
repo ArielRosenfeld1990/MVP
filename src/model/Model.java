@@ -99,7 +99,7 @@ public interface Model {
 	 * @param algorithm
 	 *            is the name of the algorithm.
 	 */
-	void solve(String mazeName, String algorithm);
+	void solve(String mazeName);
 
 	/**
 	 * This method is for getting the solution for the 3d maze
@@ -115,15 +115,15 @@ public interface Model {
 	 * @param position is the given position.
 	 */
 	
-	void getSolutionFromPosition(String mazeName,String algorithm,String position);
+	void getSolutionFromPosition(String mazeName,String position);
 	/**
 	 * This method is for getting a hint for a certain position in the maze
 	 * @param mazeName is the name of the maze
-	 * @param algorithm is the algorithm
+	 * @param algorithm is the algorithm 
 	 * @param position is the given position.
 	 */
 	
-	public void getHintFromPosition(String mazeName,String algorithm,String position);
+	public void getHintFromPosition(String mazeName,String position);
 
 	/** 
 	 * This method is for closing the model

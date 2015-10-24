@@ -68,7 +68,7 @@ public class CLI extends Observable {
 	 */
 	public void display(Object obj, CliDisplayer displayer) {
 		displayer.display(obj, out);
-	}
+	} 
 
 	/**
 	 * this method stops the main loop

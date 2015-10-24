@@ -69,7 +69,7 @@ public abstract class CrossDisplayer extends Canvas {
 	 */
 	public int[][] getCrossSection() {
 		return crossSection;
-	}
+	} 
 	/**
 	 * This method is a setter for our cross section
 	 * @param crossSection is the cross section.

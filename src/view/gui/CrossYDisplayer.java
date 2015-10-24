@@ -15,7 +15,7 @@ import algorithms.mazeGenerators.Position;
  *
  * @author Ariel Rosenfeld,Ofir Calif
  *
- * 
+ *  
  */
 public class CrossYDisplayer extends CrossDisplayer {
 

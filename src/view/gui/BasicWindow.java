@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Ariel Rosenfeld,Ofir Calif
  *
  * 
- */
+ */ 
 
 public abstract class BasicWindow extends Observable implements Runnable {
 
