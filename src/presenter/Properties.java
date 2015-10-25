@@ -131,7 +131,7 @@ public class Properties implements Serializable {
 					Node nNode = nList.item(temp);
 					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 						Element eElement = (Element) nNode;
-						RemoteIPaddress = eElement.getElementsByTagName("searcher").item(0).getTextContent();
+						RemoteIPaddress = eElement.getElementsByTagName("RemoteIPaddress").item(0).getTextContent();
 						String numThreads = eElement.getElementsByTagName("ThreadsNum").item(0).getTextContent();
 						numOfThreads = Integer.parseInt(numThreads);
 						mazeGenerator = eElement.getElementsByTagName("Generator").item(0).getTextContent();
@@ -153,28 +153,28 @@ public class Properties implements Serializable {
 	 *this method is a getter for our maze generator
 	 *@return mazeGenerator is the generator which will generate our maze
 	 */
-	static public String getMazeGenerator() {
+	public static String getMazeGenerator() {
 		return mazeGenerator;
 	}
 	/**
 	 *this method is a setter for our maze generator
 	 *@param MG is the generator which will generate our maze
 	 */
-	static public void setMazeGenerator(String MG) {
+	public static void setMazeGenerator(String MG) {
 		mazeGenerator = MG;
 	}
 	/**
 	 *this method is a getter for our number of threads
 	 *@return numOfThreads is the number of threads that would define our thread pool
 	 */
-	static public int getNumOfThreads() {
+	public static int getNumOfThreads() {
 		return numOfThreads;
 	}
 	/**
 	 *this method is a setter for our number of threads
 	 *@param numOfThreads is the number of threads that would define our thread pool
 	 */
-	static public void setNumOfThreads(int NoT) {
+	public static void setNumOfThreads(int NoT) {
 		numOfThreads =  NoT;
 	}
 	/**
