@@ -18,7 +18,7 @@ import algorithms.mazeGenerators.Position;
  *  
  */
 public class CrossYDisplayer extends CrossDisplayer {
-
+	
 	/**
 	 * constructor for CrossXDisplayer
 	 */
@@ -41,9 +41,10 @@ public class CrossYDisplayer extends CrossDisplayer {
 	 */
 	private void drawMaze(PaintEvent e) {
 		if (crossSection != null ) {
-			int width = getSize().x;
-			int height = getSize().y;
-			int mx = height / 2;
+			int startWidth = resize/2;
+			int width = getSize().x-resize;
+			int height = getSize().y-resize;
+			int mx = (height / 2)+resize/2;
 			double w = (double) width / crossSection[0].length;
 			double h = (double) height / crossSection.length;
 
@@ -55,8 +56,8 @@ public class CrossYDisplayer extends CrossDisplayer {
 					double start = mx - h0 * crossSection.length / 2;
 					double start1 = mx - h1 * crossSection.length / 2;
 
-					double[] dpoints = { j * w, start + i * h0, j * w, start + i * h0 + h0, j * w + w,
-							start1 + i * h1 + h1, j * w + w, start1 + i * h1 };
+					double[] dpoints = { (j * w)+startWidth, start + i * h0, (j * w)+startWidth, start + i * h0 + h0, (j * w + w)+startWidth,
+							start1 + i * h1 + h1, (j * w + w)+startWidth, start1 + i * h1 };
 
 					double cwidth = w / 2;
 
@@ -89,6 +90,7 @@ public class CrossYDisplayer extends CrossDisplayer {
 			if (drawHint) drawHint=false;
 		}
 	}
+	
 	/**
 	 * This method is for drawing the maze walls when Paint Event Occurred
 	 * @param p is the set of points that we need to draw as a wall

@@ -17,7 +17,6 @@ import algorithms.mazeGenerators.Position;
  * 
  */
 public class CrossXDisplayer extends CrossDisplayer {
-
 	/**
 	 * constructor for CrossXDisplayer
 	 */
@@ -40,20 +39,22 @@ public class CrossXDisplayer extends CrossDisplayer {
 	 */
 	private void drawMaze(PaintEvent e) {
 		if (crossSection != null ) {
-			int width = getSize().x;
-			int height = getSize().y;
-			int mx = width / 2;
+			int startHeight = resize/2;
+			int width = getSize().x-resize;
+			int height = getSize().y-resize;
+			int mx = (width / 2)+resize/2;
 			double w = (double) width / crossSection[0].length;
 			double h = (double) height / crossSection.length;
-
+			
+			
 			for (int i = 0; i < crossSection.length; i++) {
 				double w0 = 0.7 * w + 0.3 * w * i / crossSection.length;
 				double w1 = 0.7 * w + 0.3 * w * (i + 1) / crossSection.length;
 				double start = mx - w0 * crossSection[i].length / 2;
 				double start1 = mx - w1 * crossSection[i].length / 2;
 				for (int j = 0; j < crossSection[i].length; j++) {
-					double[] dpoints = { start + j * w0, i * h, start + j * w0 + w0, i * h, start1 + j * w1 + w1,
-							i * h + h, start1 + j * w1, i * h + h };
+					double[] dpoints = { start + j * w0, (i * h)+startHeight, start + j * w0 + w0, (i * h)+startHeight, start1 + j * w1 + w1,
+							(i * h + h)+startHeight, start1 + j * w1, (i * h + h)+startHeight };
 					double cheight = h / 2;
 
 					if (crossSection[i][j] != 0)

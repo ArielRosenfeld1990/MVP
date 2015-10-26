@@ -16,7 +16,7 @@ import algorithms.mazeGenerators.Position;
  * 
  */
 public abstract class CrossDisplayer extends Canvas {
-	
+	protected int resize;
 	protected int[][] crossSection;
 	protected MazeCharacterGuiDisplayer character;
 	protected Position goal;
@@ -62,6 +62,13 @@ public abstract class CrossDisplayer extends Canvas {
 	public CrossDisplayer(Composite parent, int style,MazeCharacterGuiDisplayer character) {
 		super(parent, style);
 		this.character=character;
+		resize=0;
+	}
+	public int getResize() {
+		return resize;
+	}
+	public void setResize(int resize) {
+		this.resize = resize;
 	}
 	/**
 	 * This method is a getter for our cross section

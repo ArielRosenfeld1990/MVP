@@ -11,6 +11,10 @@ import java.util.TimerTask;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
@@ -33,10 +37,12 @@ import algorithms.search.State;
  */
 
 public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
-	Timer timer;
-	TimerTask task;
-	CrossDisplayer crossX;
-	CrossDisplayer crossY;
+	private Timer timer;
+	private TimerTask task;
+	private CrossDisplayer crossX;
+	private CrossDisplayer crossY;
+	private int keyPressed;
+	final int CTRL=262144;
 	/**
 	 * constructor for Maze3dGuiDisplayer
 	 */ 
@@ -44,7 +50,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		super(parent, style);
 
 		setCharacter(new MyCharcter());
-
+		keyPressed=0;
 		setLayout(new GridLayout(2, false));
 		crossX = new CrossXDisplayer(this, style, character);
 		crossY = new CrossYDisplayer(this, style, character);
@@ -56,7 +62,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			crossX.setGoalImage(Image);
 			crossY.setGoalImage(Image);
 			InputStream.close();
-			
+
 			InputStream = new BufferedInputStream(new FileInputStream("resources/myStar.png"));
 			Image = new Image(null, InputStream);
 			crossX.setHintImage(Image);
@@ -70,8 +76,32 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
-				crossX.redraw();
-				crossY.redraw();
+				redrawCrosses();
+			}
+		});
+
+		addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				keyPressed=0;
+			}
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				keyPressed=arg0.keyCode;
+			}
+		});
+		addMouseWheelListener(new MouseWheelListener() {
+
+			@Override
+			public void mouseScrolled(MouseEvent arg0) {
+				int newSize=crossX.getResize()+arg0.count;
+				if(keyPressed==CTRL && newSize>=0 && newSize<=200) {
+					crossX.setResize(newSize);
+					crossY.setResize(newSize);
+					redrawCrosses();
+				}
 			}
 		});
 
@@ -256,6 +286,12 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		crossY.setGoal(maze3d.getGoalPosition());
 		updateCross();
 
+	}
+
+	public void redrawCrosses()
+	{
+		crossX.redraw();
+		crossY.redraw();
 	}
 	/**
 	 * This method is for moving a character from a certain position to another position
