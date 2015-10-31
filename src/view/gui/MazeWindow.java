@@ -33,28 +33,26 @@ import view.View;
  *
  * 
  */
-
 public class MazeWindow extends BasicWindow implements View {
 
-	String[] inputStrings;
-	String mazeName;
-	MazeGuiDisplayer maze;
-	Button generateButton;
-	Button saveButton;
-	Button loadButton;
-	Button hintButton;
-	Button solveButton;
-	Button openPropertiesButton;
-	Button exitButton;
-	/**
-	 * constructor for MazeWindow
-	 */
-
+	private String[] inputStrings;
+	private String mazeName;
+	private MazeGuiDisplayer maze;
+	private Button generateButton;
+	private Button saveButton;
+	private Button loadButton;
+	private Button hintButton;
+	private Button solveButton;
+	private Button openPropertiesButton;
+	private Button exitButton;
+	
 	public MazeWindow(String title, int width, int height) {
 		super(title, width, height);
 	}
+	
 	/**
-	 * this method sets the window and initializes our widgets
+	 * <h1>initWidgets</h1>
+	 * this method sets the window and initializing the maze window widgets
 	 */
 	@Override
 	void initWidgets() {
@@ -299,14 +297,18 @@ public class MazeWindow extends BasicWindow implements View {
 			}
 		});
 	}
+	
 	/**
-	 * this method runs our shell,display and the widgets
+	 * <h1>start</h1>
+	 * this method start the main ui loop
 	 */
 	@Override
 	public void start() {
 		run();
 	}
+	
 	/**
+	 * <h1>display</h1>
 	 * this method displaying given results
 	 */
 	@Override
@@ -351,37 +353,47 @@ public class MazeWindow extends BasicWindow implements View {
 		}
 		maze.forceFocus();
 	}
+	
 	/**
+	 * <h1>close</h1>
 	 * this method disposes our shell
 	 */
 	@Override
 	public void close() {
 		shell.dispose();
 	}
+	
 	/**
-	 * this method is used for getting a command from the user
+	 * <h1>getUserCommand</h1>
+	 * this method is used for getting a String[] that represent the user command
 	 */
 	@Override
 	public String[] getUserCommand() {
 		return inputStrings;
 	}
+
 	/**
-	 * this method is used for getting the requested hint and displaying it
+	 * <h1>requestHint</h1>
+	 * this method is used for requesting a hint
 	 */
 	private void requestHint()	{
 		inputStrings = new String[] { "displayHintFromPosition", mazeName,maze.getCharacter().getPosition().toString()  };
 		setChanged();
 		notifyObservers();
 	}
+
 	/**
-	 * this method is used for getting the requested solution and displaying it
+	 * <h1>requestSolve</h1>
+	 * this method is used for requesting solution
 	 */
 	private void requestSolve()	{
 		inputStrings = new String[] { "displaySolutionFromPosition",mazeName,maze.getCharacter().getPosition().toString()  };
 		setChanged();
 		notifyObservers();
 	}
+
 	/**
+	 * <h1>enableWidgets</h1>
 	 * this method is used for enabling certain widgets
 	 */
 	private void enableWidgets() {
@@ -393,7 +405,9 @@ public class MazeWindow extends BasicWindow implements View {
 		solveButton.setEnabled(true);
 		maze.forceFocus();
 	}
+	
 	/**
+	 * <h1>disableWidgets</h1>
 	 * this method is used for disabling certain widgets
 	 */
 	private void disableWidgets(){
@@ -403,8 +417,10 @@ public class MazeWindow extends BasicWindow implements View {
 		hintButton.setEnabled(false);
 		solveButton.setEnabled(false);
 	}
+	
 	/**
-	 * this method is used for generating a maze from a different shell
+	 * <h1>GenerateWindow</h1>
+	 * this method is used for creating a generate window
 	 */
 	private void GenerateWindow() {
 		final Shell generateShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
@@ -454,7 +470,6 @@ public class MazeWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -468,8 +483,10 @@ public class MazeWindow extends BasicWindow implements View {
 			}
 		});
 	}
+	
 	/**
-	 * this method is used for loading a maze from a file in a different shell
+	 * <h1>LoadWindow</h1>
+	 * this method is used for creating a window for loading a maze file
 	 */
 	private void LoadWindow(){
 		final Shell loadShell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);

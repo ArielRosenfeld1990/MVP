@@ -20,7 +20,8 @@ import algorithms.mazeGenerators.Position;
 public class CrossYDisplayer extends CrossDisplayer {
 	
 	/**
-	 * constructor for CrossXDisplayer
+	 * <h1>CrossYDisplayer constructor</h1>
+	 * constructor for CrossYDisplayer
 	 */
 	public CrossYDisplayer(Composite parent, int style, MazeCharacterGuiDisplayer character) {
 		super(parent, style, character);
@@ -35,7 +36,9 @@ public class CrossYDisplayer extends CrossDisplayer {
 			}
 		});
 	}
+
 	/**
+	 * <h1>drawMaze</h1>
 	 * This method is for drawing the maze when Paint Event occurred
 	 * @param e is the Paint Event.
 	 */
@@ -92,6 +95,7 @@ public class CrossYDisplayer extends CrossDisplayer {
 	}
 	
 	/**
+	 * <h1>paintCube</h1>
 	 * This method is for drawing the maze walls when Paint Event Occurred
 	 * @param p is the set of points that we need to draw as a wall
 	 * @param h repesents the height of the wall
@@ -111,8 +115,10 @@ public class CrossYDisplayer extends CrossDisplayer {
 		e.gc.fillPolygon(r);
 
 	}
+	
 	/**
-	 * This method is for getting the display of a position in the X dimension
+	 * <h1>getCrossXDisplay</h1>
+	 * This method is for getting the display of x position in the cross section 
 	 * @param position is our position.
 	 * @return int represents the index.
 	 */
@@ -123,8 +129,10 @@ public class CrossYDisplayer extends CrossDisplayer {
 
 		return -1;
 	}
+	
 	/**
-	 * This method is for getting the display of a position in the Y dimension
+	 * <h1>getCrossYDisplay</h1>
+	 * This method is for getting the display of y position in the cross section
 	 * @param position is our position.
 	 * @return int represents the index.
 	 */

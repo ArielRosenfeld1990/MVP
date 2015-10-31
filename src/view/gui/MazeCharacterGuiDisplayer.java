@@ -5,20 +5,18 @@ import algorithms.mazeGenerators.Position;
 /**
  * <h1>MazeCharacterGuiDisplayer</h1> 
  * The MazeCharacterGuiDisplayer abstract class represents functionality of a character
- * in our maze
  * <p>
  *
  * @author Ariel Rosenfeld,Ofir Calif
- *
- * 
  */
 public abstract class MazeCharacterGuiDisplayer {
 
 	private Position position;
 
-	public MazeCharacterGuiDisplayer() {
-	} 
+	public MazeCharacterGuiDisplayer() {} 
+	
 	/**
+	 * <h1>drawCharcter</h1>
 	 * This method is for drawing the character in the maze
 	 * @param paintEvent is the given paint event.
 	 * @param x is the value for the ratio	
@@ -27,14 +25,18 @@ public abstract class MazeCharacterGuiDisplayer {
 	 * @param characterHeight is the height of the character.
 	 */
 	public abstract void drawCharcter(PaintEvent paintEvent, int x, int y, int characterWidth, int characterHeight);
+	
 	/**
+	 * <h1>getPosition</h1>
 	 * This method is a getter for a position in the maze
 	 * @return position is the position in the maze.
 	 */
 	public Position getPosition() {
 		return position;
 	}
+	
 	/**
+	 * <h1>setPosition</h1>
 	 * This method is a setter for a position in the maze
 	 * @param position is the position in the maze.
 	 */

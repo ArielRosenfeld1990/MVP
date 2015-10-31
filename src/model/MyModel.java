@@ -11,7 +11,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,25 +41,24 @@ import boot.Run;
  * 
  */
 public class MyModel extends Observable implements Model {
-	//
+
 	private HashMap<String, Maze3d> mazes;
-	//private HashMap<Maze3d, Solution> mazesSolution;
-	ExecutorService threadPool;
+	private ExecutorService threadPool;
 
 
 	/**
-	 * constructor for MyModel
-	 * @throws IOException 
-	 * @throws UnknownHostException 
+	 * <h1>constructor for MyModel</h1>
+	 * initialize mazes hashmap,and threadpool
+	 * @param NumOfThreads the max number of thread for the model usage
 	 */
 	public MyModel(int NumOfThreads) {
 		mazes = new HashMap<String, Maze3d>();
 		threadPool = Executors.newFixedThreadPool(NumOfThreads);
-
 	}
 
 	/**
-	 * This method is for displaying the directory in the CLI
+	 * <h1>dir</h1>
+	 * This method is given a directory and get all of her files
 	 * 
 	 * @param path
 	 *            is the path for the files.
@@ -77,6 +75,7 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>generate3dMaze</h1>
 	 * This method is for generating a 3d maze
 	 * 
 	 * @param name
@@ -121,6 +120,7 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>getMazeByName</h1>
 	 * This method is for getting the maze by his name
 	 * 
 	 * @param name
@@ -138,6 +138,7 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>getCrossSection</h1>
 	 * This method is getting the cross section of a 3d maze
 	 * 
 	 * @param axis
@@ -181,12 +182,14 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>saveMaze</h1>
 	 * This method is for saving the maze to a file
 	 * 
 	 * @param mazeName
 	 *            is the name of the maze.
 	 * @param fileName
 	 *            is the name of the file.
+	 * @throws IOException if there is a problem in the file in the given path
 	 */
 	@Override
 	public void saveMaze(String mazeName, String fileName) throws IOException {
@@ -212,12 +215,14 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>loadMaze</h1>
 	 * This method is for loading the maze from a file
 	 * 
 	 * @param mazeName
-	 *            is the name of the maze.
+	 *            is the name to give to the maze.
 	 * @param fileName
-	 *            is the name of the file.
+	 *            is the path of the file.
+	 * @throws IOException if there is a problem in the file in the given path
 	 */
 	@Override
 	public void loadMaze(String fileName, String mazeName) throws IOException {
@@ -254,6 +259,7 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>getMazeSize</h1>
 	 * This method is for getting the size of the maze in the memory
 	 * 
 	 * @param mazeName
@@ -271,12 +277,12 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>getFileSize</h1>
 	 * This method is for getting the size of a file
 	 * 
 	 * @param fileName
 	 *            is the name of the file.
 	 */
-
 	@Override
 	public void getFileSize(String fileName) {
 		setChanged();
@@ -292,13 +298,11 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>solve</h1>
 	 * This method is for solving the maze with the different algorithms
 	 * 
 	 * @param mazeName
 	 *            is the name of the maze.
-	 * @param algorithm
-	 *            is the name of the algorithm.
-	 * @throws Exception 
 	 */
 	@Override
 	public void solve(String mazeName) {
@@ -314,6 +318,7 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>getSolutionForName</h1>
 	 * This method is for getting the solution for the 3d maze
 	 * 
 	 * @param name
@@ -331,10 +336,11 @@ public class MyModel extends Observable implements Model {
 			notifyObservers(e.getMessage());
 		}
 	}
+	
 	/**
+	 * <h1>getSolutionFromPosition</h1>
 	 * This method is for getting the solution from a certain position in the maze
 	 * @param mazeName is the name of the maze
-	 * @param algorithm is the algorithm
 	 * @param position is the given position. 
 	 */
 	@Override
@@ -353,10 +359,11 @@ public class MyModel extends Observable implements Model {
 			notifyObservers(e.getMessage());
 		}
 	}
+
 	/**
+	 * <h1>getHintFromPosition</h1>
 	 * This method is for getting a hint for a certain position in the maze
 	 * @param mazeName is the name of the maze
-	 * @param algorithm is the algorithm
 	 * @param position is the given position.
 	 */
 	@Override
@@ -380,11 +387,11 @@ public class MyModel extends Observable implements Model {
 	}
 
 	/**
+	 * <h1>close</h1>
 	 * This method is for closing myModel
 	 */
 	@Override
 	public void close() {
-		closeServerConnection();
 		threadPool.shutdown();
 		setChanged();
 		try {
@@ -396,17 +403,13 @@ public class MyModel extends Observable implements Model {
 		notifyObservers("model is safely closed");
 	}
 
-	private void closeServerConnection()
-	{
-
-
-	}
 	/**
-	 * This method is for creating a clone maze and solving it
+	 * <h1>createRequestedSolution</h1>
+	 * This method is for creating a clone maze and change the start position and then solving it
 	 * @param mazeName is the name of the maze
-	 * @param algorithm is the algorithm
-	 * @param position is the given position.
-	 * @return maze is the clone maze which was solved with the requested algorithm
+	 * @param position is the given position to set to start.
+	 * @return the solution for the maze from the given to position
+	 * @throws Exception throws if the maze name that was given is not exsists in the hashMap
 	 */
 	private Solution createRequestedSolution(String mazeName,String position) throws Exception
 	{
@@ -414,10 +417,12 @@ public class MyModel extends Observable implements Model {
 		maze.setStart(convertToPosition(position));
 		return solveByMaze(maze);
 	}
+	
 	/**
+	 * <h1>convertToPosition</h1>
 	 * This method is used for converting a string to Position
 	 * @param position is the Position represented by String
-	 * @return current is the converted Position
+	 * @return the Position form of the given string
 	 */
 	private Position convertToPosition(String position) {
 		position=position.replace("{", "");
@@ -427,13 +432,14 @@ public class MyModel extends Observable implements Model {
 		return current;
 	}
 
-
 	/**
+	 * <h1>getMaze</h1>
 	 * This method is for getting a maze
 	 * 
 	 * @param name
 	 *            is the name of the maze.
-	 * @return maze is our 3d maze. 
+	 * @return maze from the hashmap 
+	 * @throws Exception throws if the maze name that was given is not exsists in the hashMap
 	 */
 	private Maze3d getMaze(String mazeName) throws Exception {
 		Maze3d maze = mazes.get(mazeName);
@@ -441,10 +447,12 @@ public class MyModel extends Observable implements Model {
 			throw new Exception("maze dosent exsist");
 		return maze;
 	}
+
 	/**
-	 * This method is for solving a maze by a requested algorithm
+	 *<h1>solveByMaze</h1>
+	 * This method get a maze and connect to remote server to request the solution for this maze
 	 * @param maze is our maze.
-	 * @param algorithm is the algorithm for solving the maze. 
+	 * @return the solution from the server
 	 */
 	private Solution solveByMaze(Maze3d maze) {
 		Socket server=null;
@@ -481,10 +489,11 @@ public class MyModel extends Observable implements Model {
 
 	}
 	/**
-	 * This method is for loading the XML from the gui
+	 * <h1>loadXML</h1>
+	 * This method is for loading the XML from a file
 	 * 
 	 * @param name
-	 *            is the name of the Properties file.
+	 *            is the path of the Properties file.
 	 */
 	@Override
 	public void loadXML(String fileNamePath) {

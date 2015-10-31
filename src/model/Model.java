@@ -11,15 +11,17 @@ import java.io.IOException;
  * 
  */
 public interface Model {
+	
 	/**
-	 * This method is for displaying the directory in the CLI
+	 * <h1>dir method</h1>
+	 * This method get a directory and get all the files in the given directory
 	 * 
-	 * @param path
-	 *            is the path for the files.
+	 * @param path the directory to get the files from
 	 */
 	void dir(String path);
 
 	/**
+	 * <h1>generate3dMaze method</h1>
 	 * This method is for generating a 3d maze
 	 * 
 	 * @param name
@@ -36,6 +38,7 @@ public interface Model {
 	void generate3dMaze(String name, String generator, int x, int y, int z);
 
 	/**
+	 * <h1>getMazeByName</h1>
 	 * This method is for getting the maze by his name
 	 * 
 	 * @param name
@@ -44,6 +47,7 @@ public interface Model {
 	void getMazeByName(String name);
 
 	/**
+	 * <h1>getCrossSection</h1>
 	 * This method is getting the cross section of a 3d maze
 	 * 
 	 * @param axis
@@ -56,16 +60,18 @@ public interface Model {
 	void getCrossSection(char axis, int index, String mazeName);
 
 	/**
-	 * This method is for saving the maze in a file
+	 * <h1>saveMaze</h1>
+	 * This method is for saving the maze into a file
 	 * 
 	 * @param mazeName
 	 *            is the name of the maze.
 	 * @param fileName
-	 *            is the name of the file.
+	 *            is the path of the file.
 	 */
 	void saveMaze(String mazeName, String fileName) throws IOException;
 
 	/**
+	 * <h1>loadMaze</h1>
 	 * This method is for loading the maze from a file
 	 * 
 	 * @param mazeName
@@ -76,6 +82,7 @@ public interface Model {
 	void loadMaze(String fileName, String mazeName) throws IOException;
 
 	/**
+	 * <h1>getMazeSize</h1>
 	 * This method is for getting the size of the maze in the memory
 	 * 
 	 * @param mazeName
@@ -84,14 +91,16 @@ public interface Model {
 	void getMazeSize(String mazeName);
 
 	/**
+	 * <h1>getFileSize</h1>
 	 * This method is for getting the size of a file
 	 * 
 	 * @param fileName
-	 *            is the name of the file.
+	 *            is the path of the file.
 	 */
 	public void getFileSize(String fileName);
 
 	/**
+	 * <h1>solve</h1>
 	 * This method is for solving the maze with the different algorithms
 	 * 
 	 * @param mazeName
@@ -102,38 +111,44 @@ public interface Model {
 	void solve(String mazeName);
 
 	/**
+	 * <h1>getSolutionForName</h1>
 	 * This method is for getting the solution for the 3d maze
 	 * 
 	 * @param name
 	 *            is the name of the maze.
 	 */
 	void getSolutionForName(String name);
+	
 	/**
+	 * <h1>getSolutionFromPosition</h1>
 	 * This method is for getting the solution from a certain position in the maze
 	 * @param mazeName is the name of the maze
 	 * @param algorithm is the algorithm
 	 * @param position is the given position.
 	 */
-	
 	void getSolutionFromPosition(String mazeName,String position);
+	
 	/**
+	 * <h1>getHintFromPosition</h1>
 	 * This method is for getting a hint for a certain position in the maze
 	 * @param mazeName is the name of the maze
 	 * @param algorithm is the algorithm 
 	 * @param position is the given position.
 	 */
-	
 	public void getHintFromPosition(String mazeName,String position);
 
 	/** 
+	 * <h1>close</h1>
 	 * This method is for closing the model
 	 */
 	void close();
+	
 	/**
-	 * This method is for loading the XML from the gui
+	 * <h1>loadXML</h1>
+	 * This method is for loading the XML from a file
 	 * 
 	 * @param name
-	 *            is the name of the Properties file.
+	 *            is the path of the Properties file.
 	 */
 	void loadXML(String name);
 }

@@ -9,7 +9,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * <h1>MyCharcter</h1> The MyCharcter class represents functionality of a character
- * in our maze,extends MazeCharacterGuiDisplayer
+ * ,extends MazeCharacterGuiDisplayer
  * <p>
  *
  * @author Ariel Rosenfeld,Ofir Calif
@@ -17,9 +17,11 @@ import org.eclipse.swt.graphics.Image;
  *  
  */
 public class MyCharcter extends MazeCharacterGuiDisplayer {
-	BufferedInputStream character;;
-	Image im;
+	private BufferedInputStream character;;
+	private Image im;
+	
 	/**
+	 * <h1>MyCharcter</h1>
 	 * constructor for MyCharcter
 	 */
 	public MyCharcter() {
@@ -30,7 +32,9 @@ public class MyCharcter extends MazeCharacterGuiDisplayer {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
+	 * <h1>drawCharcter</h1>
 	 * This method is for drawing the character in the maze
 	 * @param paintEvent is the given paint event.
 	 * @param x is the value for the ratio	
@@ -38,7 +42,6 @@ public class MyCharcter extends MazeCharacterGuiDisplayer {
 	 * @param characterWidth is the width of the character.
 	 * @param characterHeight is the height of the character.
 	 */
-
 	@Override
 	public void drawCharcter(PaintEvent paintEvent, int x, int y, int characterWidth, int characterHeight) {
 		paintEvent.gc.drawImage(im, 0, 0, im.getImageData().width, im.getImageData().height, x, y, characterWidth,

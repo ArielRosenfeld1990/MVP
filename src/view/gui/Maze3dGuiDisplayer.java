@@ -43,9 +43,13 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	private CrossDisplayer crossY;
 	private int keyPressed;
 	final int CTRL=262144;
+	
 	/**
+	 * <h1>Maze3dGuiDisplayer</h1>
 	 * constructor for Maze3dGuiDisplayer
-	 */ 
+	 * @param parent the parent composite
+	 * @param style SWT style
+	 */
 	public Maze3dGuiDisplayer(Composite parent, int style) {
 		super(parent, style);
 
@@ -204,8 +208,11 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		moveCharacter(new Position(x, y, z));
 
 	}
+	
 	/**
+	 * <h1>displaySolution</h1>
 	 * This method is for displaying the solution for the maze
+	 * moving the character positions every 500 ms
 	 *@param solution is the solution for the maze
 	 */
 	@Override
@@ -261,7 +268,9 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		};
 		timer.scheduleAtFixedRate(task, 0, 500);
 	}
+	
 	/**
+	 * <h1>displayHint</h1>
 	 * This method is for displaying the hint for a specific Maze3dState
 	 *@param hint is the hint for the Maze3dState
 	 */
@@ -271,9 +280,13 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		crossY.displayHint(hint.getPosition());
 		redraw();
 	}
+	
 	/**
+	 * <h1>initialize</h1>
+	 * 
 	 * this method sets the maze and initializes our maze and the character
 	 * starting position
+	 * @param maze3d the maze for the display
 	 */
 	@Override
 	public void initilaize(algorithms.mazeGenerators.Maze3d maze3d) {
@@ -288,14 +301,20 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 
 	}
 
+	/**
+	 * <h1>redrawCrosses</h1>
+	 * this method redraw the crosses view
+	 */
 	public void redrawCrosses()
 	{
 		crossX.redraw();
 		crossY.redraw();
 	}
+
 	/**
+	 * <h1>moveCharacter</h1>
 	 * This method is for moving a character from a certain position to another position
-	 * @param position is the given position.
+	 * @param position the position to move the character.
 	 */
 	private void moveCharacter(Position position) {
 		if (maze3d.InMaze(position) && maze3d.getCell(position) == 0) {
@@ -305,15 +324,19 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			checkIfSolved();
 		}
 	}
+	
 	/**
-	 * This method is for updating the cross section
+	 * <h1>updateCross</h1>
+	 * This method is for updating the cross sections by the character position
 	 */
 	private void updateCross() {
 		crossX.setCrossSection(maze3d.getCrossSectionByX(character.getPosition().getX()));
 		crossY.setCrossSection(maze3d.getCrossSectionByY(character.getPosition().getY()));
 		redraw();
 	} 
+
 	/**
+	 * <h1>checkIfSolved</h1>
 	 * This method is for checking if we reached our goal position in the maze
 	 */
 	private void checkIfSolved() {

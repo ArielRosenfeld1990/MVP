@@ -18,6 +18,7 @@ import algorithms.mazeGenerators.Position;
  */
 public class CrossXDisplayer extends CrossDisplayer {
 	/**
+	 * <h1>CrossXDisplayer constructor</h1>
 	 * constructor for CrossXDisplayer
 	 */
 	public CrossXDisplayer(Composite parent, int style, MazeCharacterGuiDisplayer character) {
@@ -33,7 +34,9 @@ public class CrossXDisplayer extends CrossDisplayer {
 			}
 		});
 	}
+	
 	/**
+	 * <h1>drawMaze</h1>
 	 * This method is for drawing the maze when Paint Event occurred
 	 * @param e is the Paint Event.
 	 */
@@ -80,7 +83,9 @@ public class CrossXDisplayer extends CrossDisplayer {
 			if (drawHint) drawHint=false;
 		}
 	}
+	
 	/**
+	 * <h1>paintCube</h1>
 	 * This method is for drawing the maze walls when Paint Event Occurred
 	 * @param p is the set of points that we need to draw as a wall
 	 * @param h repesents the height of the wall
@@ -100,12 +105,13 @@ public class CrossXDisplayer extends CrossDisplayer {
 		e.gc.fillPolygon(r);
 
 	}
+	
 	/**
-	 * This method is for getting the display of a position in the X dimension
+	 * <h1>getCrossXDisplay</h1>
+	 * This method is for getting the display of x position in the cross section 
 	 * @param position is our position.
 	 * @return int represents the index.
 	 */
-
 	private int getCrossXDisplay(Position position) {
 
 		if (position.getX() == character.getPosition().getX())
@@ -113,12 +119,13 @@ public class CrossXDisplayer extends CrossDisplayer {
 
 		return -1;
 	}
+	
 	/**
-	 * This method is for getting the display of a position in the y dimension
+	 * <h1>getCrossYDisplay</h1>
+	 * This method is for getting the display of y position in the cross section
 	 * @param position is our position.
 	 * @return int represents the index.
 	 */
-
 	private int getCrossYDisplay(Position position) {
 
 		if (position.getX() == character.getPosition().getX())
