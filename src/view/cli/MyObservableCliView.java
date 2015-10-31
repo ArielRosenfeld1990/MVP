@@ -7,8 +7,8 @@ import view.View;
 
 /**
  * <h1>MyObservableCliView</h1> The MyObservableCliView class implements our
- * View interface,extending Observable so out Present can observe it and see if
- * something has changed,implements Observer so our MyObservableCliView can
+ * View interface,extending Observable so our Presenter can observe it and see if
+ * something happened,implements Observer so our MyObservableCliView can
  * observe the CLI to see if something happened
  * <p>
  * 
@@ -20,14 +20,13 @@ public class MyObservableCliView extends Observable implements View, Observer {
 
 	private CLI ui;
 
-	/**
-	 * constructor for MyView
-	 */
+
 	public MyObservableCliView() {
 	}
 
 	/**
-	 * this method is used for starting interaction between the user and the CLI
+	 * <h1>start</h1>
+	 * this method is used for starting the interaction between the client and the CLI
 	 */
 	@Override
 	public void start() {
@@ -37,10 +36,10 @@ public class MyObservableCliView extends Observable implements View, Observer {
 	} 
 
 	/**
+	 * <h1>display</h1>
 	 * This method is for displaying the object
-	 * 
-	 * @param obj
-	 *            is the object that we need to display.
+	 * @param obj is the object that we need to display.
+	 * @param out is from where we are going to display it.
 	 */
 	@Override
 	public void display(Object obj) {
@@ -68,6 +67,7 @@ public class MyObservableCliView extends Observable implements View, Observer {
 	}
 
 	/**
+	 * <h1>close</h1>
 	 * this method closes the view
 	 */
 	@Override
@@ -76,7 +76,10 @@ public class MyObservableCliView extends Observable implements View, Observer {
 	}
 
 	/**
-	 * this method is used to get a command from the CLI
+	 * <h1>getUserCommand</h1>
+	 * this method is used to get a command from the CLI and place it into 
+	 * a String Array
+	 * @return String Array that represents the command with its parameters
 	 */
 	@Override
 	public String[] getUserCommand() {
@@ -84,14 +87,11 @@ public class MyObservableCliView extends Observable implements View, Observer {
 	}
 
 	/**
-	 * This method is used when change has occured on the CLI to handle the
-	 * change and react, in this case we notify the Presenter that something
-	 * happened
-	 * 
-	 * @param o
-	 *            is the Observable that notified us that something changed.
-	 * @param o
-	 *            is the object that we got from the change.
+	 * <h1>update</h1>
+	 * This method is used when change has occurred on our Observable, to handle the
+	 * change and react, in this case we notify the Presenter that something happened
+	 * @param o is the Observable that notified us that something changed.
+	 * @param arg is the object that we got from the change.
 	 */
 	@Override
 	public void update(Observable o, Object arg) {

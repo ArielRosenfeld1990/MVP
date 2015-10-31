@@ -9,7 +9,7 @@ import view.View;
 
 /**
  * <h1>Presenter</h1> The Presenter class implements the Observer interface so
- * that we can Observe the MyModel and MyObservableCliView
+ * that we can Observe the View and Moder layers
  * <p>
  *
  * @author Ariel Rosenfeld,Ofir Calif
@@ -22,7 +22,10 @@ public class Presenter implements Observer {
 	private HashMap<String, Command> commands;
 
 	/**
-	 * constructor for Presenter
+	 * <h1>Presenter constructor</h1>
+	 * Presenter constructor initiliazing view and model data member
+	 * @param view is the given value for the view data member
+	 * @param model is the given value for the model data member
 	 */
 	public Presenter(View view, Model model) {
 		this.view = view;
@@ -31,14 +34,13 @@ public class Presenter implements Observer {
 	}
 
 	/**
-	 * This method is used when change has occured either on the Model or the
+	 * <h1>update</h1>
+	 * This method is used when change has occurred either on the Model or the
 	 * View layer to handle the change and react, in this case we distinguish
 	 * between the Model and the View layer and we response differently
 	 * 
-	 * @param o
-	 *            is the Observable that notified us that something changed.
-	 * @param o
-	 *            is the object that we got from the change.
+	 * @param o is the Observable that notified us that something changed.
+	 * @param arg is the object that we got from the change.
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
@@ -57,13 +59,12 @@ public class Presenter implements Observer {
 	}
 
 	/**
-	 * This method is for seperating between the command and the parameters
+	 * <h1>extractParamters</h1>
+	 * This method is for seperating between the command and the parameters of the command
 	 * 
-	 * @param stringArray
-	 *            is the full command that was inserted.
-	 * @param numberOfcellsToIgnore
-	 *            is the number of cells in the array that we need to ignore in
-	 *            order to perform the seperation.
+	 * @param stringArray is the full command that was inserted.
+	 * @param numberOfcellsToIgnore is the number of cells in the array that we need to ignore in
+	 * order to perform the seperation.
 	 */
 	private String[] extractParamters(String[] stringArray, int numberOfcellsToIgnore) {
 		String[] params = new String[stringArray.length - numberOfcellsToIgnore];
@@ -74,6 +75,7 @@ public class Presenter implements Observer {
 	}
 
 	/**
+	 * <h1>initilaizeCommands</h1>
 	 * this method initializing the command in our hashmap
 	 */
 	public void initilaizeCommands() {
@@ -95,28 +97,26 @@ public class Presenter implements Observer {
 	}
 
 	/**
+	 * <h1>getView</h1>
 	 * a getter for the view layer
-	 * 
-	 * @return view is the view layer
+	 * @return view is the view data member
 	 */
 	public View getView() {
 		return view;
 	}
 
 	/**
+	 * <h1>getModel</h1>
 	 * a getter for the model layer
-	 * 
-	 * @return model is the model layer
+	 * @return model is the model data member
 	 */
 	public Model getModel() {
 		return model;
 	}
 
-	/**
+	/**<h1>setModel</h1>
 	 * This method is a setter for the model layer
-	 * 
-	 * @param m
-	 *            is the model layer.
+	 * @param m is the value for the model data member.
 	 */
 	public void setModel(Model model) {
 		this.model = model;
@@ -128,6 +128,11 @@ public class Presenter implements Observer {
 	 * 
 	 */
 	public interface Command {
+		/**
+		 * <h1>doCommand</h1>
+		 * this method performs the inserted command
+		 * @param args is the String array that represents the command with the parameters
+		 */
 		void doCommand(String[] args);
 	}
 

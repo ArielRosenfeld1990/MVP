@@ -25,7 +25,11 @@ public class CLI extends Observable {
 	volatile boolean stop;
 
 	/**
-	 * constructor for CLI
+	 * <h1>CLI constructor</h1>
+	 * CLI constructor is the consturctor for our class, initiliazing in and out
+	 * data members
+	 * @param in is an InputStream parameter
+	 * @param out is an OutputStream parameter
 	 */
 	public CLI(InputStream in, OutputStream out) {
 		this.in = new BufferedReader(new InputStreamReader(in));
@@ -35,9 +39,11 @@ public class CLI extends Observable {
 	}
 
 	/**
-	 * this method is used to start the main loop of the cli
+	 * <h1>start</h1>
+	 * this method is used to start the main loop of the cli and the interaction
+	 * between the CLI and the client
 	 */
-	public void start() {// run in thread
+	public void start() {
 		mainThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -59,19 +65,19 @@ public class CLI extends Observable {
 	}
 
 	/**
+	 * <h1>display</h1>
 	 * This method is for displaying the result in the CLI
-	 * 
-	 * @param obj
-	 *            is the object that we got.
-	 * @param displayer
-	 *            is the kind of displayer we need to show in the CLI.
+	 * @param obj is the object that we got.
+	 * @param displayer is the kind of displayer we need to show in the CLI.
 	 */
 	public void display(Object obj, CliDisplayer displayer) {
 		displayer.display(obj, out);
 	} 
 
 	/**
-	 * this method stops the main loop
+	 * <h1>close</h1>
+	 * this method stops the main loop and stopping the interaction between the CLI 
+	 * and the client
 	 */
 	public void close() {
 		stop = true;
@@ -80,7 +86,9 @@ public class CLI extends Observable {
 	}
 
 	/**
+	 * <h1>getUserCommand</h1>
 	 * this method is used to get the user command
+	 * @return splitedCommand is the String Array that represents the command with the parameters
 	 */
 
 	public String[] getUserCommand() {

@@ -15,13 +15,11 @@ import algorithms.search.State;
  * 
  */
 public class SolutionCliDisplayer implements CliDisplayer {
-	/** 
-	 * This method is for displaying the solution for the 3d maze
-	 * 
-	 * @param obj
-	 *            is the object that we need to display.
-	 * @param out
-	 *            is from where we are going to display it.
+	/**
+	 * <h1>display</h1>
+	 * This method is for displaying the object
+	 * @param obj is the object that we need to display.
+	 * @param out is from where we are going to display it.
 	 */
 	@Override
 	public void display(Object obj, PrintWriter out) {

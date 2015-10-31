@@ -33,7 +33,8 @@ public class Properties implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * constructor for Properties
+	 * <h1>Properties constructor</h1>
+	 * constructor for Properties class
 	 */
 	public Properties() {
 		RemoteIPaddress = "127.0.0.1";
@@ -46,8 +47,10 @@ public class Properties implements Serializable {
 
 	}
 	/**
-	 * constructor for Properties
+	 * <h1>Properties constructor</h1>
+	 *non-default constructor for Properties class
 	 * @param doc is XML file that from it we will build our Properties object
+	 * @throws FileNotFoundException if such InputStream wasn't found
 	 */
 	public Properties(InputStream doc) throws FileNotFoundException{
 		try {	
@@ -60,17 +63,15 @@ public class Properties implements Serializable {
 		catch (FileNotFoundException e){
 			throw new FileNotFoundException("Properties file wasnt found");
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	/**
+	 * <h1>saveToXML</h1>
 	 *this method is used to save our setting in XML file
 	 */
 	public void saveToXML() {
@@ -114,7 +115,9 @@ public class Properties implements Serializable {
 
 	}
 	/**
+	 * <h1>loadFromXML</h1>
 	 *this method is used to load from XML file the requested settings
+	 *@throws FileNotFoundException if the Properties.xml file wasn't found
 	 */
 	public void loadFromXML() throws FileNotFoundException {
 
@@ -143,69 +146,105 @@ public class Properties implements Serializable {
 					System.out.println("file loaded successfully");
 				}
 		} catch (ParserConfigurationException | SAXException | IOException e) {
-			// TODO Auto-generated catch block 
+			
 			throw new FileNotFoundException("Properties file wasnt found");
 		}
 
 	}
 
 	/**
-	 *this method is a getter for our maze generator
-	 *@return mazeGenerator is the generator which will generate our maze
+	 * <h1>getMazeGenerator</h1>
+	 *this method is a getter for our maze generator setting
+	 *@return mazeGenerator is the generator 
 	 */
 	public static String getMazeGenerator() {
 		return mazeGenerator;
 	}
 	/**
-	 *this method is a setter for our maze generator
-	 *@param MG is the generator which will generate our maze
+	 * <h1>setMazeGenerator</h1>
+	 *this method is a setter for our maze generator setting
+	 *@param MG is the generator
 	 */
 	public static void setMazeGenerator(String MG) {
 		mazeGenerator = MG;
 	}
 	/**
-	 *this method is a getter for our number of threads
-	 *@return numOfThreads is the number of threads that would define our thread pool
+	 * <h1>getNumOfThreads</h1>
+	 *this method is a getter for our number of threads setting
+	 *@return numOfThreads setting
 	 */
 	public static int getNumOfThreads() {
 		return numOfThreads;
 	}
 	/**
-	 *this method is a setter for our number of threads
-	 *@param numOfThreads is the number of threads that would define our thread pool
+	 * <h1>setNumOfThreads</h1>
+	 *this method is a setter for our number of threads setting
+	 *@param NoT is the number of threads value
 	 */
 	public static void setNumOfThreads(int NoT) {
 		numOfThreads =  NoT;
 	}
 	/**
-	 *this method is a getter for our type of view
+	 * <h1>getTypeOfView</h1>
+	 *this method is a getter for our type of view setting
 	 *@return TypeOfView is the the way we will implement our view - gui or cli
 	 */
 	public static String getTypeOfView() {
 		return TypeOfView;
 	}
 	/**
+	 * <h1>setTypeOfView</h1>
 	 *this method is a getter for our type of view
 	 *@param TypeOfView is the the way we will implement our view - gui or cli
 	 */
 	public static void setTypeOfView(String typeOfView) {
 		TypeOfView = typeOfView;
 	}
+	/**
+	 * <h1>getRemoteIPaddress</h1>
+	 * is a getter for the IP address setting
+	 * @return RemoteIPaddress setting 
+	 */
 	public static String getRemoteIPaddress() {
 		return RemoteIPaddress;
 	}
+	/**
+	 * <h1>setRemoteIPaddress</h1>
+	 * a setter for the remoteIPaddress setting
+	 * @param remoteIPaddress is the value for the remoteIPaddress parameter
+	 */
 	public static void setRemoteIPaddress(String remoteIPaddress) {
 		RemoteIPaddress = remoteIPaddress;
 	}
+	/**
+	 * <h1>getTypeOfCache</h1>
+	 * a getter for our getTypeOfCache setting
+	 * @return TypeOfCache data member
+	 */
 	public static String getTypeOfCache() {
 		return TypeOfCache;
 	}
+	/**
+	 * <h1>setTypeOfCache</h1>
+	 * a setter for setTypeOfCache setting
+	 * @param typeOfCache is the value for the typeOfCache data member
+	 */
 	public static void setTypeOfCache(String typeOfCache) {
 		TypeOfCache = typeOfCache;
 	}
+	/**
+	 * <h1>getRemotePort</h1>
+	 * a getter for the getRemotePort setting
+	 * @return getRemotePort data member
+	 */
 	public static int getRemotePort() {
 		return RemotePort;
 	}
+	/**
+	 * <h1>setRemotePort</h1>
+	 * a setter for the RemotePort setting
+	 * @param remotePort is the value for the RemotePort data member
+	 */
 	public static void setRemotePort(int remotePort) {
 		RemotePort = remotePort;
 	}
