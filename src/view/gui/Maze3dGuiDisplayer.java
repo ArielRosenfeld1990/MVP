@@ -21,7 +21,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.MessageBox;
 
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Maze3dState;
@@ -43,7 +42,9 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	private CrossDisplayer crossY;
 	private int keyPressed;
 	final int CTRL=262144;
-	
+	private PaintListener imagePaint;
+	private Image solveImage;
+
 	/**
 	 * <h1>Maze3dGuiDisplayer</h1>
 	 * constructor for Maze3dGuiDisplayer
@@ -83,6 +84,26 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 				redrawCrosses();
 			}
 		});
+		
+		
+		try {
+			BufferedInputStream InputStream = new BufferedInputStream(new FileInputStream("resources/win.jpg"));
+			solveImage = new Image(null, InputStream);
+			InputStream.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		imagePaint = new PaintListener() {
+			
+			@Override
+			public void paintControl(PaintEvent arg0) {
+				arg0.gc.drawImage(solveImage, 0, 0, solveImage.getImageData().width, solveImage.getImageData().height, 0, 0, getSize().x, getSize().y);
+				
+			}
+		};		
 
 		addKeyListener(new KeyListener() {
 
@@ -208,7 +229,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		moveCharacter(new Position(x, y, z));
 
 	}
-	
+
 	/**
 	 * <h1>displaySolution</h1>
 	 * This method is for displaying the solution for the maze
@@ -268,7 +289,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		};
 		timer.scheduleAtFixedRate(task, 0, 500);
 	}
-	
+
 	/**
 	 * <h1>displayHint</h1>
 	 * This method is for displaying the hint for a specific Maze3dState
@@ -280,7 +301,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 		crossY.displayHint(hint.getPosition());
 		redraw();
 	}
-	
+
 	/**
 	 * <h1>initialize</h1>
 	 * 
@@ -290,11 +311,14 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	 */
 	@Override
 	public void initilaize(algorithms.mazeGenerators.Maze3d maze3d) {
+		removePaintListener(imagePaint);
 		super.initilaize(maze3d);
 		if(timer!=null){
 			task.cancel();
 			timer.cancel();
 		}
+		crossX.setVisible(true);
+		crossY.setVisible(true);
 		crossX.setGoal(maze3d.getGoalPosition());
 		crossY.setGoal(maze3d.getGoalPosition());
 		updateCross();
@@ -324,7 +348,7 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 			checkIfSolved();
 		}
 	}
-	
+
 	/**
 	 * <h1>updateCross</h1>
 	 * This method is for updating the cross sections by the character position
@@ -341,9 +365,9 @@ public class Maze3dGuiDisplayer extends MazeGuiDisplayer {
 	 */
 	private void checkIfSolved() {
 		if (character.getPosition().equals(maze3d.getGoalPosition())) {
-			MessageBox mBox = new MessageBox(getShell(), SWT.OK);
-			mBox.setMessage("You solve the Maze");
-			mBox.open();
+			crossX.setVisible(false);
+				crossY.setVisible(false);
+				addPaintListener(imagePaint);
 		}
 	}
 

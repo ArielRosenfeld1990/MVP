@@ -40,7 +40,7 @@ import boot.Run;
  *
  * 
  */
-public class MyModel extends Observable implements Model {
+public class MazeModel extends Observable implements Model {
 
 	private HashMap<String, Maze3d> mazes;
 	private ExecutorService threadPool;
@@ -51,7 +51,7 @@ public class MyModel extends Observable implements Model {
 	 * initialize mazes hashmap,and threadpool
 	 * @param NumOfThreads the max number of thread for the model usage
 	 */
-	public MyModel(int NumOfThreads) {
+	public MazeModel(int NumOfThreads) {
 		mazes = new HashMap<String, Maze3d>();
 		threadPool = Executors.newFixedThreadPool(NumOfThreads);
 	}
