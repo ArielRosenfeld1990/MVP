@@ -25,7 +25,6 @@ public class Properties implements Serializable {
 	static String mazeGenerator;
 	static int numOfThreads;
 	static String TypeOfView;
-	static String TypeOfCache;
 	static int RemotePort;
     Document docXML;
 	/**
@@ -42,7 +41,6 @@ public class Properties implements Serializable {
 		numOfThreads = 7;
 		mazeGenerator = "myMazeGenerator";
 		TypeOfView="GUI";
-		TypeOfCache="ZipCache";
 		docXML=null;
 
 	}
@@ -95,9 +93,6 @@ public class Properties implements Serializable {
 			Element typeofView = doc.createElement("typeofView");
 			typeofView.appendChild(doc.createTextNode(TypeOfView));
 			Properties.appendChild(typeofView);
-			Element Caching = doc.createElement("typeofCache");
-			Caching.appendChild(doc.createTextNode(TypeOfCache));
-			Properties.appendChild(Caching);
 			Element PortNum = doc.createElement("RemotePort");
 			PortNum.appendChild(doc.createTextNode(num2.toString()));
 			Properties.appendChild(PortNum);
@@ -139,7 +134,6 @@ public class Properties implements Serializable {
 						numOfThreads = Integer.parseInt(numThreads);
 						mazeGenerator = eElement.getElementsByTagName("Generator").item(0).getTextContent();
 						TypeOfView=eElement.getElementsByTagName("typeofView").item(0).getTextContent();
-						TypeOfCache=eElement.getElementsByTagName("typeofCache").item(0).getTextContent();
 						String PortNum = eElement.getElementsByTagName("RemotePort").item(0).getTextContent();
 						RemotePort = Integer.parseInt(PortNum);
 					}
@@ -216,22 +210,7 @@ public class Properties implements Serializable {
 	public static void setRemoteIPaddress(String remoteIPaddress) {
 		RemoteIPaddress = remoteIPaddress;
 	}
-	/**
-	 * <h1>getTypeOfCache</h1>
-	 * a getter for our getTypeOfCache setting
-	 * @return TypeOfCache data member
-	 */
-	public static String getTypeOfCache() {
-		return TypeOfCache;
-	}
-	/**
-	 * <h1>setTypeOfCache</h1>
-	 * a setter for setTypeOfCache setting
-	 * @param typeOfCache is the value for the typeOfCache data member
-	 */
-	public static void setTypeOfCache(String typeOfCache) {
-		TypeOfCache = typeOfCache;
-	}
+
 	/**
 	 * <h1>getRemotePort</h1>
 	 * a getter for the getRemotePort setting

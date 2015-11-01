@@ -154,7 +154,6 @@ public class MazeWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -167,31 +166,11 @@ public class MazeWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				LoadWindow();
-/*				FileDialog loadDialog = new FileDialog(shell, SWT.OPEN);
-				loadDialog.setText("Open");
-				loadDialog.setFilterPath("lib\\");
-				String[] filterExt = { "*.*" };
-				loadDialog.setFilterExtensions(filterExt);
-				String selected = loadDialog.open();
-				if (loadDialog.getFileName().equals("")==false){
-					mazeName =  loadDialog.getFileName();
-					if ((mazeName.contains(".")==false)){
-						inputStrings = new String[] { "loadMaze",selected,mazeName };
-						setChanged();
-						notifyObservers();
-					}
-					else{
-						MessageBox mLoadBox = new MessageBox(shell, SWT.OK);
-						mLoadBox.setMessage("invalid maze file!");
-						mLoadBox.open();
-					}
-				}*/
 
 			}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -210,7 +189,6 @@ public class MazeWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -230,7 +208,6 @@ public class MazeWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -264,7 +241,6 @@ public class MazeWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -282,7 +258,6 @@ public class MazeWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 
 			} 
 		});
@@ -545,7 +520,6 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
