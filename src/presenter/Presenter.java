@@ -60,11 +60,12 @@ public class Presenter implements Observer {
 
 	/**
 	 * <h1>extractParamters</h1>
-	 * This method is for seperating between the command and the parameters of the command
+	 * This method is for separating between the command and the parameters of the command
 	 * 
 	 * @param stringArray is the full command that was inserted.
 	 * @param numberOfcellsToIgnore is the number of cells in the array that we need to ignore in
-	 * order to perform the seperation.
+	 * order to perform the separation.
+	 * @return the same given string array without the "numberOfCellsToIgnore" cells from the start
 	 */
 	private String[] extractParamters(String[] stringArray, int numberOfcellsToIgnore) {
 		String[] params = new String[stringArray.length - numberOfcellsToIgnore];
@@ -116,7 +117,7 @@ public class Presenter implements Observer {
 
 	/**<h1>setModel</h1>
 	 * This method is a setter for the model layer
-	 * @param m is the value for the model data member.
+	 * @param model is the value for the model data member.
 	 */
 	public void setModel(Model model) {
 		this.model = model;
@@ -124,7 +125,6 @@ public class Presenter implements Observer {
 
 	/**
 	 * <h1>Command</h1> The Command interface represents a command
-	 * <p>
 	 * 
 	 */
 	public interface Command {
@@ -139,7 +139,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>DirCommand</h1> The DirCommand class implements our Command interface
 	 * for displaying the directory
-	 * <p>
 	 * 
 	 */
 	public class DirCommand implements Command {
@@ -156,7 +155,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>Generate3dMazeCommand</h1> The Generate3dMazeCommand class implements
 	 * our Command interface for generating 3d maze
-	 * <p>
 	 * 
 	 */
 	public class Generate3dMazeCommand implements Command {
@@ -176,7 +174,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>DisplayCommand</h1> The DisplayCommand class implements our Command
 	 * interface for displaying the maze
-	 * <p>
 	 * 
 	 */
 	public class DisplayCommand implements Command {
@@ -194,7 +191,6 @@ public class Presenter implements Observer {
 	 * <h1>DisplayCrossSectionCommand</h1> The DisplayCrossSectionCommand class
 	 * implements our Command interface for displaying a cross section for our
 	 * 3d maze
-	 * <p>
 	 * 
 	 */
 	public class DisplayCrossSectionCommand implements Command {
@@ -213,7 +209,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>SaveMazeCommand</h1> The SaveMazeCommand class implements our Command
 	 * interface for saving the maze
-	 * <p>
 	 * 
 	 */
 	public class SaveMazeCommand implements Command {
@@ -232,7 +227,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>LoadMazeCommand</h1> The LoadMazeCommand class implements our Command
 	 * interface for loading the maze
-	 * <p>
 	 * 
 	 */
 	public class LoadMazeCommand implements Command {
@@ -251,7 +245,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>MazeSizeCommand</h1> The MazeSizeCommand class implements our Command
 	 * interface for displaying the maze size
-	 * <p>
 	 * 
 	 */
 	public class MazeSizeCommand implements Command {
@@ -268,7 +261,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>FileSizeCommand</h1> The FileSizeCommand class implements our Command
 	 * interface for displaying the size of a file
-	 * <p>
 	 * 
 	 */
 	public class FileSizeCommand implements Command {
@@ -285,7 +277,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>SolveCommand</h1> The SolveCommand class implements our Command
 	 * interface for solving the maze for the different algorithms
-	 * <p>
 	 * 
 	 */
 	public class SolveCommand implements Command {
@@ -302,7 +293,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>DisplaySolutionCommand</h1> The DisplaySolutionCommand class
 	 * implements our Command interface for displaying the solution for a maze
-	 * <p>
 	 * 
 	 */
 	public class DisplaySolutionCommand implements Command {
@@ -319,7 +309,6 @@ public class Presenter implements Observer {
 	 * <h1>DisplaySolutionCommand</h1> The DisplaySolutionCommand class
 	 * implements our Command interface for displaying the solution from a specific
 	 * position in the maze
-	 * <p>
 	 * 
 	 */
 	public class DisplaySolutionFromPositionCommand implements Command {
@@ -336,7 +325,6 @@ public class Presenter implements Observer {
 	 * <h1>DisplaySolutionCommand</h1> The DisplaySolutionCommand class
 	 * implements our Command interface for displaying a hint for a specific
 	 * position in the maze
-	 * <p>
 	 * 
 	 */
 	public class DisplayHintSolutionFromPositionCommand implements Command {
@@ -352,7 +340,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>ExitCommand</h1> The ExitCommand class implements our Command
 	 * interface for safely exiting the program
-	 * <p>
 	 * 
 	 */
 	public class ExitCommand implements Command {
@@ -365,7 +352,6 @@ public class Presenter implements Observer {
 	/**
 	 * <h1>LoadXMLCommand</h1> The LoadXMLCommand class
 	 * implements our Command interface for loading XML Properties file
-	 * <p>
 	 * 
 	 */
 	public class LoadXMLCommand implements Command {

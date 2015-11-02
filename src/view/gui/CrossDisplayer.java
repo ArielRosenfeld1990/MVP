@@ -53,7 +53,7 @@ public abstract class CrossDisplayer extends Canvas {
 	/**
 	 * <h1>setHintImage</h1>
 	 * This method is a setter for our hint image
-	 * @param goalImage is the image of the hint image.
+	 * @param hintImage is the image of the hint image.
 	 */
 	public void setHintImage(Image hintImage) {
 		this.hintImage = hintImage;

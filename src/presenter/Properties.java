@@ -189,7 +189,7 @@ public class Properties implements Serializable {
 	/**
 	 * <h1>setTypeOfView</h1>
 	 *this method is a getter for our type of view
-	 *@param TypeOfView is the the way we will implement our view - gui or cli
+	 *@param typeOfView is the the way we will implement our view - gui or cli
 	 */
 	public static void setTypeOfView(String typeOfView) {
 		TypeOfView = typeOfView;

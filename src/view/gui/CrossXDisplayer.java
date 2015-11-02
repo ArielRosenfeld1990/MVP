@@ -20,6 +20,9 @@ public class CrossXDisplayer extends CrossDisplayer {
 	/**
 	 * <h1>CrossXDisplayer constructor</h1>
 	 * constructor for CrossXDisplayer
+	 * @param parent the parent component
+	 * @param style SWT style
+	 * @param character the maze character to display
 	 */
 	public CrossXDisplayer(Composite parent, int style, MazeCharacterGuiDisplayer character) {
 		super(parent, style, character);

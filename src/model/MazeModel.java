@@ -436,7 +436,7 @@ public class MazeModel extends Observable implements Model {
 	 * <h1>getMaze</h1>
 	 * This method is for getting a maze
 	 * 
-	 * @param name
+	 * @param mazeName
 	 *            is the name of the maze.
 	 * @return maze from the hashmap 
 	 * @throws Exception throws if the maze name that was given is not exsists in the hashMap
@@ -492,7 +492,7 @@ public class MazeModel extends Observable implements Model {
 	 * <h1>loadXML</h1>
 	 * This method is for loading the XML from a file
 	 * 
-	 * @param name
+	 * @param fileNamePath
 	 *            is the path of the Properties file.
 	 */
 	@Override

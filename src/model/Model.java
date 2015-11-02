@@ -67,6 +67,7 @@ public interface Model {
 	 *            is the name of the maze.
 	 * @param fileName
 	 *            is the path of the file.
+	 * @throws IOException throws if there is a problem to save the maze
 	 */
 	void saveMaze(String mazeName, String fileName) throws IOException;
 
@@ -78,6 +79,7 @@ public interface Model {
 	 *            is the name of the maze.
 	 * @param fileName
 	 *            is the name of the file.
+	 * @throws IOException throws if there is a problem to load the given file
 	 */
 	void loadMaze(String fileName, String mazeName) throws IOException;
 
@@ -105,8 +107,6 @@ public interface Model {
 	 * 
 	 * @param mazeName
 	 *            is the name of the maze.
-	 * @param algorithm
-	 *            is the name of the algorithm.
 	 */
 	void solve(String mazeName);
 
@@ -123,7 +123,6 @@ public interface Model {
 	 * <h1>getSolutionFromPosition</h1>
 	 * This method is for getting the solution from a certain position in the maze
 	 * @param mazeName is the name of the maze
-	 * @param algorithm is the algorithm
 	 * @param position is the given position.
 	 */
 	void getSolutionFromPosition(String mazeName,String position);
@@ -132,7 +131,6 @@ public interface Model {
 	 * <h1>getHintFromPosition</h1>
 	 * This method is for getting a hint for a certain position in the maze
 	 * @param mazeName is the name of the maze
-	 * @param algorithm is the algorithm 
 	 * @param position is the given position.
 	 */
 	public void getHintFromPosition(String mazeName,String position);
